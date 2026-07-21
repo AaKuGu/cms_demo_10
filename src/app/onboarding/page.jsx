@@ -1,15 +1,36 @@
 "use client";
 
-import { useActionStateWithToast } from "@/hooks/useActionWithToast";
 import { createClinicAction } from "@/actions/Onboarding.actions";
+import FormInput from "@/components/FormInput";
+import { useSubmitWithToast } from "@/hooks/useSubmitWithToast";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
-const initialState = { error: null, values: null };
+const initialFormValues = {
+  clinicName: "",
+  ownerName: "",
+};
+
 
 export default function OnboardingPage() {
-  const [state, formAction, isPending] = useActionStateWithToast(
-    createClinicAction,
-    initialState
-  );
+ const router = useRouter();
+  const [formValues, setFormValues] = useState(initialFormValues);
+  const [state, submit, isPending] = useSubmitWithToast(createClinicAction, {
+    error: null,
+    success: null,
+  });
+
+  const updateField = (field) => (e) => {
+    setFormValues((prev) => ({ ...prev, [field]: e.target.value }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.set("clinicName", formValues.clinicName);
+    formData.set("ownerName", formValues.ownerName);
+    submit(formData);
+  };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-slate-50 px-4">
@@ -23,42 +44,25 @@ export default function OnboardingPage() {
           </p>
         </div>
 
-        <form action={formAction} className="space-y-4">
-          <div>
-            <label
-              htmlFor="clinicName"
-              className="mb-1.5 block text-sm font-medium text-slate-700"
-            >
-              Clinic name
-            </label>
-            <input
-              id="clinicName"
-              name="clinicName"
-              type="text"
-               defaultValue={state?.values?.clinicName ?? ""}
-              placeholder="e.g. Sunrise Family Clinic"
-              required
-              className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-300"
-            />
-          </div>
-
-          <div>
-            <label
-              htmlFor="ownerName"
-              className="mb-1.5 block text-sm font-medium text-slate-700"
-            >
-              Owner name
-            </label>
-            <input
-              id="ownerName"
-              name="ownerName"
-              type="text"
-              defaultValue={state?.values?.ownerName ?? ""}
-              placeholder="e.g. Dr. Aditi Sharma"
-              required
-              className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-300"
-            />
-          </div>
+        <form onSubmit={handleSubmit} className="space-y-4">
+         <FormInput
+            label="Clinic name"
+            name="clinicName"
+            type="text"
+             value={formValues.clinicName}
+            onChange={updateField("clinicName")}
+            placeholder="e.g. Sunrise Family Clinic"
+            required
+          />
+          <FormInput
+            label="Owner name"
+            name="ownerName"
+            type="text"
+           value={formValues.ownerName}
+            onChange={updateField("ownerName")}
+            placeholder="e.g. Dr. Aditi Sharma"
+            required
+          />
 
           <button
             type="submit"

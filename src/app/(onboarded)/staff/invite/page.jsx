@@ -3,112 +3,94 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import PageHeader from "@/components/PageHeader";
+import FormInput from "@/components/FormInput";
+import PermissionsSelector from "../PermissionsSelector";
+import { createStaffAction } from "@/actions/Staff.actions";
+import { useSubmitWithToast } from "@/hooks/useSubmitWithToast";
 
-const PERMISSION_GROUPS = [
-  {
-    resource: "Patients",
-    permissions: [
-      { key: "create_patient", label: "Create" },
-      { key: "view_patient", label: "View" },
-      { key: "update_patient", label: "Update" },
-      { key: "delete_patient", label: "Delete" },
-    ],
-  },
-  {
-    resource: "Appointments",
-    permissions: [
-      { key: "create_appointment", label: "Create" },
-      { key: "view_appointment", label: "View" },
-      { key: "update_appointment", label: "Update" },
-      { key: "delete_appointment", label: "Delete" },
-    ],
-  },
-  {
-    resource: "Billing",
-    permissions: [
-      { key: "create_billing", label: "Create" },
-      { key: "view_billing", label: "View" },
-      { key: "update_billing", label: "Update" },
-      { key: "delete_billing", label: "Delete" },
-    ],
-  },
-  {
-    resource: "Prescriptions",
-    permissions: [
-      { key: "create_prescription", label: "Create" },
-      { key: "view_prescription", label: "View" },
-      { key: "update_prescription", label: "Update" },
-      { key: "delete_prescription", label: "Delete" },
-    ],
-  },
-  {
-    resource: "Reports",
-    permissions: [{ key: "view_reports", label: "View" }],
-  },
-];
+const initialFormValues = {
+  name: "",
+  email: "",
+  phone: "",
+  designation: "",
+};
 
 export default function InviteStaffPage() {
   const router = useRouter();
+   const [formValues, setFormValues] = useState(initialFormValues);
   const [selected, setSelected] = useState([]);
+   const [state, submit, isPending] = useSubmitWithToast(createStaffAction, {
+    error: null,
+    success: null,
+  });
 
-  const togglePermission = (key) => {
-    setSelected((prev) =>
-      prev.includes(key) ? prev.filter((p) => p !== key) : [...prev, key]
-    );
+
+    const updateField = (field) => (e) => {
+    setFormValues((prev) => ({ ...prev, [field]: e.target.value }));
+  };
+
+   const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.set("name", formValues.name);
+    formData.set("email", formValues.email);
+    formData.set("phone", formValues.phone);
+    formData.set("designation", formValues.designation);
+    formData.set("permissions", JSON.stringify(selected));
+
+    submit(formData);
   };
 
   return (
     <div className="max-w-2xl">
       <PageHeader title="Invite Staff" />
-
-      <div className="border rounded-lg p-5 mb-6">
+ <form onSubmit={handleSubmit}>
+      <div className="border border-gray-200 rounded-lg p-5 mb-6">
         <p className="text-sm font-medium mb-3">Basic Details</p>
         <div className="grid grid-cols-2 gap-3">
-          <input placeholder="Full Name" className="border rounded-md px-3 py-2 text-sm" />
-          <input placeholder="Email" className="border rounded-md px-3 py-2 text-sm" />
-          <input placeholder="Phone" className="border rounded-md px-3 py-2 text-sm" />
-          <input placeholder="Designation (e.g. Receptionist)" className="border rounded-md px-3 py-2 text-sm" />
-          <input
-            placeholder="Address"
-            className="border rounded-md px-3 py-2 text-sm col-span-2"
-          />
+         <FormInput label="Full Name" name="name" placeholder="e.g. Riya Sharma"
+         value={formValues.name}
+              onChange={updateField("name")}
+         />
+        <FormInput label="Email" name="email" type="email" placeholder="e.g. riya@example.com"
+         value={formValues.email}
+              onChange={updateField("email")}
+        />
+        <FormInput label="Phone" name="phone" type="tel" hint="Optional" 
+         value={formValues.phone}
+              onChange={updateField("phone")}
+        />
+        <FormInput label="Designation" name="designation" placeholder="e.g. Receptionist" hint="Optional"
+         value={formValues.designation}
+              onChange={updateField("designation")}
+        />
         </div>
       </div>
 
-      <div className="border rounded-lg p-5 mb-6">
+      <div className="border border-gray-200 rounded-lg p-5 mb-6">
         <p className="text-sm font-medium mb-4">Permissions</p>
-        <div className="flex flex-col gap-4">
-          {PERMISSION_GROUPS.map((group) => (
-            <div key={group.resource}>
-              <p className="text-sm text-gray-600 mb-2">{group.resource}</p>
-              <div className="flex flex-wrap gap-4">
-                {group.permissions.map((perm) => (
-                  <label key={perm.key} className="flex items-center gap-2 text-sm">
-                    <input
-                      type="checkbox"
-                      checked={selected.includes(perm.key)}
-                      onChange={() => togglePermission(perm.key)}
-                    />
-                    {perm.label}
-                  </label>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
+        <PermissionsSelector selected={selected} onChange={setSelected} />
       </div>
+
 
       <div className="flex justify-end gap-2">
         <button
+        type="button"
           onClick={() => router.push("/staff")}
           className="px-4 py-2 rounded-md text-sm border"
         >
           Cancel
         </button>
-        <button className="px-4 py-2 rounded-md bg-gray-900 text-white text-sm">
-          Send Invite
-        </button>
+        <button
+            type="submit"
+            disabled={isPending}
+            className="px-4 py-2 rounded-md bg-gray-900 text-white text-sm disabled:opacity-60"
+          >
+            {isPending ? "Inviting..." : "Send Invite"}
+          </button>
       </div>
+      </form>
     </div>
   );
 }

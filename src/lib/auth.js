@@ -19,14 +19,17 @@ export const auth = betterAuth({
     google: {   
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    },
+    },  
   },
-  plugins: [
+  plugins: [  
     customSession(async ({ user, session }) => {
       const clinic = await getClinic({ userId: user.id });
       const clinicId = clinic ? serialize(clinic)._id : null;
- 
-      return { user, session, clinicId };
+      const isOwner = !!clinic; 
+
+      console.log("auth.js : clinic , clinicId, isOwner : ", clinic, clinicId, isOwner);
+
+      return { user, session, clinicId, isOwner };
     }),
   ],
 });

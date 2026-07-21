@@ -5,9 +5,9 @@ import { getClinicByUserId } from "@/services/Clinic.services";
 import { tryCatchAction } from "@/lib/tryCatchAction";
 import { createClinicValidator } from "@/validators/Clinic.validators";
 import { parseOrReturnError } from "@/lib/parseOrReturnError";
-import { getUserIdOrReturn } from "@/lib/getUserIdOrReturn";
+import { getUserIdOrReturn } from "@/services/AuthenticatedHoc.services";
 
-export async function createClinicAction(prevState, formData) {
+export async function createClinicAction(formData) {
 
   const rawValues = {
     clinicName: formData.get("clinicName"),
@@ -28,7 +28,7 @@ export async function createClinicAction(prevState, formData) {
  return tryCatchAction(async () => {
     const existingClinic = await getClinicByUserId(userId);
     if (existingClinic) {
-      return { error: "You already have a clinic set up.", values: rawValues };
+      return { error: "You already have a clinic set up." };
     }
 
     await createClinic({ ...parsed.data, userId });
