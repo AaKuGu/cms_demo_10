@@ -18,6 +18,7 @@ export function useSubmitWithToast(action, initialState) {
         errorToast(result.error);
       } else if (result?.success) {
         successToast(result.success);
+        router.refresh();
         if (result.redirectTo) router.push(result.redirectTo);
       }
     } finally {

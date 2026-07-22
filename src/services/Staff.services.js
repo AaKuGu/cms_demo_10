@@ -15,3 +15,13 @@ export async function getStaffByEmail(clinicId, email) {
   }
   return getStaff({ clinicId, email });
 }
+
+//we did nto use getStaffById in the following , and used getStaff, beause of this clinicId and 
+// staffId both used for fitlerering
+//vecause of this, we dont need to write an extrac check of if staff.clinciId !== clincId then....
+export async function getStaffByStaffId(clinicId, staffId) {
+  if (!clinicId || !staffId) {
+    throwError("Staff.services: Invalid clinicId or staffId");
+  }
+  return getStaff({ _id: staffId, clinicId });
+}
