@@ -2,10 +2,11 @@
 
 import { getOwnerOrReturn } from "@/services/AuthenticatedHoc.services";
 import { createStaffValidator } from "@/validators/Staff.validators";
-import { createStaff, getStaffById, updateStaffById } from "@/crud/Staff.crud";
+import { createStaff, deleteStaffById, getStaffById, updateStaffById } from "@/crud/Staff.crud";
 import { getStaffByEmail } from "@/services/Staff.services";
 import { tryCatchAction } from "@/lib/tryCatchAction";
 import { parseOrReturnError } from "@/lib/parseOrReturnError";
+import { withClinicIdActionWrapper } from "./ActionWrapper";
 
 export async function createStaffAction(formData) {
   const rawValues = {
@@ -39,14 +40,8 @@ export async function createStaffAction(formData) {
 }
 
 
-
-
 export async function revokeStaffAction(staffId) {
-  const ownerResult = await getOwnerOrReturn();
-  if (!ownerResult.success) return ownerResult.response;
-  const { clinicId } = ownerResult.data;
-
-  return tryCatchAction(async () => {
+   return withClinicIdActionWrapper(async (clinicId) => {
     const staff = await getStaffById(staffId);
 
     if (!staff) {
@@ -67,5 +62,26 @@ export async function revokeStaffAction(staffId) {
     }
 
     return { success: "Staff access revoked." };
+  });
+}
+
+export async function deleteStaffAction(staffId) {
+  return withClinicIdActionWrapper(async (clinicId) => {
+    const staff = await getStaffById(staffId);
+
+    if (!staff) {
+      return { error: "Staff member not found." };
+    }
+
+    if (String(staff.clinicId) !== String(clinicId)) {
+      return { error: "You do not have permission to delete this staff member." };
+    }
+
+    const deleted = await deleteStaffById(staffId);
+    if (!deleted) {
+      return { error: "Failed to delete staff member. Please try again." };
+    }
+
+    return { success: "Staff member deleted." };
   });
 }
