@@ -14,11 +14,16 @@ export function useSubmitWithToast(action, initialState) {
       const result = await action(formData);
       setState(result);
 
-      if (result?.error) {
-        errorToast(result.error);
-      } else if (result?.success) {
-        successToast(result.success);
+      console.log("result in useSubmitWithToast : ", result);
+
+      if (result?.success === false) {
+        errorToast(result.msg);
+      } else if (result?.success === true) {
+        successToast(result.msg);
         router.refresh();
+
+        console.log("result in useSubmitWithToast : ", result);
+
         if (result.redirectTo) router.push(result.redirectTo);
       }
     } finally {

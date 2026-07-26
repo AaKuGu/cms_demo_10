@@ -1,11 +1,18 @@
-import { AuthenticatedHoc } from "@/hoc/AuthenticatedHoc";
 import { getStaffs } from "@/services/Staff.services.js";
 import PageHeader from "@/components/PageHeader";
 import StaffList from "./StaffList";
 
-async function StaffPage({ clinicId }) {
-  const staff = await getStaffs(clinicId);
+async function StaffPage() {
+const { data: staff, error } = await getStaffs();
 
+  if (error) {
+    return (
+      <div className="text-center py-16">
+        <p className="text-gray-900 font-medium mb-1">Access denied</p>
+        <p className="text-sm text-gray-500">{error.message}</p>
+      </div>
+    );
+  } 
   return (
     <div>
       <PageHeader
@@ -20,9 +27,9 @@ async function StaffPage({ clinicId }) {
           </a>
         }
       />
-      <StaffList staff={JSON.parse(JSON.stringify(staff))} />
+      <StaffList staff={staff} />
     </div>
   );
 }
 
-export default AuthenticatedHoc(StaffPage);
+export default StaffPage;

@@ -3,5 +3,9 @@ import dbConnect from "@/lib/dbConnect";
 
 export async function getClinicByUserId(userId) {
   await dbConnect();
-  return getClinic({ userId });
+  const clinic = await getClinic({ userId });
+  if(clinic?.success) {
+    return clinic;
+  }
+  return { msg: "Clinic not found.", success: false, data: null };
 }

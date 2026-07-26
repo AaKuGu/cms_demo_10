@@ -1,13 +1,20 @@
-import { AuthenticatedHoc } from "@/hoc/AuthenticatedHoc";
+import { getClinicIdFromSession, getUserIdFromSession } from "@/lib/authentication/authentication";
 import { redirect } from "next/navigation";
 
-function OnboardingLayout({ children, userId, clinicId }) {
-  console.log(userId); // the logged-in user's id, available here
+async function OnboardingLayout({children}) {
+  
+    const userId = await getUserIdFromSession();
 
-  if(!userId) redirect("/login");
-  if(clinicId) redirect ("/dashboard")
+    if(!userId) {
+      redirect("/login");
+    }
+
+    const clinicId = await getClinicIdFromSession();
+    if(clinicId){
+      redirect("/dashboard")
+    }
 
   return <>{children}</>;
 }
 
-export default AuthenticatedHoc(OnboardingLayout);
+export default OnboardingLayout;

@@ -1,38 +1,37 @@
 "use server";
 
-import { createClinic } from "@/crud/Clinic.crud"
-import { getClinicByUserId } from "@/services/Clinic.services";
+import { createClinic, getClinicByUserId } from "@/crud/Clinic.crud"
 import { tryCatchAction } from "@/lib/tryCatchAction";
 import { createClinicValidator } from "@/validators/Clinic.validators";
-import { parseOrReturnError } from "@/lib/parseOrReturnError";
-import { getUserIdOrReturn } from "@/services/AuthenticatedHoc.services";
+import { throwError } from "@/lib/throwError";
+import { validateInputs } from "@/lib/validateInputs";
+import { getUserIdFromSession } from "@/lib/authentication/authentication";
+import { serialize } from "@/lib/serialize";
+import { redirect } from "next/navigation";
 
 export async function createClinicAction(formData) {
-
-  const rawValues = {
+ return tryCatchAction(async () => {
+   const rawValues = {
     clinicName: formData.get("clinicName"),
     ownerName: formData.get("ownerName"),
   };
-
-  const userResult = await getUserIdOrReturn();
-  if (!userResult.success) {
-    return userResult.response;
-  }
-  const userId = userResult.data;
-
-   const parsed = parseOrReturnError(createClinicValidator, rawValues);
-  if (!parsed.success) {
-    return parsed.response;
-  }
-
- return tryCatchAction(async () => {
-    const existingClinic = await getClinicByUserId(userId);
-    if (existingClinic) {
-      return { error: "You already have a clinic set up." };
+    const userId = await getUserIdFromSession();
+    if (!userId) {
+      redirect("/login");
     }
 
-    await createClinic({ ...parsed.data, userId });
+  const validated = validateInputs(createClinicValidator, rawValues);
+    if (!validated.success) {
+      throwError(validated.error); // throw karne ka decision yahan hai, validator ke andar nahi
+    }
 
-    return { success: "Clinic created!", redirectTo: "/dashboard" };
-  }, rawValues);
+    const existingClinic = await getClinicByUserId(userId);
+    if(existingClinic){
+      redirect("/dashboard");
+    } 
+
+    const createdClinic =  await createClinic({ ...validated.data, userId });
+    return serialize(createdClinic); // ye zaroori hai, mat hatana 
+
+  });
 }

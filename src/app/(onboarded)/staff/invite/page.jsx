@@ -6,7 +6,7 @@ import PageHeader from "@/components/PageHeader";
 import FormInput from "@/components/FormInput";
 import PermissionsSelector from "../PermissionsSelector";
 import { createStaffAction } from "@/actions/Staff.actions";
-import { useSubmitWithToast } from "@/hooks/useSubmitWithToast";
+import { errorToast, successToast } from "@/lib/toast";
 
 const initialFormValues = {
   name: "",
@@ -19,18 +19,16 @@ export default function InviteStaffPage() {
   const router = useRouter();
    const [formValues, setFormValues] = useState(initialFormValues);
   const [selected, setSelected] = useState([]);
-   const [state, submit, isPending] = useSubmitWithToast(createStaffAction, {
-    error: null,
-    success: null,
-  });
+ const [isPending, setIsPending] = useState(false);
 
 
     const updateField = (field) => (e) => {
     setFormValues((prev) => ({ ...prev, [field]: e.target.value }));
   };
 
-   const handleSubmit = (e) => {
+   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsPending(true);
 
     const formData = new FormData();
     formData.set("name", formValues.name);
@@ -39,7 +37,19 @@ export default function InviteStaffPage() {
     formData.set("designation", formValues.designation);
     formData.set("permissions", JSON.stringify(selected));
 
-    submit(formData);
+     const { data, error } = await createStaffAction(formData);
+
+     console.log("createStaffAction response:", { data, error });
+
+    setIsPending(false);
+
+    if (error) {
+      errorToast(error);
+      return;
+    }
+
+    successToast("Staff invited!");
+    router.push("/staff");
   };
 
   return (

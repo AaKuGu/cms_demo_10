@@ -16,6 +16,11 @@ export async function getClinic(filter = {}) {
   return Clinic.findOne(filter);
 }
 
+export async function getClinicByUserId(userId) {
+  await dbConnect();
+  return Clinic.findOne({ userId });
+}
+
 export async function getClinics(filter = {}) {
   await dbConnect();
   return Clinic.find(filter);

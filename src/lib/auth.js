@@ -5,6 +5,7 @@ import { dbConnect } from "@/lib/dbConnect";
 import { getClinic } from "@/crud/Clinic.crud";
 import { serialize } from "./serialize";
 import { customSession } from "better-auth/plugins";
+import { getStaffByUserId } from "@/crud/Staff.crud";
 
 // Ensure the mongoose connection is established before better-auth
 // tries to use it.
@@ -24,12 +25,32 @@ export const auth = betterAuth({
   plugins: [  
     customSession(async ({ user, session }) => {
       const clinic = await getClinic({ userId: user.id });
-      const clinicId = clinic ? serialize(clinic)._id : null;
-      const isOwner = !!clinic; 
 
-      console.log("auth.js : clinic , clinicId, isOwner : ", clinic, clinicId, isOwner);
+       if (clinic) {
+        return {
+          user,
+          session,
+          clinicId: serialize(clinic)._id,
+          isOwner: true,
+        };
+      }
 
-      return { user, session, clinicId, isOwner };
+      console.log("No clinic found for user:", user.id);
+
+      const staff = await getStaffByUserId(user.id);
+
+      console.log("Staff found for user:", staff);
+
+      if (staff) {
+        return {
+          user,
+          session,
+          clinicId: serialize(staff).clinicId,
+          isOwner: false,
+        };
+      }
+
+      return { user, session, clinicId: null, isOwner: false };
     }),
   ],
 });

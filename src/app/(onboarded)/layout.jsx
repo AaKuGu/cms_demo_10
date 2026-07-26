@@ -1,10 +1,10 @@
-import { AuthenticatedHoc } from "@/hoc/AuthenticatedHoc";
-import { redirect } from "next/navigation";
 import Navbar from "./Navbar/Navbar";
 import Sidebar from "./Sidebar/Sidebar";
+import { afterOnboardingRoutesGuard } from "@/lib/routes/routes";
+export const dynamic = "force-dynamic";
 
-async function OnboardedLayout({ clinicId, children }) {
-  if (!clinicId) redirect("/onboarding");
+async function OnboardedLayout({ children }) {
+  const { clinicId } = await afterOnboardingRoutesGuard();
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -19,4 +19,4 @@ async function OnboardedLayout({ clinicId, children }) {
   );
 }
 
-export default AuthenticatedHoc(OnboardedLayout);
+export default OnboardedLayout;

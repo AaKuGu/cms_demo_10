@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import { deleteStaffAction, revokeStaffAction } from "@/actions/Staff.actions";
-import { useSubmitWithToast } from "@/hooks/useSubmitWithToast";
 import { Trash2 } from "lucide-react";
 
 const STATUS_STYLES = {
@@ -31,30 +31,41 @@ function initials(name, email) {
 export default function StaffList({ staff }) {
   const router = useRouter();
   const [revokingId, setRevokingId] = useState(null);
-   const [deletingId, setDeletingId] = useState(null);
-  const [, submitRevoke, isPending] = useSubmitWithToast(revokeStaffAction, {
-    error: null,
-    success: null,
-  });
-  const [, submitDelete, isDeleting] = useSubmitWithToast(deleteStaffAction, {
-    error: null,
-    success: null,
-  });
+  const [deletingId, setDeletingId] = useState(null);
 
-  const handleRevoke = (e, staffId) => {
+  const handleRevoke = async (e, staffId) => {
     e.stopPropagation();
     if (!window.confirm("Revoke this staff member's access?")) return;
+
     setRevokingId(staffId);
-    submitRevoke(staffId);
+    const { error } = await revokeStaffAction(staffId);
+    setRevokingId(null);
+
+    if (error) {
+      toast.error(error);
+      return;
+    }
+
+    toast.success("Staff access revoked.");
+    router.refresh();
   };
 
-   const handleDelete = (e, staffId) => {
+  const handleDelete = async (e, staffId) => {
     e.stopPropagation();
     if (!window.confirm("Delete this staff member permanently? This cannot be undone.")) return;
-    setDeletingId(staffId);
-    submitDelete(staffId);
-  };
 
+    setDeletingId(staffId);
+    const { error } = await deleteStaffAction(staffId);
+    setDeletingId(null);
+
+    if (error) {
+      toast.error(error);
+      return;
+    }
+
+    toast.success("Staff member deleted.");
+    router.refresh();
+  };
 
   if (staff.length === 0) {
     return (
@@ -105,15 +116,15 @@ export default function StaffList({ staff }) {
             {member.status !== "revoked" && (
               <button
                 onClick={(e) => handleRevoke(e, member._id)}
-                disabled={isPending && revokingId === member._id}
+                disabled={revokingId === member._id}
                 className="text-sm text-red-600 hover:text-red-700 font-medium disabled:opacity-40 disabled:cursor-not-allowed"
               >
-                {isPending && revokingId === member._id ? "Revoking..." : "Revoke"}
+                {revokingId === member._id ? "Revoking..." : "Revoke"}
               </button>
             )}
             <button
               onClick={(e) => handleDelete(e, member._id)}
-              disabled={isDeleting && deletingId === member._id}
+              disabled={deletingId === member._id}
               className="text-gray-400 hover:text-red-600 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
               title="Delete staff member"
             >

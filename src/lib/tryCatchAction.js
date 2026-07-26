@@ -1,27 +1,20 @@
-// src/lib/tryCatchAction.js
+import { errorConsole } from "./console/console";
+
+// lib/tryCatchAction.js
 export async function tryCatchAction(fn) {
   try {
-    return await fn();
+    const data = await fn();
+    return { data, error: null };
   } catch (err) {
-    console.error("Action failed:", err);
+    // redirect() internally throw karta hai, usko catch mat karo
+    if (err?.digest?.startsWith("NEXT_REDIRECT")) throw err;
 
-    // Mongo duplicate key error (unique index violation)
-    if (err.code === 11000) {
-      const field = Object.keys(err.keyPattern || {})[0];
-      return { error: field ? `This ${field} is already in use.` : "This record already exists." };
-    }
+    errorConsole(`Action failed: ${err.message}`);
 
-    // Mongoose validation error
-    if (err.name === "ValidationError") {
-      const firstError = Object.values(err.errors || {})[0];
-      return { error: firstError?.message || "Invalid data provided." };
+      if (err.isAppError) {
+      return { data: null, error: err.message }; // humara khud ka throw — safe hai dikhane ke liye
     }
+    return { data: null, error: "Something went wrong. Please try again." }; // unexpected — generic
 
-    // Mongoose bad ObjectId / cast error
-    if (err.name === "CastError") {
-      return { error: "Invalid ID provided." };
-    }
-      
-    return { error: "Something went wrong. Please try again." };
   }
 }
