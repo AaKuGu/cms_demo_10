@@ -7,6 +7,7 @@ import FormInput from "@/components/FormInput";
 import PermissionsSelector from "../PermissionsSelector";
 import { createStaffAction } from "@/actions/Staff.actions";
 import { errorToast, successToast } from "@/lib/toast";
+import { logConsole } from "@/lib/console/console";
 
 const initialFormValues = {
   name: "",
@@ -39,7 +40,7 @@ export default function InviteStaffPage() {
 
      const { data, error } = await createStaffAction(formData);
 
-     console.log("createStaffAction response:", { data, error });
+     logConsole("createStaffAction response:", { data, error });
 
     setIsPending(false);
 

@@ -6,6 +6,7 @@ import { getClinic } from "@/crud/Clinic.crud";
 import { serialize } from "./serialize";
 import { customSession } from "better-auth/plugins";
 import { getStaffByUserId } from "@/crud/Staff.crud";
+import { logConsole } from "@/lib/console/console";
 
 // Ensure the mongoose connection is established before better-auth
 // tries to use it.
@@ -35,11 +36,11 @@ export const auth = betterAuth({
         };
       }
 
-      console.log("No clinic found for user:", user.id);
+      logConsole("No clinic found for user:", user.id);
 
       const staff = await getStaffByUserId(user.id);
 
-      console.log("Staff found for user:", staff);
+      logConsole("Staff found for user:", staff);
 
       if (staff) {
         return {

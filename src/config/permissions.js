@@ -44,3 +44,10 @@ export const PERMISSION_GROUPS = [
 export const PERMISSIONS = [
   ...new Set(PERMISSION_GROUPS.flatMap((group) => group.permissions.map((p) => p.key))),
 ];
+
+export const STAFF_PERMISSIONS = {
+  VIEW_STAFF: "view_staff",
+  CREATE_STAFF: "create_staff",
+  DELETE_STAFF: "delete_staff",
+  REVOKE_STAFF: "revoke_staff",
+};

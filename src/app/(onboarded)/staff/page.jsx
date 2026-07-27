@@ -1,18 +1,15 @@
-import { getStaffs } from "@/services/Staff.services.js";
+import { fetchAllStaffs } from "@/lib/SSRCalls/ssrCalls";
 import PageHeader from "@/components/PageHeader";
+import ActionDenied from "@/components/ActionDenied";
 import StaffList from "./StaffList";
 
 async function StaffPage() {
-const { data: staff, error } = await getStaffs();
+  const { data: staff, error } = await fetchAllStaffs();
 
   if (error) {
-    return (
-      <div className="text-center py-16">
-        <p className="text-gray-900 font-medium mb-1">Access denied</p>
-        <p className="text-sm text-gray-500">{error.message}</p>
-      </div>
-    );
-  } 
+    return <ActionDenied message={error} />;
+  }
+
   return (
     <div>
       <PageHeader

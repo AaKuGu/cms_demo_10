@@ -10,9 +10,10 @@ import { after } from "next/server";
 import { getEmailFromSession, getUserIdFromSession } from "@/lib/authentication/authentication";
 import { tryCatchAction } from "@/lib/tryCatchAction";
 import { ERRORS } from "@/lib/errors/errorMessages";
+import { STAFF_PERMISSIONS } from "@/config/permissions";
 
 export async function createStaffAction(formData) {
-  return afterOnboardingActionGuard("create_staff", async ({ clinicId }) => {
+  return afterOnboardingActionGuard(STAFF_PERMISSIONS.CREATE_STAFF, async ({ clinicId }) => {
     const rawValues = {
       name: formData.get("name"),
       email: formData.get("email"),
@@ -41,7 +42,7 @@ export async function createStaffAction(formData) {
 }
 
 export async function deleteStaffAction(staffId) {
-  return afterOnboardingActionGuard("delete_staff", async ({ clinicId }) => {
+  return afterOnboardingActionGuard(STAFF_PERMISSIONS.DELETE_STAFF, async ({ clinicId }) => {
     if (!staffId) {
       throwError("Staff ID is required.");
     }
@@ -65,7 +66,7 @@ export async function deleteStaffAction(staffId) {
 }
 
 export async function revokeStaffAction(staffId) {
-  return afterOnboardingActionGuard("revoke_staff", async ({ clinicId }) => {
+  return afterOnboardingActionGuard(STAFF_PERMISSIONS.REVOKE_STAFF, async ({ clinicId }) => {
     if (!staffId) {
       throwError("Staff ID is required.");
     }

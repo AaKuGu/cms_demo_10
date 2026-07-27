@@ -1,6 +1,6 @@
 // app/staff/accept/page.jsx
 import { getEmailFromSession, getUserIdFromSession } from "@/lib/authentication/authentication";
-import { getInvitedStaffByEmail } from "@/crud/Staff.crud";
+import { getInvitedStaffByEmail, getStaff } from "@/crud/Staff.crud";
 import { getClinic } from "@/crud/Clinic.crud";
 import PageHeader from "@/components/PageHeader";
 import AcceptInviteForm from "./AcceptInviteForm";
@@ -17,6 +17,12 @@ export default async function AcceptInvitePage() {
   if(!email) {
     redirect("/login?redirect=/invite/accept");
   }
+
+  const activeStaff = await getStaff({ email: email.toLowerCase(), status: "active" });
+  if (activeStaff) {
+    redirect("/dashboard");
+  }
+
   const invite = await getInvitedStaffByEmail(email);
   const _invite = serialize(invite);
 

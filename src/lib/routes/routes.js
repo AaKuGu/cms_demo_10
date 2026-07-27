@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { getAuthenticatedContext } from "../authentication/authentication";
+import { logConsole } from "@/lib/console/console";
 
 export async function afterOnboardingRoutesGuard() {
   const context = await getAuthenticatedContext();
@@ -17,7 +18,7 @@ export async function afterOnboardingRoutesGuard() {
 
 export async function beforeOnboardingRoutesGuard() {
   const context = await getAuthenticatedContext();
-  console.log("before on boarding routes guard : ", context);
+  logConsole("before on boarding routes guard : ", context);
 
   if (!context.userId) {
     redirect("/login");

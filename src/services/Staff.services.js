@@ -5,6 +5,8 @@ import { serialize } from "@/lib/serialize";
 import { throwError } from "@/lib/throwError";
 import { tryCatchAction } from "@/lib/tryCatchAction";
 import { redirect } from "next/navigation";
+import { STAFF_PERMISSIONS } from "@/config/permissions";
+import { logConsole } from "@/lib/console/console";
 
 export async function getStaffs() {
 return tryCatchAction(async () => {
@@ -24,22 +26,22 @@ return tryCatchAction(async () => {
     throwError('Email not found in session.'); 
   }
 
-  const _isAuthorized = await isAuthorized({ email, clinicId, isOwner }, "view_staff");
+  const _isAuthorized = await isAuthorized({ email, clinicId, isOwner }, STAFF_PERMISSIONS.VIEW_STAFF);
   if (!_isAuthorized.allowed) {
     throwError(_isAuthorized.reason);
   }
 
-  console.log("getStaffs: userId, clinicId, email, isOwner", { userId, clinicId, email, isOwner });
+  logConsole("getStaffs: userId, clinicId, email, isOwner", { userId, clinicId, email, isOwner });
 
   const staffs = await getStaffList({ clinicId });
 
-  console.log("getStaffs response:", { staffs });
+  logConsole("getStaffs response:", { staffs });
 
   return serialize(staffs);
 })};
 
 export async function getStaffByEmail(email) {
-  const { clinicId } = await afterOnboardingServicesGuard("view_staff"); // adjust permission string
+  const { clinicId } = await afterOnboardingServicesGuard(STAFF_PERMISSIONS.VIEW_STAFF); // adjust permission string
 
   if (!email) {
     throwError("Staff.services: Invalid email");
@@ -50,7 +52,7 @@ export async function getStaffByEmail(email) {
 // staffId both used for fitlerering
 //vecause of this, we dont need to write an extrac check of if staff.clinciId !== clincId then....
 export async function getStaffByStaffId(staffId) {
-  const { clinicId } = await afterOnboardingServicesGuard("view_staff"); // adjust permission string
+  const { clinicId } = await afterOnboardingServicesGuard(STAFF_PERMISSIONS.VIEW_STAFF); // adjust permission string
 
   if (!staffId) {
     throwError("Staff.services: Invalid staffId");
@@ -62,7 +64,7 @@ export async function getStaffByStaffId(staffId) {
 export async function createStaff(formData) {
  
 
-  const { clinicId } = await afterOnboardingServicesGuard("create_staff"); // adjust permission string
+  const { clinicId } = await afterOnboardingServicesGuard(STAFF_PERMISSIONS.CREATE_STAFF); // adjust permission string
 
  const rawValues = {
     name: formData.get("name"),
