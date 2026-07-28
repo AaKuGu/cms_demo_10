@@ -51,3 +51,17 @@ export const STAFF_PERMISSIONS = {
   DELETE_STAFF: "delete_staff",
   REVOKE_STAFF: "revoke_staff",
 };
+
+export const PATIENT_PERMISSIONS = {
+  VIEW_PATIENT: "view_patient",
+  CREATE_PATIENT: "create_patient",
+  UPDATE_PATIENT: "update_patient",
+  DELETE_PATIENT: "delete_patient",
+};
+
+export const APPOINTMENT_PERMISSIONS = {
+  VIEW_APPOINTMENT: "view_appointment",
+  CREATE_APPOINTMENT: "create_appointment",
+  UPDATE_APPOINTMENT: "update_appointment",
+  DELETE_APPOINTMENT: "delete_appointment",
+};

@@ -15,14 +15,7 @@ async function StaffPage() {
       <PageHeader
         title="Staff"
         description="People with access to your clinic, and what they're allowed to do."
-        action={
-          <a
-            href="/staff/invite"
-            className="px-4 py-2 rounded-lg bg-gray-900 text-white text-sm font-medium hover:bg-gray-800 transition-colors"
-          >
-            Invite Staff
-          </a>
-        }
+        rightButton={{ href: "/staff/invite", label: "Invite Staff" }}
       />
       <StaffList staff={staff} />
     </div>
