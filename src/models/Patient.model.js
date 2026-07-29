@@ -31,6 +31,7 @@ const patientSchema = new mongoose.Schema(
     gender: {
       type: String,
       trim: true,
+      enum: ["", "male", "female", "other", "prefer_not_to_say"],
       default: "",
     },
     address: {
@@ -42,11 +43,6 @@ const patientSchema = new mongoose.Schema(
       type: String,
       trim: true,
       default: "",
-    },
-    status: {
-      type: String,
-      enum: ["active", "inactive"],
-      default: "active",
     },
   },
   { timestamps: true }

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { deleteStaffAction, revokeStaffAction } from "@/actions/Staff.actions";
-import { Trash2 } from "lucide-react";
+import ActionGroup from "@/components/ActionGroup";
 
 const STATUS_STYLES = {
   active: "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-600/20",
@@ -122,14 +122,15 @@ export default function StaffList({ staff }) {
                 {revokingId === member._id ? "Revoking..." : "Revoke"}
               </button>
             )}
-            <button
-              onClick={(e) => handleDelete(e, member._id)}
-              disabled={deletingId === member._id}
-              className="text-gray-400 hover:text-red-600 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-              title="Delete staff member"
-            >
-              <Trash2 size={16} />
-            </button>
+            <ActionGroup
+              onEdit={(e) => {
+                e.stopPropagation();
+                router.push(`/staff/${member._id}`);
+              }}
+              onDelete={(e) => handleDelete(e, member._id)}
+              isDeleting={deletingId === member._id}
+              isEditing={false}
+            />
           </div>
         </div>
       ))}

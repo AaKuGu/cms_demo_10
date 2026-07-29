@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import EmptyState from "@/components/EmptyState";
+import ActionGroup from "@/components/ActionGroup";
 import { getNameInitials } from "@/lib/ui/initials";
 
 export default function PatientList({ patients }) {
@@ -40,14 +41,17 @@ export default function PatientList({ patients }) {
             </div>
           </div>
 
-          <div className="shrink-0 text-right">
-            <p className="text-sm font-medium text-gray-700">
-              {patient.phone || "No phone"}
-            </p>
-            <p className="text-xs text-gray-500">
-              {patient.status === "active" ? "Active" : "Inactive"}
-            </p>
-          </div>
+          <ActionGroup
+            onEdit={(e) => {
+              e.stopPropagation();
+              router.push(`/patients/${patient._id}/edit`);
+            }}
+            onDelete={(e) => {
+              e.stopPropagation();
+              console.log("Delete patient", patient._id);
+            }}
+            isDeleting={false}
+          />
         </div>
       ))}
     </div>

@@ -15,7 +15,7 @@ async function PatientsPage() {
       <PageHeader
         title="Patients"
         description="Manage your clinic patients and their records."
-        rightButton={{ href: "/patients", label: "Add Patient" }}
+        rightButton={{ href: "/patients/new", label: "Add Patient" }}
       />
       <PatientList patients={patients} />
     </div>
