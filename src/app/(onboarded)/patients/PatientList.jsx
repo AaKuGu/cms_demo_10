@@ -4,9 +4,13 @@ import { useRouter } from "next/navigation";
 import EmptyState from "@/components/EmptyState";
 import ActionGroup from "@/components/ActionGroup";
 import { getNameInitials } from "@/lib/ui/initials";
+import { useState } from "react";
+import { deletePatientAction } from "@/actions/Patient.actions";
+import { errorToast, successToast } from "@/lib/toast";
 
 export default function PatientList({ patients }) {
-  const router = useRouter();
+   const router = useRouter();
+  const [deletingId, setDeletingId] = useState(null);
 
   if (!patients || patients.length === 0) {
     return (
@@ -18,6 +22,22 @@ export default function PatientList({ patients }) {
       />
     );
   }
+
+   const handleDelete = async (e, patientId) => {
+    e.stopPropagation();
+    if (!window.confirm("Delete this patient permanently? This cannot be undone.")) return;
+
+    setDeletingId(patientId);
+    const { error } = await deletePatientAction(patientId);
+    setDeletingId(null);
+
+    if (error) {
+      errorToast(error);
+      return;
+    }
+successToast("Patient deleted.");
+    router.refresh();
+  };
 
   return (
     <div className="overflow-hidden rounded-xl border border-gray-200 divide-y divide-gray-200">
@@ -48,9 +68,9 @@ export default function PatientList({ patients }) {
             }}
             onDelete={(e) => {
               e.stopPropagation();
-              console.log("Delete patient", patient._id);
+              handleDelete(e, patient._id);
             }}
-            isDeleting={false}
+           isDeleting={deletingId === patient._id}
           />
         </div>
       ))}

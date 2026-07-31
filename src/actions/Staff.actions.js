@@ -1,12 +1,11 @@
 "use server";
 
-import { createStaffValidator } from "@/validators/Staff.validators";
+import { createStaffValidator, updateStaffValidator } from "@/validators/Staff.validators";
 import { validateInputs } from "@/lib/validateInputs";
 import { throwError } from "@/lib/throwError";
 import { serialize } from "@/lib/serialize";
 import { afterOnboardingActionGuard } from "@/lib/actions/action";
 import { deleteStaffById, getStaffById, updateStaffById, createStaff, getStaffByEmail, acceptStaffInvite } from "@/crud/Staff.crud";
-import { after } from "next/server";
 import { getEmailFromSession, getUserIdFromSession } from "@/lib/authentication/authentication";
 import { tryCatchAction } from "@/lib/tryCatchAction";
 import { ERRORS } from "@/lib/errors/errorMessages";
@@ -129,3 +128,45 @@ export async function staffAcceptInviteAction(staffId) {
   });
 }
 
+export async function updateStaffAction(formData, staffId) {
+  return afterOnboardingActionGuard(STAFF_PERMISSIONS.UPDATE_STAFF, async ({ clinicId }) => {
+    if (!staffId) {
+      throwError("Staff ID is required.");
+    }
+
+    const existingStaff = await getStaffById(staffId);
+    if (!existingStaff) {
+      throwError("Staff member not found.");
+    }
+
+    if (existingStaff.clinicId.toString() !== clinicId.toString()) {
+      throwError("You are not authorized to update this staff member.");
+    }
+
+    const rawValues = {
+      name: formData.get("name"),
+      email: formData.get("email"),
+      phone: formData.get("phone"),
+      designation: formData.get("designation"),
+      permissions: JSON.parse(formData.get("permissions") || "[]"),
+    };
+
+    const validated = validateInputs(updateStaffValidator, rawValues);
+    if (!validated.success) {
+      throwError(validated.error);
+    }
+
+    const duplicateStaff = await getStaffByEmail(clinicId, validated.data.email);
+    if (duplicateStaff && duplicateStaff._id.toString() !== staffId) {
+      throwError("This email has already been invited.");
+    }
+
+    const updated = await updateStaffById(staffId, { ...validated.data, clinicId });
+    if (!updated) {
+      throwError("Failed to update staff member. Please try again.");
+    }
+
+    return serialize(updated);
+  });
+}
+// 9651338585 : durga ji road : 

@@ -1,4 +1,4 @@
-import { fetchAllStaffs } from "@/lib/SSRCalls/ssrCalls";
+import { fetchAllStaffs } from "@/lib/SSRCalls/staffSsrCalls";
 import PageHeader from "@/components/PageHeader";
 import ActionDenied from "@/components/ActionDenied";
 import StaffList from "./StaffList";

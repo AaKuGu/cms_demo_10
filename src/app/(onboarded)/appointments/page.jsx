@@ -14,6 +14,8 @@ async function AppointmentsPage() {
       <PageHeader
         title="Appointments"
         description="Manage your clinic schedule and upcoming visits."
+        rightButton={{ href: "/appointments/new", label: "Create Appointment" }}
+
       />
 
       <div className="rounded-xl border border-gray-200 bg-white p-6">

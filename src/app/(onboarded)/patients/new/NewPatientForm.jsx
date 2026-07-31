@@ -6,7 +6,6 @@ import PatientForm from "../PatientForm/PatientForm";
 import { createPatientAction } from "@/actions/Patient.actions";
 import { errorToast, successToast } from "@/lib/toast";
 import { logConsole } from "@/lib/console/console";
-import { dateToInputValue } from "@/lib/dateToInputValue";
 
 const defaultValues = {
   name: "",

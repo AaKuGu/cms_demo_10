@@ -50,6 +50,7 @@ export const STAFF_PERMISSIONS = {
   CREATE_STAFF: "create_staff",
   DELETE_STAFF: "delete_staff",
   REVOKE_STAFF: "revoke_staff",
+  UPDATE_STAFF: "update_staff",
 };
 
 export const PATIENT_PERMISSIONS = {

@@ -34,3 +34,8 @@ export async function getEmailFromSession() {
     const session = await auth.api.getSession({ headers: await headers() });
     return session?.user?.email ?? null;
 }
+
+export async function getStaffIdFromSession() {
+    const session = await auth.api.getSession({ headers: await headers() });
+    return session?.staffId ?? null;
+}

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import PageHeader from "@/components/PageHeader";
 import ActionDenied from "@/components/ActionDenied";
-import { fetchStaff } from "@/lib/SSRCalls/ssrCalls";
+import { fetchStaff } from "@/lib/SSRCalls/staffSsrCalls";
 
 export default async function StaffDetailPage({ params }) {
   const { staffId } = await params;

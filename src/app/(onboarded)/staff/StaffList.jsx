@@ -125,7 +125,7 @@ export default function StaffList({ staff }) {
             <ActionGroup
               onEdit={(e) => {
                 e.stopPropagation();
-                router.push(`/staff/${member._id}`);
+                router.push(`/staff/${member._id}/edit`);
               }}
               onDelete={(e) => handleDelete(e, member._id)}
               isDeleting={deletingId === member._id}

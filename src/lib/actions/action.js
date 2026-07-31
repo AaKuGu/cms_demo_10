@@ -4,7 +4,8 @@ import {
   getClinicIdFromSession, 
   getEmailFromSession, 
   getIsOwnerFromSession, 
-  getUserIdFromSession 
+  getUserIdFromSession,
+  getStaffIdFromSession,
 } from "@/lib/authentication/authentication";
 import { isAuthorized } from "@/lib/authorization/authorization";
 import { throwError } from "@/lib/throwError";
@@ -39,6 +40,8 @@ export function afterOnboardingActionGuard(permission, fn) {
       throwError(_isAuthorized.reason);
     }
 
-    return fn({ userId, clinicId, email, isOwner });
+    const staffId = await getStaffIdFromSession();
+
+    return fn({ userId, clinicId, email, isOwner, staffId});
   });
 }

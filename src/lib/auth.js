@@ -33,6 +33,7 @@ export const auth = betterAuth({
           session,
           clinicId: serialize(clinic)._id,
           isOwner: true,
+          staffId: null,
         };
       }
 
@@ -48,10 +49,11 @@ export const auth = betterAuth({
           session,
           clinicId: serialize(staff).clinicId,
           isOwner: false,
+          staffId: serialize(staff)._id,
         };
       }
 
-      return { user, session, clinicId: null, isOwner: false };
+      return { user, session, clinicId: null, isOwner: false, staffId : null };
     }),
   ],
 });

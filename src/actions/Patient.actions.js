@@ -5,7 +5,7 @@ import { validateInputs } from "@/lib/validateInputs";
 import { throwError } from "@/lib/throwError";
 import { serialize } from "@/lib/serialize";
 import { afterOnboardingActionGuard } from "@/lib/actions/action";
-import { createPatient, getPatient, getPatientById, updatePatientById } from "@/crud/Patient.crud";
+import { createPatient, getPatient, getPatientById, updatePatientById, deletePatientById } from "@/crud/Patient.crud";
 import { PATIENT_PERMISSIONS } from "@/config/permissions";
 
 export async function createPatientAction(formData) {
@@ -80,5 +80,29 @@ export async function updatePatientAction(formData, patientId) {
     }
 
     return serialize(updated);
+  });
+}
+
+export async function deletePatientAction(patientId) {
+  return afterOnboardingActionGuard(PATIENT_PERMISSIONS.DELETE_PATIENT, async ({ clinicId }) => {
+    if (!patientId) {
+      throwError("Patient ID is required.");
+    }
+
+    const patient = await getPatientById(patientId);
+    if (!patient) {
+      throwError("Patient not found.");
+    }
+
+    if (patient.clinicId.toString() !== clinicId.toString()) {
+      throwError("You are not authorized to delete this patient.");
+    }
+
+    const deleted = await deletePatientById(patientId);
+    if (!deleted) {
+      throwError("Failed to delete patient. Please try again.");
+    }
+
+    return serialize(deleted);
   });
 }
