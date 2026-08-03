@@ -29,7 +29,7 @@ const page = async () => {
     }
 
     if (data) {
-        redirect("/dashboard")
+        redirect("/shops")
     }
 
 }
