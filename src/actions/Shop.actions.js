@@ -1,6 +1,6 @@
 "use server";
 
-import { createShop, deleteShopById, getShopById, updateShopById } from "@/crud/Shop.crud";
+import { createShop, deleteShopById, getShopById, getShop, updateShopById } from "@/crud/Shop.crud";
 import { afterOnboardingActionGuard } from "@/lib/actions/action";
 import { logConsole } from "@/lib/console/console";
 import { serialize } from "@/lib/serialize";
@@ -15,7 +15,9 @@ export async function createShopAction(formData) {
 
         const rawValues = {
             name: formData.get("name"),
+            slug: formData.get("slug"),
             address: formData.get("address"),
+            phone: formData.get("phone"),
             googleMapLink: formData.get("googleMapLink"),
             logo: formData.get("logo"),
         };
@@ -25,6 +27,13 @@ export async function createShopAction(formData) {
 
         if (!validated.success) {
             throwError(validated.error);
+        }
+
+        const existingShopWithSlug = await getShop({ slug: validated.data.slug });
+        logConsole("actions/shop : createShopAction : existingShopWithSlug ", existingShopWithSlug)
+
+        if (existingShopWithSlug) {
+            throwError("This store URL is already taken. Please choose another.");
         }
 
         const created = await createShop({
@@ -64,6 +73,8 @@ export async function updateShopAction(formData, shopId) {
 
         const rawValues = {
             name: formData.get("name"),
+            slug: formData.get("slug"),
+            phone: formData.get("phone"),
             address: formData.get("address"),
             googleMapLink: formData.get("googleMapLink"),
             logo: formData.get("logo"),
@@ -73,7 +84,16 @@ export async function updateShopAction(formData, shopId) {
         logConsole("actions/shop : updateShopAction : validated ", validated)
 
         if (!validated.success) {
-            throwError(validated.error);
+            // throwError(validated.error);
+        }
+
+        if (validated.data.slug !== existingShop.slug) {
+            const existingShopWithSlug = await getShopBySlug(validated.data.slug);
+            logConsole("actions/shop : updateShopAction : existingShopWithSlug ", existingShopWithSlug)
+
+            if (existingShopWithSlug) {
+                throwError("This store URL is already taken. Please choose another.");
+            }
         }
 
         const updated = await updateShopById(shopId, { ...validated.data, appUserId });

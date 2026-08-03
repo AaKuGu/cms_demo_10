@@ -1,0 +1,18 @@
+import ActionDenied from '@/components/ActionDenied';
+import { fetchAShop } from '@/SSRCalls/Shop.ssrCalls';
+import UpdateShopContainer from './UpdateShopContainer';
+import React from 'react'
+
+const page = async ({ params }) => {
+    const { shopId } = await params;
+
+    const { data: shop, error } = await fetchAShop({ shopId });
+
+    if (error) {
+        return <ActionDenied message={error} />;
+    }
+
+    return <UpdateShopContainer shop={shop} shopId={shopId} />;
+}
+
+export default page

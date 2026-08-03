@@ -2,17 +2,9 @@
 
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import ShopForm from "../ShopForm";
-import { createShopAction } from "@/actions/Shop.actions";
+import ShopForm from "../../ShopForm";
+import { updateShopAction } from "@/actions/Shop.actions";
 import { errorToast, successToast } from "@/lib/toast";
-
-const defaultValues = {
-    name: "",
-    slug: "",
-    address: "",
-    googleMapLink: "",
-    logo: "",
-};
 
 const slugify = (value) =>
     value
@@ -21,11 +13,19 @@ const slugify = (value) =>
         .replace(/[^a-z0-9]+/g, "-")
         .replace(/^-+|-+$/g, "");
 
-export default function NewShopContainer() {
+export default function UpdateShopContainer({ shop, shopId }) {
     const router = useRouter();
-    const [formValues, setFormValues] = useState(() => ({ ...defaultValues }));
+    const [formValues, setFormValues] = useState(() => ({
+        name: shop.name || "",
+        slug: shop.slug || "",
+        phone: shop.phone || "",
+        address: shop.address || "",
+        googleMapLink: shop.googleMapLink || "",
+        logo: shop.logo || "",
+    }));
     const [isPending, setIsPending] = useState(false);
-    const slugTouchedRef = useRef(false);
+    // Existing shop already has a slug — don't overwrite it just because the user edits the name.
+    const slugTouchedRef = useRef(true);
 
     const updateField = (field) => (e) => {
         const value = e.target.value;
@@ -54,13 +54,13 @@ export default function NewShopContainer() {
 
         const formData = new FormData();
         formData.set("name", formValues.name);
-        formData.set("phone", formValues.phone);
         formData.set("slug", formValues.slug);
+        formData.set("phone", formValues.phone);
         formData.set("address", formValues.address);
         formData.set("googleMapLink", formValues.googleMapLink);
         formData.set("logo", formValues.logo);
 
-        const { data, error } = await createShopAction(formData);
+        const { data, error } = await updateShopAction(formData, shopId);
 
         setIsPending(false);
 
@@ -69,7 +69,7 @@ export default function NewShopContainer() {
             return;
         }
 
-        successToast("Shop added successfully!");
+        successToast("Shop updated successfully!");
         router.push("/shops");
     };
 
@@ -80,7 +80,7 @@ export default function NewShopContainer() {
             onSubmit={handleSubmit}
             onCancel={() => router.push("/shops")}
             isPending={isPending}
-            submitLabel="Add Shop"
+            submitLabel="Save Changes"
         />
     );
 }

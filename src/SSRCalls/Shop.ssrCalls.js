@@ -15,3 +15,20 @@ export async function fetchAllShops() {
         return serialize(shops);
     });
 }
+
+
+import { getShopById } from "@/crud/Shop.crud";
+
+export async function fetchAShop({ shopId } = {}) {
+    return afterOnboardingActionGuard(async ({ appUserId }) => {
+
+        logConsole("ssrcalls : shop : fetchAShop : appUserId ", appUserId)
+        logConsole("ssrcalls : shop : fetchAShop : shopId ", shopId)
+
+        const shop = await getShopById(shopId);
+
+        logConsole("ssrcalls : shop : fetchAShop : shop ", shop)
+
+        return serialize(shop);
+    });
+}

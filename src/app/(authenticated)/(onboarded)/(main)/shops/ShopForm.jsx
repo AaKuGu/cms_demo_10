@@ -27,6 +27,33 @@ export default function ShopForm({
 
                     <div className="md:col-span-2">
                         <FormInput
+                            label="Store URL"
+                            name="slug"
+                            placeholder="e.g. green-leaf-boutique"
+                            hint={
+                                formValues.slug
+                                    ? `shop99.com/${formValues.slug}`
+                                    : "Lowercase letters, numbers, and hyphens only"
+                            }
+                            value={formValues.slug}
+                            onChange={onChange("slug")}
+                        />
+                    </div>
+
+                    <div className="md:col-span-2">
+                        <FormInput
+                            label="WhatsApp Number"
+                            name="phone"
+                            type="tel"
+                            placeholder="e.g. 9876543210"
+                            hint="Customers will message you directly on WhatsApp from your store"
+                            value={formValues.phone}
+                            onChange={onChange("phone")}
+                        />
+                    </div>
+
+                    <div className="md:col-span-2">
+                        <FormInput
                             label="Address"
                             name="address"
                             placeholder="e.g. 42 Market Road, Bengaluru"

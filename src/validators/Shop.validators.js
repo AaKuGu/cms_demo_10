@@ -1,4 +1,5 @@
 import { z } from "zod";
+const slugRegex = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 export const createShopValidator = z.object({
     name: z
@@ -6,6 +7,21 @@ export const createShopValidator = z.object({
         .trim()
         .min(2, "Name must be at least 2 characters")
         .max(100, "Name must be under 100 characters"),
+    slug: z
+        .string()
+        .trim()
+        .toLowerCase()
+        .min(2, "Slug must be at least 2 characters")
+        .max(100, "Slug must be under 100 characters")
+        .regex(
+            slugRegex,
+            "Slug can only contain lowercase letters, numbers, and hyphens (e.g. bhaiya-ji-cosmetics)"
+        ),
+    phone: z
+        .string()
+        .trim()
+        .regex(/^[6-9]\d{9}$/, "Enter a valid 10-digit mobile number")
+        .or(z.literal("")),
     address: z
         .string()
         .trim()
