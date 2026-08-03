@@ -18,6 +18,8 @@ const page = async ({ params }) => {
         return <ActionDenied message={error} />;
     }
 
+    
+
     return (
         <div className="relative">
             {/* Floating on top of the preview — seller-only, never shown on the public live site */}
