@@ -1,3 +1,3 @@
 export const siteConfig = {
-  name: "Clinic Management",
+  name: "Shop 99",
 };

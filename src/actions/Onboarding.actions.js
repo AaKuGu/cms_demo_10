@@ -10,27 +10,27 @@ import { serialize } from "@/lib/serialize";
 import { redirect } from "next/navigation";
 
 export async function createClinicAction(formData) {
- return tryCatchAction(async () => {
-   const rawValues = {
-    clinicName: formData.get("clinicName"),
-    ownerName: formData.get("ownerName"),
-  };
+  return tryCatchAction(async () => {
+    const rawValues = {
+      clinicName: formData.get("clinicName"),
+      ownerName: formData.get("ownerName"),
+    };
     const userId = await getUserIdFromSession();
     if (!userId) {
       redirect("/login");
     }
 
-  const validated = validateInputs(createClinicValidator, rawValues);
+    const validated = validateInputs(createClinicValidator, rawValues);
     if (!validated.success) {
       throwError(validated.error); // throw karne ka decision yahan hai, validator ke andar nahi
     }
 
     const existingClinic = await getClinicByUserId(userId);
-    if(existingClinic){
+    if (existingClinic) {
       redirect("/dashboard");
-    } 
+    }
 
-    const createdClinic =  await createClinic({ ...validated.data, userId });
+    const createdClinic = await createClinic({ ...validated.data, userId });
     return serialize(createdClinic); // ye zaroori hai, mat hatana 
 
   });

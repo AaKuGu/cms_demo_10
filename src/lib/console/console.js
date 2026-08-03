@@ -1,5 +1,5 @@
-export const errorConsole = (msg) => {
-  console.error(msg);
+export const errorConsole = (...args) => {
+  console.error(...args);
 };
 
 export const logConsole = (...args) => {

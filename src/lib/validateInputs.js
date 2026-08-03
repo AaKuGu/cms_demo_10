@@ -1,4 +1,9 @@
+import { logConsole } from "./console/console";
+
 export function validateInputs(validator, rawValues) {
+
+  logConsole("validateInputs : ", validator, rawValues)
+
   const parsed = validator.safeParse(rawValues);
 
   if (!parsed.success) {
