@@ -22,6 +22,8 @@ export async function createProductAction(formData) {
             name: formData.get("name"),
             desc: formData.get("desc"),
             price: Number(formData.get("price")),
+            image: formData.get("image"),
+
         };
 
         logConsole("actions/product : createProductAction : rawValues ", rawValues);

@@ -32,6 +32,7 @@ export default function NewProductContainer({ shopId, categories = [] }) {
         formData.set("name", formValues.name);
         formData.set("desc", formValues.desc);
         formData.set("price", formValues.price);
+        formData.set("image", formValues.image);
 
         const { data, error } = await createProductAction(formData);
 
