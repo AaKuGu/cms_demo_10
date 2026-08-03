@@ -17,17 +17,21 @@ export default function ShopsList({ shops }) {
     const handleDelete = async (e, shopId, shopName) => {
         e.stopPropagation();
 
-        const confirmed = window.confirm(`Are you sure you want to delete "${shopName || "this shop"}"?`);
+        const confirmed = window.confirm(
+            `Are you sure you want to delete "${shopName || "this shop"}"?`
+        );
+
         if (!confirmed) {
-            logConsole("ShopsList : handleDelete : delete cancelled for shopId ", shopId)
+            logConsole(
+                "ShopsList : handleDelete : delete cancelled for shopId ",
+                shopId
+            );
             return;
         }
 
         setDeletingId(shopId);
-        logConsole("ShopsList : handleDelete : shopId ", shopId)
 
         const { error } = await deleteShopAction(shopId);
-        logConsole("ShopsList : handleDelete : deleteShopAction response ", { error })
 
         setDeletingId(null);
 
@@ -57,46 +61,58 @@ export default function ShopsList({ shops }) {
                 <div
                     key={shop._id}
                     onClick={() => router.push(`/shops/${shop._id}`)}
-                    className="flex items-center justify-between px-5 py-4 transition-colors hover:bg-gray-50 cursor-pointer"
+                    className="cursor-pointer p-4 transition-colors hover:bg-gray-50"
                 >
-                    <div className="flex min-w-0 items-center gap-3">
-                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gray-900 text-xs font-semibold text-white">
-                            {getNameInitials(shop.name, "S")}
-                        </div>
-                        <div className="min-w-0">
-                            <p className="truncate font-medium text-gray-900">
-                                {shop.name || "Unnamed shop"}
-                            </p>
-                            <p className="truncate text-sm text-faint">
-                                {shop.address || shop.googleMapLink || "No address added"}
-                            </p>
-                        </div>
-                    </div>
+                    <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                        {/* Shop Info */}
+                        <div className="flex min-w-0 items-center gap-3">
+                            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gray-900 text-sm font-semibold text-white">
+                                {getNameInitials(shop.name, "S")}
+                            </div>
 
-                    <div className="flex items-center gap-2">
-                        <Button type="button" variant="outline" onClick={(e) => {
-                            e.stopPropagation();
-                            router.push(`/shop-manage/${shop._id}/storePreview`);
-                        }}>Manage Shop</Button>
-                        {/* <button
-                            type="button"
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                router.push(`/shop-manage/${shop._id}/`);
-                            }}
-                            className="rounded-md bg-slate-900 px-3 py-2 text-xs font-medium text-white transition-colors hover:bg-slate-800"
+                            <div className="min-w-0 flex-1">
+                                <p className="truncate font-medium text-gray-900">
+                                    {shop.name || "Unnamed shop"}
+                                </p>
+
+                                <p className="truncate text-sm text-faint">
+                                    {shop.address ||
+                                        shop.googleMapLink ||
+                                        "No address added"}
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Actions */}
+                        <div
+                            className="flex w-full items-center gap-2 sm:w-auto"
+                            onClick={(e) => e.stopPropagation()}
                         >
-                            Manage Shop
-                        </button> */}
+                            <div className="flex-1 sm:flex-none">
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    className="w-full sm:w-auto"
+                                    onClick={() =>
+                                        router.push(
+                                            `/shop-manage/${shop._id}/storePreview`
+                                        )
+                                    }
+                                >
+                                    Manage Shop
+                                </Button>
+                            </div>
 
-                        <ActionGroup
-                            onEdit={(e) => {
-                                e.stopPropagation();
-                                router.push(`/shops/${shop._id}/edit`);
-                            }}
-                            onDelete={(e) => handleDelete(e, shop._id, shop.name)}
-                            isDeleting={deletingId === shop._id}
-                        />
+                            <ActionGroup
+                                onEdit={() =>
+                                    router.push(`/shops/${shop._id}/edit`)
+                                }
+                                onDelete={(e) =>
+                                    handleDelete(e, shop._id, shop.name)
+                                }
+                                isDeleting={deletingId === shop._id}
+                            />
+                        </div>
                     </div>
                 </div>
             ))}

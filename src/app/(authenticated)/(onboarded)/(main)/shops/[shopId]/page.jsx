@@ -42,7 +42,7 @@ const page = async ({ params }) => {
               {shop.name.replace(/_/g, " ")}
             </h1>
             {shop.slug ? (
-              <p className="text-sm text-gray-400">${process.env.NEXT_PUBLIC_CURRENT_URL}/{shop.slug}</p>
+              <p className="text-sm text-gray-400">{process.env.NEXT_PUBLIC_CURRENT_URL}/{shop.slug}</p>
             ) : (
               <p className="text-sm text-amber-600">No store URL set yet</p>
             )}

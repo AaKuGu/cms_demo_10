@@ -1,17 +1,26 @@
 "use client";
 
-import { siteConfig } from "@/config/site";
 import { useAuth } from "@/hooks/useAuth";
-import Image from "next/image";
+import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 
 
 export default function LoginPage() {
     const { loginWithGoogle } = useAuth();
 
-    const handle_login_with_google = () => {
-        const callbackURL = "/shops";
-        loginWithGoogle(callbackURL);
+    const [loading, setLoading] = useState(false);
+
+
+    const handle_login_with_google = async () => {
+        setLoading(true);
+
+        try {
+            const callbackURL = "/shops";
+            await loginWithGoogle(callbackURL);
+        } catch (err) {
+            setLoading(false);
+            console.error(err);
+        }
     };
 
     return (
@@ -25,14 +34,43 @@ export default function LoginPage() {
                     </p>
                 </div>
 
-                
+
 
                 <button
                     onClick={handle_login_with_google}
+                    disabled={loading}
                     className="flex w-full items-center justify-center gap-3 rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-300 focus:ring-offset-2"
                 >
-                    <FcGoogle className="h-5 w-5" />
-                    Continue with Google
+                    {loading ? (
+                        <>
+                            <svg
+                                className="h-5 w-5 animate-spin"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                            >
+                                <circle
+                                    className="opacity-25"
+                                    cx="12"
+                                    cy="12"
+                                    r="10"
+                                    stroke="currentColor"
+                                    strokeWidth="4"
+                                />
+                                <path
+                                    className="opacity-75"
+                                    fill="currentColor"
+                                    d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                                />
+                            </svg>
+
+                            Redirecting...
+                        </>
+                    ) : (
+                        <>
+                            <FcGoogle className="h-5 w-5" />
+                            Continue with Google
+                        </>
+                    )}
                 </button>
 
             </div>
