@@ -2,9 +2,9 @@
 import Link from "next/link";
 
 const variants = {
-  primary: "bg-primary hover:bg-primary-hover text-white",
-  outline: "border border-border text-black hover:bg-black hover:text-white",
-  ghost: "text-text-muted hover:bg-surface",
+    primary: "bg-primary hover:bg-primary-hover text-white",
+    outline: "border border-border text-black hover:bg-black hover:text-white",
+    ghost: "text-text-muted hover:bg-surface",
 };
 
 const sizes = {
@@ -23,7 +23,7 @@ export default function Button({
     ...props
 }) {
     const classes = [
-        "inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none",
+        "inline-flex items-center justify-center gap-2 rounded-lg text-[9px] md:text-[13px] transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none",
         variants[variant],
         sizes[size],
         fullWidth ? "w-full" : "",
