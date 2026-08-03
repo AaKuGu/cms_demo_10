@@ -1,9 +1,9 @@
 import ActionDenied from '@/components/ActionDenied';
 import { fetchStorePreviewByShopId } from '@/SSRCalls/StorePreview.ssrCalls';
 import { logConsole } from '@/lib/console/console';
-import StorePreviewView from './StorePreviewView';
 import ShareStoreButton from '@/components/ShareStoreButton';
 import React from 'react'
+import StorePreviewView from '@/components/StorePreviewView';
 
 const page = async ({ params }) => {
     const { shopId } = await params;
@@ -21,7 +21,7 @@ const page = async ({ params }) => {
     return (
         <div className="relative">
             {/* Floating on top of the preview — seller-only, never shown on the public live site */}
-            <div className="sticky top-0 z-50 flex justify-end border-b border-gray-200 bg-white/90 px-4 py-2.5 backdrop-blur-sm sm:px-6">
+            <div className="sticky top-0 z-25 flex justify-end border-b border-gray-200 bg-white/90 px-2 py-1 backdrop-blur-sm sm:px-3">
                 <ShareStoreButton
                     shopSlug={shop.slug}
                     shopName={shop.name.replace(/_/g, " ")}

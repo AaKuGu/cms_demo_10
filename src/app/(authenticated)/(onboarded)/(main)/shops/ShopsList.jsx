@@ -8,6 +8,7 @@ import { deleteShopAction } from "@/actions/Shop.actions";
 import { errorToast, successToast } from "@/lib/toast";
 import { getNameInitials } from "@/lib/ui/initials";
 import { logConsole } from "@/lib/console/console";
+import Button from "@/ui/Button";
 
 export default function ShopsList({ shops }) {
     const router = useRouter();
@@ -51,7 +52,7 @@ export default function ShopsList({ shops }) {
     }
 
     return (
-        <div className="overflow-hidden rounded-xl border border-gray-200 divide-y divide-gray-200">
+        <div className="overflow-hidden rounded-xl border border-border divide-y divide-gray-200">
             {shops.map((shop) => (
                 <div
                     key={shop._id}
@@ -66,14 +67,18 @@ export default function ShopsList({ shops }) {
                             <p className="truncate font-medium text-gray-900">
                                 {shop.name || "Unnamed shop"}
                             </p>
-                            <p className="truncate text-sm text-gray-500">
+                            <p className="truncate text-sm text-faint">
                                 {shop.address || shop.googleMapLink || "No address added"}
                             </p>
                         </div>
                     </div>
 
                     <div className="flex items-center gap-2">
-                        <button
+                        <Button type="button" variant="outline" onClick={(e) => {
+                            e.stopPropagation();
+                            router.push(`/shop-manage/${shop._id}/storePreview`);
+                        }}>Manage Shop</Button>
+                        {/* <button
                             type="button"
                             onClick={(e) => {
                                 e.stopPropagation();
@@ -82,7 +87,7 @@ export default function ShopsList({ shops }) {
                             className="rounded-md bg-slate-900 px-3 py-2 text-xs font-medium text-white transition-colors hover:bg-slate-800"
                         >
                             Manage Shop
-                        </button>
+                        </button> */}
 
                         <ActionGroup
                             onEdit={(e) => {

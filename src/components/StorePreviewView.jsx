@@ -2,6 +2,32 @@
 
 import { useMemo, useState } from "react";
 
+/*
+  Design pass notes (v2 — identity pass)
+  ---------------------------------------
+  Palette pulled from the products themselves (gold bangles, maroon/teal
+  lac work) instead of generic zinc neutrals:
+    ink     #241A15  primary text, warm near-black
+    muted   #948676  secondary text, warm gray (replaces zinc-400/500)
+    hair    #ECE2D2  borders / hairlines, warm instead of cool gray
+    sand    #F3EAD9  card + tile fill
+    maroon  #7A1F3D  primary accent — active tab, price, logo ring
+    maroon-dk #5E1730 hover state for maroon
+    gold    #B8873B  secondary accent — header hairline, logo ring, focus
+
+  Signature element: the gold→maroon gradient hairline under the header,
+  echoed in the logo ring and the filled maroon pill on the active category
+  tab. That's the one bold move; everything else (grid, spacing, cards)
+  stays disciplined so the accent actually reads as intentional.
+
+  Category tabs moved from underline-on-text to filled pills — reads more
+  like a boutique's counter signage than a SaaS dashboard, and gives the
+  active state real weight instead of a hairline.
+
+  Product cards: sand-toned tile (not flat gray), price restyled as a small
+  maroon badge so "how much" is the visual answer, not just another text row.
+*/
+
 const StorePreviewView = ({ shop, categories, products }) => {
     const categoriesWithProducts = useMemo(() => {
         return categories
@@ -28,9 +54,9 @@ const StorePreviewView = ({ shop, categories, products }) => {
         <div className="flex h-screen flex-col bg-white">
 
             {/* Header — logo left, name centered, WhatsApp on the right */}
-            <div className="shrink-0 border-b border-zinc-200 bg-gradient-to-b from-zinc-50 to-white">
-                <div className="mx-auto max-w-6xl px-4 py-5 sm:px-6 sm:py-8 lg:px-8">
-                    <div className="grid grid-cols-[auto_1fr_auto] items-center gap-2 sm:gap-4">
+            <div className="relative shrink-0 bg-gradient-to-b from-[#FBF7F0] to-white">
+                <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-9 lg:px-8">
+                    <div className="grid grid-cols-[auto_1fr_auto] items-center gap-3 sm:gap-6">
 
                         {/* Logo — left */}
                         <div className="flex justify-start">
@@ -38,25 +64,25 @@ const StorePreviewView = ({ shop, categories, products }) => {
                                 <img
                                     src={shop.logo}
                                     alt={shop.name}
-                                    className="h-12 w-12 rounded-full object-cover ring-1 ring-zinc-200 sm:h-16 sm:w-16 lg:h-20 lg:w-20"
+                                    className="h-12 w-12 rounded-full object-cover ring-2 ring-[#B8873B]/40 ring-offset-2 sm:h-16 sm:w-16 lg:h-[4.5rem] lg:w-[4.5rem]"
                                 />
                             ) : (
-                                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-zinc-900 text-base font-medium text-white sm:h-16 sm:w-16 sm:text-xl lg:h-20 lg:w-20 lg:text-2xl">
+                                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-[#7A1F3D] to-[#5E1730] text-base font-medium tracking-tight text-white ring-2 ring-[#B8873B]/40 ring-offset-2 sm:h-16 sm:w-16 sm:text-xl lg:h-[4.5rem] lg:w-[4.5rem] lg:text-2xl">
                                     {shop.name.charAt(0)}
                                 </div>
                             )}
                         </div>
 
                         {/* Name + address — center */}
-                        <div className="flex flex-col items-center text-center">
-                            <h1 className="font-serif text-lg tracking-tight text-zinc-900 sm:text-2xl lg:text-4xl">
+                        <div className="flex min-w-0 flex-col items-center text-center">
+                            <h1 className="font-serif text-xl leading-tight tracking-tight text-[#241A15] sm:text-3xl lg:text-[2.75rem]">
                                 {shop.name.replace(/_/g, " ")}
                             </h1>
 
                             {shop.address && (
-                                <p className="mt-1 flex items-center gap-1.5 text-xs text-zinc-500 sm:mt-2 sm:text-sm">
+                                <p className="mt-1.5 flex max-w-full items-center gap-1.5 text-xs text-[#948676] sm:mt-2.5 sm:text-sm">
                                     <svg
-                                        className="h-3.5 w-3.5 shrink-0 text-zinc-400 sm:h-4 sm:w-4"
+                                        className="h-3.5 w-3.5 shrink-0 text-[#B8873B] sm:h-4 sm:w-4"
                                         fill="none"
                                         viewBox="0 0 24 24"
                                         stroke="currentColor"
@@ -85,9 +111,9 @@ const StorePreviewView = ({ shop, categories, products }) => {
                                     href={`https://wa.me/91${shop.phone}?text=${whatsappMessage}`}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="flex items-center gap-1.5 rounded-full bg-green-500 px-2.5 py-2 text-xs font-medium text-white shadow-sm transition hover:bg-green-600 sm:gap-2 sm:px-4 sm:py-2.5 sm:text-sm"
+                                    className="flex items-center gap-1.5 rounded-full bg-green-500 px-3 py-2 text-xs font-medium text-white shadow-sm transition duration-200 hover:bg-green-600 hover:shadow-md active:scale-[0.97] sm:gap-2 sm:px-4 sm:py-2.5 sm:text-sm"
                                 >
-                                    <svg className="h-4 w-4 shrink-0 sm:h-5 sm:w-5" fill="currentColor" viewBox="0 0 24 24">
+                                    <svg className="h-4 w-4 shrink-0 sm:h-[1.125rem] sm:w-[1.125rem]" fill="currentColor" viewBox="0 0 24 24">
                                         <path d="M17.6 6.32A7.85 7.85 0 0012.05 4a7.94 7.94 0 00-6.9 11.9L4 20l4.2-1.1a7.9 7.9 0 003.85 1h0a7.94 7.94 0 007.94-7.94 7.9 7.9 0 00-2.35-5.62zm-5.55 12.2h0a6.6 6.6 0 01-3.36-.92l-.24-.14-2.5.65.67-2.44-.16-.25a6.6 6.6 0 01-1-3.5A6.6 6.6 0 0117.6 7.24a6.56 6.56 0 011.94 4.66 6.6 6.6 0 01-6.6 6.62zm3.6-4.94c-.2-.1-1.17-.58-1.35-.64s-.32-.1-.45.1-.5.63-.62.77-.23.15-.43.05a5.4 5.4 0 01-1.6-1 6 6 0 01-1.1-1.37c-.12-.2 0-.3.09-.4s.2-.24.3-.36a1.4 1.4 0 00.2-.34.4.4 0 000-.36c-.05-.1-.45-1.08-.62-1.48s-.33-.33-.45-.33h-.4a.75.75 0 00-.55.26 2.3 2.3 0 00-.72 1.7 4 4 0 00.85 2.1 9.2 9.2 0 003.53 3.1c.5.2.9.33 1.2.42a2.9 2.9 0 001.33.08 2.2 2.2 0 001.43-1 1.8 1.8 0 00.12-1c-.05-.1-.18-.15-.38-.25z" />
                                     </svg>
                                     <span className="hidden sm:inline">Chat</span>
@@ -96,6 +122,9 @@ const StorePreviewView = ({ shop, categories, products }) => {
                         </div>
                     </div>
                 </div>
+
+                {/* Signature hairline — gold to maroon, the one bold accent on the page */}
+                <div className="h-[3px] w-full bg-gradient-to-r from-[#B8873B] via-[#7A1F3D] to-[#B8873B]" />
             </div>
 
             {/* Sections zone — this is where Trending Now, Banners, About, etc. will slot in later,
@@ -104,26 +133,26 @@ const StorePreviewView = ({ shop, categories, products }) => {
             {/* Category tabs — fixed, doesn't scroll */}
             {
                 categoriesWithProducts.length > 0 && (
-                    <div className="mx-auto w-full max-w-6xl shrink-0 border-b border-zinc-200 px-4 sm:px-6 lg:px-8">
-                        <div className="flex gap-1 overflow-x-auto pb-px">
+                    <div className="mx-auto w-full max-w-6xl shrink-0 border-b border-[#ECE2D2] bg-white px-4 py-3 sm:px-6 sm:py-4 lg:px-8">
+                        <div className="flex gap-2 overflow-x-auto sm:gap-2.5">
                             {categoriesWithProducts.map((cat) => {
                                 const isActive = cat._id === activeCategoryId;
                                 return (
                                     <button
                                         key={cat._id}
                                         onClick={() => setActiveCategoryId(cat._id)}
-                                        className={`relative whitespace-nowrap px-3 py-2.5 text-xs font-medium transition sm:px-4 sm:py-3 sm:text-sm ${isActive
-                                            ? "text-zinc-900"
-                                            : "text-zinc-400 hover:text-zinc-600"
+                                        className={`shrink-0 whitespace-nowrap rounded-full px-4 py-2 text-xs font-medium transition-all duration-200 sm:px-5 sm:py-2.5 sm:text-sm ${isActive
+                                            ? "bg-[#7A1F3D] text-white shadow-sm shadow-[#7A1F3D]/20"
+                                            : "bg-[#F3EAD9] text-[#6B5D4F] hover:bg-[#ECE2D2] hover:text-[#241A15]"
                                             }`}
                                     >
                                         {cat.name}
-                                        <span className="ml-1.5 text-xs text-zinc-400">
+                                        <span
+                                            className={`ml-1.5 text-[0.6875rem] tabular-nums ${isActive ? "text-white/70" : "text-[#948676]"
+                                                }`}
+                                        >
                                             {cat.products.length}
                                         </span>
-                                        {isActive && (
-                                            <span className="absolute inset-x-3 -bottom-px h-0.5 rounded-full bg-zinc-900" />
-                                        )}
                                     </button>
                                 );
                             })}
@@ -133,38 +162,64 @@ const StorePreviewView = ({ shop, categories, products }) => {
             }
 
             {/* Products area — this is the ONLY part that scrolls */}
-            <div className="flex-1 overflow-y-auto">
-                <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+            <div className="flex-1 overflow-y-auto bg-white">
+                <div className="mx-auto max-w-6xl px-4 py-7 sm:px-6 sm:py-10 lg:px-8">
 
                     {categoriesWithProducts.length === 0 ? (
-                        <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-300 py-20 text-center">
-                            <p className="text-sm text-zinc-400">
-                                This store hasn&apos;t added any products yet.
+                        <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-[#ECE2D2] bg-[#FBF7F0]/50 py-24 text-center">
+                            <svg
+                                className="h-8 w-8 text-[#C9B79A]"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                strokeWidth={1.2}
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14M4 6h16v12H4V6z"
+                                />
+                            </svg>
+                            <p className="mt-3 text-sm font-medium text-[#6B5D4F]">
+                                No products yet
+                            </p>
+                            <p className="mt-1 text-xs text-[#948676]">
+                                Items will show up here as soon as they&apos;re added.
                             </p>
                         </div>
                     ) : (
                         <>
                             {/* Category description */}
                             {activeCategory?.description && (
-                                <p className="mb-6 max-w-lg text-sm text-zinc-500">
+                                <p className="mb-7 max-w-lg text-sm leading-relaxed text-[#948676]">
                                     {activeCategory.description}
                                 </p>
                             )}
 
                             {/* Products grid */}
-                            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-6 lg:grid-cols-5">
+                            <div
+                                className="
+    grid
+    grid-cols-1      // very small screens
+    xs:grid-cols-2   // small phones and up
+    md:grid-cols-3   // tablets
+    lg:grid-cols-4   // laptops and desktops
+    gap-x-3 gap-y-7
+    sm:gap-x-6 sm:gap-y-9
+  "
+                            >
                                 {activeCategory?.products.map((product) => (
                                     <div key={product._id} className="group">
-                                        <div className="relative flex aspect-square items-center justify-center overflow-hidden rounded-lg bg-zinc-100">
+                                        <div className="relative flex aspect-square items-center justify-center overflow-hidden rounded-xl bg-[#F3EAD9] shadow-[0_1px_2px_rgba(36,26,21,0.06)] transition-all duration-300 group-hover:-translate-y-0.5 group-hover:shadow-[0_10px_24px_-8px_rgba(122,31,61,0.25)]">
                                             {product.image ? (
                                                 <img
                                                     src={product.image}
                                                     alt={product.name}
-                                                    className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+                                                    className="h-full w-full object-cover transition duration-300 ease-out group-hover:scale-[1.04]"
                                                 />
                                             ) : (
                                                 <svg
-                                                    className="h-9 w-9 text-zinc-300"
+                                                    className="h-9 w-9 text-[#C9B79A]"
                                                     fill="none"
                                                     viewBox="0 0 24 24"
                                                     stroke="currentColor"
@@ -179,14 +234,14 @@ const StorePreviewView = ({ shop, categories, products }) => {
                                             )}
                                         </div>
 
-                                        <div className="mt-2 sm:mt-3">
-                                            <h3 className="line-clamp-1 text-xs font-medium text-zinc-900 sm:text-sm">
+                                        <div className="mt-2.5 sm:mt-3.5">
+                                            <h3 className="line-clamp-1 text-xs font-medium leading-snug text-[#241A15] sm:text-sm">
                                                 {product.name}
                                             </h3>
-                                            <p className="mt-0.5 line-clamp-1 text-xs text-zinc-400">
+                                            <p className="mt-0.5 line-clamp-1 text-xs leading-snug text-[#AB9C8C]">
                                                 {product.desc}
                                             </p>
-                                            <p className="mt-1 text-xs font-semibold text-zinc-900 sm:mt-1.5 sm:text-sm">
+                                            <p className="mt-1.5 inline-block text-xs font-semibold tabular-nums text-[#7A1F3D] sm:mt-2 sm:text-sm">
                                                 ₹{product.price.toLocaleString("en-IN")}
                                             </p>
                                         </div>
@@ -197,7 +252,7 @@ const StorePreviewView = ({ shop, categories, products }) => {
                     )}
                 </div>
             </div>
-        </div >
+        </div>
     );
 };
 

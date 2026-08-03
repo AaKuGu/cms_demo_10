@@ -17,7 +17,7 @@ const layout = async ({ children }) => {
       <ShopManageNav />
       <div className="flex flex-1 flex-col md:flex-row">
         <Sidebar />
-        <main className="flex-1 p-4 md:p-6">{children}</main>
+        <main className="flex-1 p-2 md:p-3">{children}</main>
       </div>
     </div>
   )

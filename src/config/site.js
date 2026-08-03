@@ -1,3 +1,4 @@
 export const siteConfig = {
-  name: "Shop 99",
+  name: "BNN Shop",
+  logoSrc: "/horizontal_logo.png"
 };

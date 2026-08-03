@@ -18,12 +18,16 @@ export async function proxy(request) {
 
   // Case 2: already logged in, trying to access login/register → send to dashboard
   if (sessionCookie && isPublicRoute) {
-    return NextResponse.redirect(new URL("/onboarding", request.url));
+    return NextResponse.redirect(new URL("/shops", request.url));
   }
 
   return NextResponse.next();
 }
 
+// export const config = {
+//   matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+// };
+
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico|.*\\..*).*)"],
 };

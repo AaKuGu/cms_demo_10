@@ -5,8 +5,6 @@ import { fetchPublicStoreBySlug } from '@/SSRCalls/PublicStore.ssrCalls';
 import { logConsole } from '@/lib/console/console';
 import StorePreviewView from '@/components/StorePreviewView';
 
-// Wrapped in cache() so calling this twice (once in generateMetadata, once in page)
-// within the same request only hits the DB once.
 const getStoreData = cache(async (shopSlug) => {
     return fetchPublicStoreBySlug({ shopSlug });
 });

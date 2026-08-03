@@ -2,9 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useAuth } from "@/hooks/useAuth"; // adjust path to where useAuth lives
-
-
+import { useAuth } from "@/hooks/useAuth";
 
 export default function Navbar() {
     const { logout } = useAuth();
@@ -22,31 +20,25 @@ export default function Navbar() {
     };
 
     return (
-        <header className="sticky top-0 z-50 border-b border-stone-200 bg-white/80 backdrop-blur-md">
+        <header className="sticky top-0 z-50 border-b border-border bg-white/80 backdrop-blur-md">
             <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
 
                 {/* Logo */}
-                <Link href="/dashboard" className="flex items-center gap-2">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-stone-900 text-sm font-bold text-white">
-                        S
-                    </div>
-                    <span className="text-base font-semibold tracking-tight text-stone-900">
-                        Shoply
-                    </span>
+                <Link href="/shops" className="flex items-center gap-2">
+                    <img src="/horizontal_logo.png" className={`max-w-[130px] h-auto`} />
                 </Link>
-
 
                 {/* Right side */}
                 <div className="flex items-center gap-3">
                     <button
                         onClick={handleLogout}
                         disabled={isLoggingOut}
-                        className="hidden items-center gap-2 rounded-lg border border-stone-300 px-4 py-2 text-sm font-medium text-stone-700 transition hover:border-red-300 hover:bg-red-50 hover:text-red-600 disabled:cursor-not-allowed disabled:opacity-60 md:flex"
+                        className="hidden items-center gap-2 rounded-lg border border-border px-4 py-2 text-sm font-medium text-text transition hover:border-primary hover:bg-primary-light hover:text-primary disabled:cursor-not-allowed disabled:opacity-60 md:flex"
                     >
                         {isLoggingOut ? (
                             <>
                                 <svg
-                                    className="h-4 w-4 animate-spin text-stone-400"
+                                    className="h-4 w-4 animate-spin text-text-muted"
                                     fill="none"
                                     viewBox="0 0 24 24"
                                 >
@@ -89,7 +81,7 @@ export default function Navbar() {
                     {/* Mobile menu toggle */}
                     <button
                         onClick={() => setIsMenuOpen((open) => !open)}
-                        className="flex h-9 w-9 items-center justify-center rounded-md text-stone-600 hover:bg-stone-100 md:hidden"
+                        className="flex h-9 w-9 items-center justify-center rounded-md text-text hover:bg-surface md:hidden"
                         aria-label="Toggle menu"
                     >
                         <svg
@@ -119,12 +111,12 @@ export default function Navbar() {
 
             {/* Mobile menu */}
             {isMenuOpen && (
-                <div className="border-t border-stone-200 bg-white px-4 py-3 md:hidden">
+                <div className="border-t border-border bg-white px-4 py-3 md:hidden">
                     <div className="flex flex-col gap-1">
                         <button
                             onClick={handleLogout}
                             disabled={isLoggingOut}
-                            className="mt-2 flex items-center justify-center gap-2 rounded-lg border border-stone-300 px-4 py-2 text-sm font-medium text-stone-700 transition hover:border-red-300 hover:bg-red-50 hover:text-red-600 disabled:cursor-not-allowed disabled:opacity-60"
+                            className="mt-2 flex items-center justify-center gap-2 rounded-lg border border-border px-4 py-2 text-sm font-medium text-text transition hover:border-primary hover:bg-primary-light hover:text-primary disabled:cursor-not-allowed disabled:opacity-60"
                         >
                             {isLoggingOut ? "Logging out..." : "Logout"}
                         </button>
