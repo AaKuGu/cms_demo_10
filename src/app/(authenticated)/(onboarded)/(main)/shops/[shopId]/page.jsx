@@ -65,62 +65,62 @@ const page = async ({ params }) => {
               Google Maps
             </p>
             {shop.googleMapLink ? (
-<a
-              href = { shop.googleMapLink }
+              <a
+                href={shop.googleMapLink}
                 target="_blank"
-            rel="noopener noreferrer"
-            className="mt-1 inline-block text-sm text-gray-900 underline underline-offset-2 hover:text-gray-600"
+                rel="noopener noreferrer"
+                className="mt-1 inline-block text-sm text-gray-900 underline underline-offset-2 hover:text-gray-600"
               >
-            View on map
-          </a>
-          ) : (
-          <p className="mt-1 text-sm text-gray-400">Not added</p>
+                View on map
+              </a>
+            ) : (
+              <p className="mt-1 text-sm text-gray-400">Not added</p>
             )}
+          </div>
+
+          <div>
+            <p className="text-xs font-medium uppercase tracking-wide text-gray-400">
+              Created on
+            </p>
+            <p className="mt-1 text-sm text-gray-900">{formattedDate}</p>
+          </div>
+
+          <div>
+            <p className="text-xs font-medium uppercase tracking-wide text-gray-400">
+              Shop ID
+            </p>
+            <p className="mt-1 truncate text-sm text-gray-500">{shop._id}</p>
+          </div>
         </div>
 
-        <div>
-          <p className="text-xs font-medium uppercase tracking-wide text-gray-400">
-            Created on
-          </p>
-          <p className="mt-1 text-sm text-gray-900">{formattedDate}</p>
-        </div>
 
-        <div>
-          <p className="text-xs font-medium uppercase tracking-wide text-gray-400">
-            Shop ID
-          </p>
-          <p className="mt-1 truncate text-sm text-gray-500">{shop._id}</p>
-        </div>
-      </div>
-
-
-      {/* Actions */}
-      <div className="flex justify-end gap-2 border-t border-gray-200 p-5">
-        <button className="rounded-md border border-gray-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
-          Edit shop
-        </button>
-
-
-        {shop.slug ? (
-          <Link
-            href={`http://localhost:3000/${shop.slug}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="rounded-md bg-gray-900 px-4 py-2 text-sm text-white hover:bg-gray-800"
-          >
-            View live site
-          </Link>
-        ) : (
-          <button
-            disabled
-            title="Add a store URL to enable this"
-            className="cursor-not-allowed rounded-md bg-gray-300 px-4 py-2 text-sm text-white"
-          >
-            View live site
+        {/* Actions */}
+        <div className="flex justify-end gap-2 border-t border-gray-200 p-5">
+          <button className="rounded-md border border-gray-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+            Edit shop
           </button>
-        )}
+
+
+          {shop.slug ? (
+            <Link
+              href={`/${shop.slug}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-md bg-gray-900 px-4 py-2 text-sm text-white hover:bg-gray-800"
+            >
+              View live site
+            </Link>
+          ) : (
+            <button
+              disabled
+              title="Add a store URL to enable this"
+              className="cursor-not-allowed rounded-md bg-gray-300 px-4 py-2 text-sm text-white"
+            >
+              View live site
+            </button>
+          )}
+        </div>
       </div>
-    </div>
     </div >
   )
 }
