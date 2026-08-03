@@ -42,7 +42,7 @@ const page = async ({ params }) => {
               {shop.name.replace(/_/g, " ")}
             </h1>
             {shop.slug ? (
-              <p className="text-sm text-gray-400">localhost:3000/{shop.slug}</p>
+              <p className="text-sm text-gray-400">${process.env.NEXT_PUBLIC_CURRENT_URL}/{shop.slug}</p>
             ) : (
               <p className="text-sm text-amber-600">No store URL set yet</p>
             )}
@@ -103,7 +103,7 @@ const page = async ({ params }) => {
 
           {shop.slug ? (
             <Link
-              href={`/${shop.slug}`}
+              href={`${process.env.NEXT_PUBLIC_CURRENT_URL}/${shop.slug}`}
               target="_blank"
               rel="noopener noreferrer"
               className="rounded-md bg-gray-900 px-4 py-2 text-sm text-white hover:bg-gray-800"
