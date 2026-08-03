@@ -88,6 +88,8 @@ export default function ShopsList({ shops }) {
                             className="flex w-full items-center gap-2 sm:w-auto"
                             onClick={(e) => e.stopPropagation()}
                         >
+                            <Button href={`/${shop?.slug}`} target="_blank">Live Link</Button>
+
                             <div className="flex-1 sm:flex-none">
                                 <Button
                                     type="button"

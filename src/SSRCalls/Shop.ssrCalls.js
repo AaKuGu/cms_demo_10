@@ -32,3 +32,4 @@ export async function fetchAShop({ shopId } = {}) {
         return serialize(shop);
     });
 }
+
