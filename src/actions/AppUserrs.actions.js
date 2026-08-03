@@ -12,7 +12,7 @@ import { createAppUserValidator } from "@/validators/AppUser.validators";
 export async function createAppUserAction() {
 
 
-    return afterOnboardingActionGuard(async ({ userIdFromAuthLibrary, email, name }) => {
+    return beforeOnboardingActionGuard(async ({ userIdFromAuthLibrary, email, name }) => {
 
         logConsole("actions/appusers : createAppUserAction :  userIdFromAuthLibrary ", userIdFromAuthLibrary)
         logConsole("actions/appusers : createAppUserAction :  email ", email)
@@ -38,7 +38,7 @@ export async function createAppUserAction() {
 }
 
 export async function updatePatientAction(formData, patientId) {
-    return afterOnboardingActionGuard(PATIENT_PERMISSIONS.UPDATE_PATIENT, async ({ clinicId }) => {
+    return beforeOnboardingActionGuard(PATIENT_PERMISSIONS.UPDATE_PATIENT, async ({ clinicId }) => {
         if (!patientId) {
             throwError("Patient ID is required.");
         }
