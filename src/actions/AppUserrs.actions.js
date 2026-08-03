@@ -1,7 +1,7 @@
 "use server";
 
 import { createAppUser } from "@/crud/AppUsers.crud";
-import { beforeOnboardingActionGuard } from "@/lib/actions/action";
+import { afterOnboardingActionGuard, beforeOnboardingActionGuard } from "@/lib/actions/action";
 import { logConsole } from "@/lib/console/console";
 import { serialize } from "@/lib/serialize";
 import { throwError } from "@/lib/throwError";
@@ -12,7 +12,7 @@ import { createAppUserValidator } from "@/validators/AppUser.validators";
 export async function createAppUserAction() {
 
 
-    return OnboardingActionGuard(async ({ userIdFromAuthLibrary, email, name }) => {
+    return afterOnboardingActionGuard(async ({ userIdFromAuthLibrary, email, name }) => {
 
         logConsole("actions/appusers : createAppUserAction :  userIdFromAuthLibrary ", userIdFromAuthLibrary)
         logConsole("actions/appusers : createAppUserAction :  email ", email)
