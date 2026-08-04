@@ -17,12 +17,12 @@ export default function SidebarComponent({ prop }) {
     return (
         <>
             {/* Mobile top bar */}
-            <div className="flex items-center justify-between border-b border-border bg-white px-4 py-3 md:hidden">
+            <div className="flex items-center justify-between border-b border-border bg-white px-2 py-1 md:px-4 md:py-3 md:hidden">
                 <button
                     type="button"
                     onClick={() => setIsOpen(true)}
                     aria-label="Open menu"
-                    className="rounded-md p-2 text-neutral-700 hover:bg-neutral-100"
+                    className="rounded-md p-1 text-neutral-700 hover:bg-neutral-100"
                 >
                     <Menu size={22} />
                 </button>
