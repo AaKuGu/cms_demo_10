@@ -14,12 +14,20 @@ export async function getShopById(shopId) {
     return serialize(shop);
 }
 
-export async function getShop(filter) {
+// export async function getShop(filter) {
+//     await dbConnect();
+//     const shop = await Shop.findOne(filter);
+//     return serialize(shop);
+// }
+
+export async function getShop(filter, select) {
     await dbConnect();
-    const shop = await Shop.findOne(filter);
+    const query = Shop.findOne(filter);
+    if (select) query.select(select);
+    const shop = await query;
     return serialize(shop);
 }
-
+ 
 export async function getShopList(filter = {}) {
     await dbConnect();
     const shops = await Shop.find(filter).sort({ createdAt: -1 });

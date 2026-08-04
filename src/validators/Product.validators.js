@@ -32,3 +32,8 @@ export const createProductValidator = z.object({
 });
 
 export const updateProductValidator = createProductValidator.partial();
+
+
+export const productsSettingsValidator = z.object({
+    showPricing: z.boolean().optional(),
+});

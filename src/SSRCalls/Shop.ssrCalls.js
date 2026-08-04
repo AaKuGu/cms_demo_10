@@ -1,5 +1,5 @@
 import { afterOnboardingActionGuard } from "@/lib/actions/action";
-import { getShopList } from "@/crud/Shop.crud";
+import { getShopList, getShop } from "@/crud/Shop.crud";
 import { serialize } from "@/lib/serialize";
 import { logConsole } from "@/lib/console/console";
 
@@ -33,3 +33,16 @@ export async function fetchAShop({ shopId } = {}) {
     });
 }
 
+
+
+export async function fetchProductParentSettings({ shopId }) {
+    return afterOnboardingActionGuard(async ({ appUserId }) => {
+        logConsole("ssrcalls : shop : fetchAShop : appUserId ", appUserId);
+        logConsole("ssrcalls : shop : fetchAShop : shopId ", shopId);
+
+        const productParentSettings = await getShop({ _id: shopId }, "settings.products");
+
+        logConsole("ssrcalls : shop : fetchAShop : productParentSettings ", productParentSettings);
+        return serialize(productParentSettings);
+    });
+}

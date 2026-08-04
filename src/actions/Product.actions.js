@@ -2,13 +2,13 @@
 
 import { revalidatePath } from "next/cache";
 import { createProduct, deleteProductById, getProductById, updateProductById } from "@/crud/Product.crud";
-import { getShopById } from "@/crud/Shop.crud";
+import { getShopById, updateShopById } from "@/crud/Shop.crud";
 import { afterOnboardingActionGuard } from "@/lib/actions/action";
 import { logConsole } from "@/lib/console/console";
 import { serialize } from "@/lib/serialize";
 import { throwError } from "@/lib/throwError";
 import { validateInputs } from "@/lib/validateInputs";
-import { createProductValidator } from "@/validators/Product.validators";
+import { createProductValidator, productsSettingsValidator } from "@/validators/Product.validators";
 
 export async function createProductAction(formData) {
     return afterOnboardingActionGuard(async ({ appUserId, userIdFromAuthLibrary }) => {
@@ -173,5 +173,59 @@ export async function deleteProductAction(productId, shopId) {
         revalidatePath(`/shop-manage/${shopId}/products`);
 
         return serialize(deleted);
+    });
+}
+
+export async function updateProductSettingsAction(formData, shopId) {
+    return afterOnboardingActionGuard(async ({ appUserId }) => {
+        logConsole("actions/product : updateProductSettingsAction : formData ", formData);
+        logConsole("actions/product : updateProductSettingsAction : shopId ", shopId);
+
+        if (!shopId) {
+            throwError("Shop ID is required.");
+        }
+
+        const rawValues = {
+            showPricing: formData.get("showPricing") === "true",
+        };
+        logConsole("actions/product : updateProductSettingsAction : rawValues ", rawValues);
+
+        const validated = validateInputs(productsSettingsValidator, rawValues);
+        logConsole("actions/product : updateProductSettingsAction : validated ", validated);
+
+        if (!validated.success) {
+            throwError(validated.error);
+        }
+
+        const shop = await getShopById(shopId);
+        logConsole("actions/product : updateProductSettingsAction : shop ", shop);
+
+        if (!shop) {
+            throwError("Selected shop not found.");
+        }
+
+        if (shop.appUserId?.toString() !== appUserId.toString()) {
+            throwError("You are not authorized to update this shop's product settings.");
+        }
+
+        // Merge onto existing settings.products, so any future fields not
+        // touched by this particular call are preserved rather than wiped out.
+        const updated = await updateShopById(shopId, {
+            $set: {
+                "settings.products": {
+                    ...shop.settings?.products,
+                    ...validated.data,
+                },
+            },
+        });
+        logConsole("actions/product : updateProductSettingsAction : updated ", updated);
+
+        if (!updated) {
+            throwError("Failed to update settings. Please try again.");
+        }
+
+        revalidatePath(`/shop-manage/${shopId}/products`);
+
+        return serialize(updated);
     });
 }

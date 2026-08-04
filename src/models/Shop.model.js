@@ -40,6 +40,11 @@ const shopSchema = new mongoose.Schema(
             trim: true,
             default: "",
         },
+        settings: {
+            products: {
+                showPricing: { type: Boolean, default: true },
+            },
+        },
         logo: {
             type: String,
             trim: true,

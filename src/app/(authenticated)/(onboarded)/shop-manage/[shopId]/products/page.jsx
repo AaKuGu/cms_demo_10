@@ -2,6 +2,7 @@ import PageHeader from '@/components/PageHeader';
 import ActionDenied from '@/components/ActionDenied';
 import { fetchDataForProductListing } from '@/SSRCalls/Product.ssrCalls';
 import ProductsList from './ProductsList';
+import ProductsNav from './ProductsNav';
 
 const page = async ({ params }) => {
     const { shopId } = await params;
@@ -13,6 +14,7 @@ const page = async ({ params }) => {
 
     return (
         <div className="p-6">
+            <ProductsNav/>
             <PageHeader
                 title="Products"
                 description="Manage your product catalog."

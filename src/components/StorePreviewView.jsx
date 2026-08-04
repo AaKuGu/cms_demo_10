@@ -2,33 +2,9 @@
 
 import { useMemo, useState } from "react";
 
-/*
-  Design pass notes (v2 — identity pass)
-  ---------------------------------------
-  Palette pulled from the products themselves (gold bangles, maroon/teal
-  lac work) instead of generic zinc neutrals:
-    ink     #241A15  primary text, warm near-black
-    muted   #948676  secondary text, warm gray (replaces zinc-400/500)
-    hair    #ECE2D2  borders / hairlines, warm instead of cool gray
-    sand    #F3EAD9  card + tile fill
-    maroon  #7A1F3D  primary accent — active tab, price, logo ring
-    maroon-dk #5E1730 hover state for maroon
-    gold    #B8873B  secondary accent — header hairline, logo ring, focus
-
-  Signature element: the gold→maroon gradient hairline under the header,
-  echoed in the logo ring and the filled maroon pill on the active category
-  tab. That's the one bold move; everything else (grid, spacing, cards)
-  stays disciplined so the accent actually reads as intentional.
-
-  Category tabs moved from underline-on-text to filled pills — reads more
-  like a boutique's counter signage than a SaaS dashboard, and gives the
-  active state real weight instead of a hairline.
-
-  Product cards: sand-toned tile (not flat gray), price restyled as a small
-  maroon badge so "how much" is the visual answer, not just another text row.
-*/
-
 const StorePreviewView = ({ shop, categories, products }) => {
+    const showPricing = shop?.settings?.products?.showPricing !== false; // default true if unset
+
     const categoriesWithProducts = useMemo(() => {
         return categories
             .map((cat) => ({
@@ -50,6 +26,15 @@ const StorePreviewView = ({ shop, categories, products }) => {
         `Hi, I saw your store "${shop.name.replace(/_/g, " ")}" online and wanted to ask about your products.`
     );
 
+    const getProductWhatsappLink = (product) => {
+        const message = encodeURIComponent(
+            showPricing
+                ? `Hi, I'm interested in "${product.name}" (₹${product.price.toLocaleString("en-IN")}) from ${shop.name.replace(/_/g, " ")}. Iska kya price padega / is this available?`
+                : `Hi, I'm interested in "${product.name}" from ${shop.name.replace(/_/g, " ")}. Ye kitne ka hai / what's the price and is it available?`
+        );
+        return `https://wa.me/91${shop.phone}?text=${message}`;
+    };
+
     return (
         <div className="flex h-screen flex-col bg-white">
 
@@ -58,7 +43,6 @@ const StorePreviewView = ({ shop, categories, products }) => {
                 <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-9 lg:px-8">
                     <div className="grid grid-cols-[auto_1fr_auto] items-center gap-3 sm:gap-6">
 
-                        {/* Logo — left */}
                         <div className="flex justify-start">
                             {shop.logo ? (
                                 <img
@@ -73,7 +57,6 @@ const StorePreviewView = ({ shop, categories, products }) => {
                             )}
                         </div>
 
-                        {/* Name + address — center */}
                         <div className="flex min-w-0 flex-col items-center text-center">
                             <h1 className="font-serif text-xl leading-tight tracking-tight text-[#241A15] sm:text-3xl lg:text-[2.75rem]">
                                 {shop.name.replace(/_/g, " ")}
@@ -104,7 +87,6 @@ const StorePreviewView = ({ shop, categories, products }) => {
                             )}
                         </div>
 
-                        {/* WhatsApp — right */}
                         <div className="flex justify-end">
                             {shop.phone && (
                                 <a
@@ -123,14 +105,9 @@ const StorePreviewView = ({ shop, categories, products }) => {
                     </div>
                 </div>
 
-                {/* Signature hairline — gold to maroon, the one bold accent on the page */}
                 <div className="h-[3px] w-full bg-gradient-to-r from-[#B8873B] via-[#7A1F3D] to-[#B8873B]" />
             </div>
 
-            {/* Sections zone — this is where Trending Now, Banners, About, etc. will slot in later,
-                stacked above the category tabs, each as its own full-width band. */}
-
-            {/* Category tabs — fixed, doesn't scroll */}
             {
                 categoriesWithProducts.length > 0 && (
                     <div className="mx-auto w-full max-w-6xl shrink-0 border-b border-[#ECE2D2] bg-white px-4 py-3 sm:px-6 sm:py-4 lg:px-8">
@@ -161,7 +138,6 @@ const StorePreviewView = ({ shop, categories, products }) => {
                 )
             }
 
-            {/* Products area — this is the ONLY part that scrolls */}
             <div className="flex-1 overflow-y-auto bg-white">
                 <div className="mx-auto max-w-6xl px-4 py-7 sm:px-6 sm:py-10 lg:px-8">
 
@@ -189,21 +165,19 @@ const StorePreviewView = ({ shop, categories, products }) => {
                         </div>
                     ) : (
                         <>
-                            {/* Category description */}
                             {activeCategory?.description && (
                                 <p className="mb-7 max-w-lg text-sm leading-relaxed text-[#948676]">
                                     {activeCategory.description}
                                 </p>
                             )}
 
-                            {/* Products grid */}
                             <div
                                 className="
     grid
-    grid-cols-1      // very small screens
-    xs:grid-cols-2   // small phones and up
-    md:grid-cols-3   // tablets
-    lg:grid-cols-4   // laptops and desktops
+    grid-cols-1
+    xs:grid-cols-2
+    md:grid-cols-3
+    lg:grid-cols-4
     gap-x-3 gap-y-7
     sm:gap-x-6 sm:gap-y-9
   "
@@ -241,9 +215,26 @@ const StorePreviewView = ({ shop, categories, products }) => {
                                             <p className="mt-0.5 line-clamp-1 text-xs leading-snug text-[#AB9C8C]">
                                                 {product.desc}
                                             </p>
-                                            <p className="mt-1.5 inline-block text-xs font-semibold tabular-nums text-[#7A1F3D] sm:mt-2 sm:text-sm">
-                                                ₹{product.price.toLocaleString("en-IN")}
-                                            </p>
+
+                                            <div className={`mt-1.5 flex items-center sm:mt-2 ${showPricing ? "justify-between" : "justify-end"}`}>
+                                                {showPricing && (
+                                                    <p className="text-xs font-semibold tabular-nums text-[#7A1F3D] sm:text-sm">
+                                                        ₹{product.price.toLocaleString("en-IN")}
+                                                    </p>
+                                                )}
+
+                                                <a
+                                                    href={getProductWhatsappLink(product)}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    aria-label={`Ask about ${product.name} on WhatsApp`}
+                                                    className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-green-500 text-white shadow-sm transition duration-200 hover:bg-green-600 hover:shadow-md active:scale-[0.93] sm:h-8 sm:w-8"
+                                                >
+                                                    <svg className="h-3.5 w-3.5 sm:h-4 sm:w-4" fill="currentColor" viewBox="0 0 24 24">
+                                                        <path d="M17.6 6.32A7.85 7.85 0 0012.05 4a7.94 7.94 0 00-6.9 11.9L4 20l4.2-1.1a7.9 7.9 0 003.85 1h0a7.94 7.94 0 007.94-7.94 7.9 7.9 0 00-2.35-5.62zm-5.55 12.2h0a6.6 6.6 0 01-3.36-.92l-.24-.14-2.5.65.67-2.44-.16-.25a6.6 6.6 0 01-1-3.5A6.6 6.6 0 0117.6 7.24a6.56 6.56 0 011.94 4.66 6.6 6.6 0 01-6.6 6.62zm3.6-4.94c-.2-.1-1.17-.58-1.35-.64s-.32-.1-.45.1-.5.63-.62.77-.23.15-.43.05a5.4 5.4 0 01-1.6-1 6 6 0 01-1.1-1.37c-.12-.2 0-.3.09-.4s.2-.24.3-.36a1.4 1.4 0 00.2-.34.4.4 0 000-.36c-.05-.1-.45-1.08-.62-1.48s-.33-.33-.45-.33h-.4a.75.75 0 00-.55.26 2.3 2.3 0 00-.72 1.7 4 4 0 00.85 2.1 9.2 9.2 0 003.53 3.1c.5.2.9.33 1.2.42a2.9 2.9 0 001.33.08 2.2 2.2 0 001.43-1 1.8 1.8 0 00.12-1c-.05-.1-.18-.15-.38-.25z" />
+                                                    </svg>
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                 ))}
@@ -251,8 +242,8 @@ const StorePreviewView = ({ shop, categories, products }) => {
                         </>
                     )}
                 </div>
-            </div>
-        </div>
+            </div >
+        </div >
     );
 };
 

@@ -1,6 +1,16 @@
 import { z } from "zod";
 const slugRegex = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
+const productsSettingsValidator = z.object({
+    showPricing: z.boolean().optional(),
+});
+
+const shopSettingsValidator = z
+    .object({
+        products: productsSettingsValidator.optional(),
+    })
+    .optional();
+
 export const createShopValidator = z.object({
     name: z
         .string()
@@ -42,6 +52,7 @@ export const createShopValidator = z.object({
         .max(500, "Logo URL must be under 500 characters")
         .optional()
         .or(z.literal("")),
+    settings: shopSettingsValidator,
 });
 
 export const updateShopValidator = createShopValidator.partial();
