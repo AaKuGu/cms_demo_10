@@ -56,7 +56,7 @@ export default function ProductsList({ products, shopId }) {
                                 {product.name || "Unnamed product"}
                             </p>
                             <p className="truncate text-sm text-gray-500">
-                                {product.desc || "No description added"}
+                                {product.categoryId.name || "No Category added"}
                             </p>
                         </div>
                     </div>

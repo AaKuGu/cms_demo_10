@@ -3,15 +3,15 @@ import { getProduct, getProductList } from "@/crud/Product.crud";
 import { serialize } from "@/lib/serialize";
 import { logConsole } from "@/lib/console/console";
 
-export async function fetchAllProducts({ shopId } = {}) {
+export async function fetchDataForProductListing({ shopId } = {}) {
     return afterOnboardingActionGuard(async ({ appUserId }) => {
         logConsole("ssrcalls : product : fetchAllProducts : appUserId ", appUserId)
         logConsole("ssrcalls : product : fetchAllProducts : shopId ", shopId)
 
-        const products = await getProductList({ appUserId, shopId });
-        logConsole("ssrcalls : product : fetchAllProducts : products ", products)
+        const data = await getProductList({ appUserId, shopId }, ['categoryId']);
+        logConsole("ssrcalls : product : fetchAllProducts : data ", data)
 
-        return serialize(products);
+        return serialize(data);
     });
 }
 

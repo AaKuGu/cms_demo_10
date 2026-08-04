@@ -1,6 +1,6 @@
 import { logConsole } from "@/lib/console/console";
 import dbConnect from "@/lib/dbConnect";
-import AppUser from "@/models/AppUsers.model";
+import AppUser from "@/models/AppUser.model";
 
 export async function createAppUser(data) {
     logConsole("crud : createAppUser : ", data);

@@ -63,7 +63,7 @@ import mongoose from "mongoose";
 import { dbConnect } from "@/lib/dbConnect";
 import { customSession } from "better-auth/plugins";
 import { logConsole } from "@/lib/console/console";
-import { getAppUser } from "@/crud/AppUsers.crud";
+import { getAppUser } from "@/crud/AppUser.crud";
 
 // Ensure the mongoose connection is established before better-auth
 // tries to use it.

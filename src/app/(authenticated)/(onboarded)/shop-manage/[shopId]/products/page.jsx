@@ -1,11 +1,11 @@
 import PageHeader from '@/components/PageHeader';
 import ActionDenied from '@/components/ActionDenied';
-import { fetchAllProducts } from '@/SSRCalls/Product.ssrCalls';
+import { fetchDataForProductListing } from '@/SSRCalls/Product.ssrCalls';
 import ProductsList from './ProductsList';
 
 const page = async ({ params }) => {
     const { shopId } = await params;
-    const { data: products, error } = await fetchAllProducts({ shopId });
+    const { data: products, error } = await fetchDataForProductListing({ shopId });
 
     if (error) {
         return <ActionDenied message={error} />;

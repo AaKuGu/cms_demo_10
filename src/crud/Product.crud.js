@@ -2,6 +2,7 @@ import dbConnect from "@/lib/dbConnect";
 import Product from "@/models/Product.model";
 import { serialize } from "@/lib/serialize";
 import { logConsole } from "@/lib/console/console";
+// import Category from "@/models/Category.model";
 
 export async function createProduct(data) {
     await dbConnect();
@@ -24,9 +25,11 @@ export async function getProduct(filter) {
     return serialize(product);
 }
 
-export async function getProductList(filter = {}) {
+export async function getProductList(filter = {}, populate = []) {
     await dbConnect();
-    const products = await Product.find(filter).sort({ createdAt: -1 });
+    const products = await Product.find(filter)
+        .populate(populate)
+        .sort({ createdAt: -1 });
 
     logConsole("crud/Product : getProductList : products ", products)
 

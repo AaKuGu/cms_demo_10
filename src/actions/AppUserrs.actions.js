@@ -1,6 +1,6 @@
 "use server";
 
-import { createAppUser } from "@/crud/AppUsers.crud";
+import { createAppUser } from "@/crud/AppUser.crud";
 import { afterOnboardingActionGuard, beforeOnboardingActionGuard } from "@/lib/actions/action";
 import { logConsole } from "@/lib/console/console";
 import { serialize } from "@/lib/serialize";
