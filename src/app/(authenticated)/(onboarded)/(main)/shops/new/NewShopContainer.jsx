@@ -9,6 +9,7 @@ import { errorToast, successToast } from "@/lib/toast";
 const defaultValues = {
     name: "",
     slug: "",
+    phone: "",
     address: "",
     googleMapLink: "",
     logo: "",

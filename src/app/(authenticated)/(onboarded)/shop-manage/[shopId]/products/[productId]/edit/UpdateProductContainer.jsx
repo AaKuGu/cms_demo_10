@@ -14,6 +14,7 @@ export default function UpdateProductContainer({ product, shopId, categories = [
         name: product.name || "",
         desc: product.desc || "",
         price: product.price || "",
+        image: product.image || "",
     });
 
     const updateField = (field) => (e) => {
@@ -31,6 +32,7 @@ export default function UpdateProductContainer({ product, shopId, categories = [
         formData.set("name", formValues.name);
         formData.set("desc", formValues.desc || "");
         formData.set("price", String(formValues.price));
+        formData.set("image", formValues.image);
 
         const { data, error } = await updateProductAction(formData);
         setIsPending(false);

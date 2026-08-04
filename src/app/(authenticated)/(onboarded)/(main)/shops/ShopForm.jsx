@@ -1,6 +1,7 @@
 "use client";
 
 import FormInput from "@/components/FormInput";
+import ImageUpload from "@/components/ImageUpload";
 
 export default function ShopForm({
     formValues,
@@ -15,6 +16,14 @@ export default function ShopForm({
             <div className="rounded-xl border border-gray-200 bg-white p-5">
                 <p className="mb-3 text-sm font-medium text-gray-900">Shop details</p>
                 <div className="grid gap-3 md:grid-cols-2">
+                    <div className="md:col-span-2">
+                        <ImageUpload
+                            label="Shop Logo"
+                            value={formValues.logo}
+                            onChange={(url) => onChange("logo")({ target: { value: url } })}
+                        />
+                    </div>
+
                     <div className="md:col-span-2">
                         <FormInput
                             label="Shop Name"
@@ -72,18 +81,6 @@ export default function ShopForm({
                             hint="Optional"
                             value={formValues.googleMapLink}
                             onChange={onChange("googleMapLink")}
-                        />
-                    </div>
-
-                    <div className="md:col-span-2">
-                        <FormInput
-                            label="Logo URL"
-                            name="logo"
-                            type="url"
-                            placeholder="https://example.com/logo.png"
-                            hint="Optional"
-                            value={formValues.logo}
-                            onChange={onChange("logo")}
                         />
                     </div>
                 </div>

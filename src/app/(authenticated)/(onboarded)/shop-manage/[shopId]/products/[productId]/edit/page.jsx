@@ -3,20 +3,25 @@ import ActionDenied from '@/components/ActionDenied';
 import { fetchAllCategories } from '@/SSRCalls/Category.ssrCalls';
 import { getProductById } from '@/crud/Product.crud';
 import UpdateProductContainer from './UpdateProductContainer';
+import { logConsole } from '@/lib/console/console';
+import { fetchProductAndCategoresForEditPage } from '@/SSRCalls/Product.ssrCalls';
 
 export default async function EditProductPage({ params }) {
     const { shopId, productId } = await params;
 
-    const [productResult, categoriesResult] = await Promise.all([
-        getProductById(productId),
-        fetchAllCategories({ shopId }),
-    ]);
+    // const [productResult, categoriesResult] = await Promise.all([
+    //     getProductById(productId),
+    //     fetchAllCategories({ shopId }),
+    // ]);
 
-    const product = productResult;
-    const { data: categories = [], error: categoryError } = categoriesResult;
+    const { data: { product, categories }, error } = await fetchProductAndCategoresForEditPage({ productId, shopId });
 
-    if (categoryError) {
-        return <ActionDenied message={categoryError} />;
+    logConsole("shop-manage/shopid/products/productid/edit/page.jsx : product : ", product)
+    logConsole("shop-manage/shopid/products/productid/edit/page.jsx : categories : ", categories)
+
+
+    if (error) {
+        return <ActionDenied message={error} />;
     }
 
     if (!product || product.shopId?.toString() !== shopId.toString()) {

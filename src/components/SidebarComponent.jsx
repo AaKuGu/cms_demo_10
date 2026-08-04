@@ -58,14 +58,18 @@ export default function SidebarComponent({ prop }) {
 
                         const actual_href = prop === "main" ? href : `/shop-manage/${shopId}/${href}`;
 
-                        const isActive = pathname === actual_href;
+                        // Exact match OR pathname is a child route of this nav item
+                        const isActive =
+                            pathname === actual_href ||
+                            pathname.startsWith(`${actual_href}/`);
+
                         return (
                             <Link
                                 key={actual_href}
                                 href={actual_href}
                                 onClick={() => setIsOpen(false)}
                                 className={`flex items-center gap-3 rounded-md border-l-4 px-3 py-2.5 text-sm font-medium transition-colors
-                ${isActive
+            ${isActive
                                         ? "border-primary bg-black text-white"
                                         : "border-transparent text-neutral-700 hover:bg-neutral-100"
                                     }`}

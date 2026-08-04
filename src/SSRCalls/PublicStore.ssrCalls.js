@@ -6,6 +6,8 @@ import { serialize } from "@/lib/serialize";
 import { logConsole } from "@/lib/console/console";
 import { tryCatchAction } from "@/lib/tryCatchAction";
 import { throwError } from "@/lib/throwError";
+import { getSocials } from "@/crud/Socials.crud";
+import { getContact } from "@/crud/Contact.crud";
 
 export async function fetchPublicStoreBySlug({ shopSlug } = {}) {
     return tryCatchAction(async () => {
@@ -22,14 +24,18 @@ export async function fetchPublicStoreBySlug({ shopSlug } = {}) {
             throwError("Store not found");
         }
 
-        const [categories, products] = await Promise.all([
+        const [categories, products, socials, contact] = await Promise.all([
             getCategoryList({ shopId: shop._id }),
             getProductList({ shopId: shop._id }),
+            getSocials({ shopId: shop._id }),
+            getContact({ shopId: shop._id }),
         ]);
 
         logConsole("ssrcalls : publicStore : fetchPublicStoreBySlug : categories ", categories);
         logConsole("ssrcalls : publicStore : fetchPublicStoreBySlug : products ", products);
+        logConsole("ssrcalls : publicStore : fetchPublicStoreBySlug : socials ", socials);
+        logConsole("ssrcalls : publicStore : fetchPublicStoreBySlug : contact ", contact);
 
-        return serialize({ shop, categories, products });
+        return serialize({ shop, categories, products, socials, contact });
     });
 }
