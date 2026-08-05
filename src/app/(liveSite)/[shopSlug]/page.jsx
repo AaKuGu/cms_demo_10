@@ -60,10 +60,11 @@ const page = async ({ params }) => {
         notFound();
     }
 
-    const { shop, categories, products, socials, contact } = data;
+    const { shop, categories, products, socials, contact, aboutUs } = data;
     logConsole("(liveSite)/[shopSlug]/page.jsx : contact :  ", contact);
+    logConsole("(liveSite)/[shopSlug]/page.jsx : aboutUs :  ", aboutUs);
 
-    return <StorePreviewView shop={shop} categories={categories} products={products} socials={socials} contact={contact}/>;
+    return <StorePreviewView shop={shop} categories={categories} products={products} socials={socials} contact={contact} aboutUs={aboutUs}/>;
 }
 
 export default page
