@@ -3,7 +3,7 @@ import { fetchStorePreviewByShopId } from '@/SSRCalls/StorePreview.ssrCalls';
 import { logConsole } from '@/lib/console/console';
 import ShareStoreButton from '@/components/ShareStoreButton';
 import React from 'react'
-import StorePreviewView from '@/components/StorePreviewView';
+import StorePreviewView from '@/components/StorePreview/StorePreviewView';
 
 const page = async ({ params }) => {
     const { shopId } = await params;
@@ -18,7 +18,7 @@ const page = async ({ params }) => {
         return <ActionDenied message={error} />;
     }
 
-    
+
 
     return (
         <div className="relative">

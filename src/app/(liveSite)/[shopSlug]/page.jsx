@@ -3,7 +3,7 @@ import { cache } from 'react';
 import { notFound } from 'next/navigation';
 import { fetchPublicStoreBySlug } from '@/SSRCalls/PublicStore.ssrCalls';
 import { logConsole } from '@/lib/console/console';
-import StorePreviewView from '@/components/StorePreviewView';
+import StorePreviewView from '@/components/StorePreview/StorePreviewView';
 
 const getStoreData = cache(async (shopSlug) => {
     return fetchPublicStoreBySlug({ shopSlug });
@@ -63,7 +63,7 @@ const page = async ({ params }) => {
     const { shop, categories, products, socials, contact } = data;
     logConsole("(liveSite)/[shopSlug]/page.jsx : contact :  ", contact);
 
-    return <StorePreviewView shop={shop} categories={categories} products={products} socials={socials} contact={contact}/>;
+    return <StorePreviewView shop={shop} categories={categories} products={products} socials={socials} contact={contact} />;
 }
 
 export default page
