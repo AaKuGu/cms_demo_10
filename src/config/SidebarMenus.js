@@ -19,6 +19,6 @@ export const Shop_Sidebar_Menus = [
   { label: "Categories", getHref: routes.categories, icon: Tags },
   { label: "Products", getHref: routes.products, icon: Package },
   { label: "Socials", getHref: routes.socials, icon: Share2 },
-  { label: "Contact", getHref: routes.contactUs, icon: Phone },
+  { label: "Contact Us", getHref: routes.contactUs, icon: Phone },
   { label: "About Us", getHref: routes.aboutUs, icon: Info },
 ];
