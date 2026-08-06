@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import ShopForm from "../ShopForm";
 import { createShopAction } from "@/actions/Shop.actions";
 import { errorToast, successToast } from "@/lib/toast";
+import { routes } from "@/lib/routes/routes";
 
 const defaultValues = {
     name: "",
@@ -71,7 +72,7 @@ export default function NewShopContainer() {
         }
 
         successToast("Shop added successfully!");
-        router.push("/shops");
+        router.push(routes.shops);
     };
 
     return (
@@ -79,7 +80,7 @@ export default function NewShopContainer() {
             formValues={formValues}
             onChange={updateField}
             onSubmit={handleSubmit}
-            onCancel={() => router.push("/shops")}
+            onCancel={() => router.push(routes.shops)}
             isPending={isPending}
             submitLabel="Add Shop"
         />

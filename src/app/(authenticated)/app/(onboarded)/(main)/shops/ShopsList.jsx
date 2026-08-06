@@ -9,6 +9,7 @@ import { errorToast, successToast } from "@/lib/toast";
 import { getNameInitials } from "@/lib/ui/initials";
 import { logConsole } from "@/lib/console/console";
 import Button from "@/ui/Button";
+import { routes } from "@/lib/routes/routes";
 
 export default function ShopsList({ shops }) {
     const router = useRouter();
@@ -60,7 +61,7 @@ export default function ShopsList({ shops }) {
             {shops.map((shop) => (
                 <div
                     key={shop._id}
-                    onClick={() => router.push(`/shops/${shop._id}`)}
+                    onClick={() => router.push(routes.shopView(shop._id))}
                     className="cursor-pointer p-4 transition-colors hover:bg-gray-50"
                 >
                     <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -97,7 +98,7 @@ export default function ShopsList({ shops }) {
                                     className="w-full sm:w-auto"
                                     onClick={() =>
                                         router.push(
-                                            `/shop-manage/${shop._id}/storePreview`
+                                            routes.storePreview(shop._id)
                                         )
                                     }
                                 >
@@ -107,7 +108,7 @@ export default function ShopsList({ shops }) {
 
                             <ActionGroup
                                 onEdit={() =>
-                                    router.push(`/shops/${shop._id}/edit`)
+                                    router.push(routes.shopEdit(shop._id))
                                 }
                                 onDelete={(e) =>
                                     handleDelete(e, shop._id, shop.name)

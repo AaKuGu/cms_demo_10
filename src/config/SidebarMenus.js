@@ -1,3 +1,4 @@
+import { routes } from "@/lib/routes/routes";
 import {
   LayoutDashboard,
   Store,
@@ -9,15 +10,15 @@ import {
 } from "lucide-react";
 
 export const Main_Sidebar_Menus = [
-  { label: "Shops", href: "/shops", icon: Store },
+  { label: "Shops", getHref: () => routes.shops, icon: Store },
 ];
 
 export const Shop_Sidebar_Menus = [
-  { label: "Live View", href: "live", icon: LayoutDashboard },
-  { label: "Store Preview", href: "storePreview", icon: LayoutDashboard },
-  { label: "Products", href: "products", icon: Package },
-  { label: "Categories", href: "categories", icon: Tags },
-  { label: "Socials", href: "socials", icon: Share2 },
-  { label: "Contact", href: "contact", icon: Phone },
-  { label: "About Us", href: "about", icon: Info },
+  { label: "Live View", getHref: routes.live, icon: LayoutDashboard },
+  { label: "Store Preview", getHref: routes.storePreview, icon: LayoutDashboard },
+  { label: "Categories", getHref: routes.categories, icon: Tags },
+  { label: "Products", getHref: routes.products, icon: Package },
+  { label: "Socials", getHref: routes.socials, icon: Share2 },
+  { label: "Contact", getHref: routes.contactUs, icon: Phone },
+  { label: "About Us", getHref: routes.aboutUs, icon: Info },
 ];

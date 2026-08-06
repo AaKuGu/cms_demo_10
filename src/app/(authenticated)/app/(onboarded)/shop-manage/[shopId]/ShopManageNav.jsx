@@ -1,5 +1,6 @@
 "use client";
 
+import { routes } from '@/lib/routes/routes';
 import Link from 'next/link'
 
 const ShopManageNav = () => {
@@ -7,7 +8,7 @@ const ShopManageNav = () => {
         <div className="sticky top-0 z-40 border-b border-stone-200 bg-white/80 backdrop-blur-md">
             <div className="mx-auto flex max-w-7xl items-center px-2 py-1">
                 <Link
-                    href="/shops"
+                    href={routes.shops}
                     className="flex items-center gap-2 rounded-md px-0.5 py-0.5 text-sm font-medium text-stone-600 transition hover:bg-stone-100 hover:text-stone-900"
                 >
                     <svg

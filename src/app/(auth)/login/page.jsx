@@ -1,6 +1,7 @@
 "use client";
 
 import { useAuth } from "@/hooks/useAuth";
+import { routes } from "@/lib/routes/routes";
 import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 
@@ -15,7 +16,7 @@ export default function LoginPage() {
         setLoading(true);
 
         try {
-            const callbackURL = "/shops";
+            const callbackURL = routes.shops;
             await loginWithGoogle(callbackURL);
         } catch (err) {
             setLoading(false);

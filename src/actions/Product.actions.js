@@ -57,7 +57,7 @@ export async function createProductAction(formData) {
             throwError("Failed to add product. Please try again.");
         }
 
-        revalidatePath(`/shop-manage/${validated.data.shopId}/products`);
+        // revalidatePath(`/shop-manage/${validated.data.shopId}/products`);
 
         return serialize(created);
     });
@@ -224,7 +224,6 @@ export async function updateProductSettingsAction(formData, shopId) {
             throwError("Failed to update settings. Please try again.");
         }
 
-        revalidatePath(`/shop-manage/${shopId}/products`);
 
         return serialize(updated);
     });

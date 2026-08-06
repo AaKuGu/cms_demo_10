@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import ShopForm from "../../ShopForm";
 import { updateShopAction } from "@/actions/Shop.actions";
 import { errorToast, successToast } from "@/lib/toast";
+import { routes } from "@/lib/routes/routes";
 
 const slugify = (value) =>
     value
@@ -70,7 +71,7 @@ export default function UpdateShopContainer({ shop, shopId }) {
         }
 
         successToast("Shop updated successfully!");
-        router.push("/shops");
+        router.push(routes.shops);
     };
 
     return (
@@ -78,7 +79,7 @@ export default function UpdateShopContainer({ shop, shopId }) {
             formValues={formValues}
             onChange={updateField}
             onSubmit={handleSubmit}
-            onCancel={() => router.push("/shops")}
+            onCancel={() => router.push(routes.shops)}
             isPending={isPending}
             submitLabel="Save Changes"
         />

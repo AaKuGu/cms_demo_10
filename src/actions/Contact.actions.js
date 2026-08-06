@@ -59,8 +59,6 @@ export async function updateContactAction(formData, shopId) {
             throwError("Failed to update contact info. Please try again.");
         }
 
-        revalidatePath(`/shop-manage/${shopId}/contact`);
-
         return serialize(updated);
     });
 }

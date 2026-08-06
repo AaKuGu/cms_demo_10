@@ -54,19 +54,20 @@ export default function SidebarComponent({ prop }) {
                 </div>
 
                 <nav className="flex-1 space-y-1 px-3">
-                    {NAV_ITEMS.map(({ label, href, icon: Icon }) => {
+                    {NAV_ITEMS.map(({ label, getHref, icon: Icon }) => {
 
-                        const actual_href = prop === "main" ? href : `/shop-manage/${shopId}/${href}`;
+
+                        const href = getHref(shopId); // Call the function with shopId to get the actual href
 
                         // Exact match OR pathname is a child route of this nav item
                         const isActive =
-                            pathname === actual_href ||
-                            pathname.startsWith(`${actual_href}/`);
+                            pathname === href ||
+                            pathname.startsWith(`${href}/`);
 
                         return (
                             <Link
-                                key={actual_href}
-                                href={actual_href}
+                                key={href}
+                                href={href}
                                 onClick={() => setIsOpen(false)}
                                 className={`flex items-center gap-3 rounded-md border-l-4 px-3 py-2.5 text-sm font-medium transition-colors
             ${isActive

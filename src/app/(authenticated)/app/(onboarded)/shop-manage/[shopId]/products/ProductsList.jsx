@@ -7,6 +7,7 @@ import { deleteProductAction } from "@/actions/Product.actions";
 import { getNameInitials } from "@/lib/ui/initials";
 import { errorToast, successToast } from "@/lib/toast";
 import { useState } from "react";
+import { routes } from "@/lib/routes/routes";
 
 export default function ProductsList({ products, shopId }) {
     const router = useRouter();
@@ -44,7 +45,7 @@ export default function ProductsList({ products, shopId }) {
             {products.map((product) => (
                 <div
                     key={product._id}
-                    onClick={() => router.push(`/shop-manage/${shopId}/products/${product._id}`)}
+                    onClick={() => router.push(routes.productView(shopId, product._id))}
                     className="flex items-center justify-between px-5 py-4 transition-colors hover:bg-gray-50 cursor-pointer"
                 >
                     <div className="flex min-w-0 items-center gap-3">
@@ -68,7 +69,7 @@ export default function ProductsList({ products, shopId }) {
                         <ActionGroup
                             onEdit={(e) => {
                                 e.stopPropagation();
-                                router.push(`/shop-manage/${shopId}/products/${product._id}/edit`);
+                                router.push(routes.productEdit(shopId, product._id));
                             }}
                             onDelete={(e) => {
                                 e.stopPropagation();

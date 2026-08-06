@@ -9,6 +9,7 @@ import { serialize } from "@/lib/serialize";
 import { throwError } from "@/lib/throwError";
 import { validateInputs } from "@/lib/validateInputs";
 import { createCategoryValidator } from "@/validators/Category.validators";
+import { routes } from "@/lib/routes/routes";
 
 export async function createCategoryAction(formData) {
     return afterOnboardingActionGuard(async ({ appUserId, userIdFromAuthLibrary }) => {
@@ -52,9 +53,9 @@ export async function createCategoryAction(formData) {
             throwError("Failed to create category. Please try again.");
         }
 
-        revalidatePath(`/shop-manage/${validated.data.shopId}/categories`);
+        revalidatePath(routes.categories(validated.data.shopId));
 
-        return serialize(created);
+        return serialize(created);  
     });
 }
 
@@ -101,7 +102,7 @@ export async function removeCategoryAction(categoryId, shopId) {
             throwError("Failed to delete category. Please try again.");
         }
 
-        revalidatePath(`/shop-manage/${shopId}/categories`);
+        revalidatePath(routes.categories(shopId));
 
         return serialize(deleted);
     });
@@ -169,7 +170,7 @@ export async function updateCategoryAction(formData) {
             throwError("Failed to update category. Please try again.");
         }
 
-        revalidatePath(`/shop-manage/${rawValues.shopId}/categories`);
+        revalidatePath(routes.categories(rawValues.shopId));
 
         return serialize(updated);
     });

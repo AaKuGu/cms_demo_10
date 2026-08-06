@@ -21,7 +21,7 @@ export function afterOnboardingActionGuard(fn) {
     logConsole("lib/actions/afterOnboardingActionGuard : userIdFromAuthLibrary : ", userIdFromAuthLibrary)
 
     if (!userIdFromAuthLibrary) {
-      redirect("/login");
+      redirect(routes.login);
     }
 
 
@@ -31,7 +31,7 @@ export function afterOnboardingActionGuard(fn) {
 
 
     if (!appUserId) {
-      redirect("/onboarding")
+      redirect(routes.onboarding)
     }
 
     // const clinicId = await getClinicIdFromSession();
@@ -65,7 +65,7 @@ export function beforeOnboardingActionGuard(fn) {
 
 
     if (!userIdFromAuthLibrary) {
-      redirect("/login");
+      redirect(routes.login);
     }
 
     logConsole("lib/actions/beforeOnboardingActionGuard : userIdFromAuthLibrary : ", userIdFromAuthLibrary)

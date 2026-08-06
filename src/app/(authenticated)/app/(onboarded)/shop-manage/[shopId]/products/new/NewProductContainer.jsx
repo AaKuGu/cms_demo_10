@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import ProductForm from "./ProductForm";
 import { createProductAction } from "@/actions/Product.actions";
 import { errorToast, successToast } from "@/lib/toast";
+import { routes } from "@/lib/routes/routes";
 
 const defaultValues = {
     categoryId: "",
@@ -44,7 +45,7 @@ export default function NewProductContainer({ shopId, categories = [] }) {
         }
 
         successToast("Product added successfully!");
-        router.push(`/shop-manage/${shopId}/products`);
+        router.push(routes.products(shopId));
     };
 
     return (
@@ -52,7 +53,7 @@ export default function NewProductContainer({ shopId, categories = [] }) {
             formValues={formValues}
             onChange={updateField}
             onSubmit={handleSubmit}
-            onCancel={() => router.push(`/shop-manage/${shopId}/products`)}
+            onCancel={() => router.push(routes.products(shopId))}
             isPending={isPending}
             submitLabel="Add Product"
             shopId={shopId}

@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/authClient";
 import { successToast, errorToast } from "@/lib/toast";
+import { routes } from "@/lib/routes/routes";
 
 export function useAuth() {
   const router = useRouter();
@@ -11,7 +12,7 @@ export function useAuth() {
     await authClient.signOut({
       fetchOptions: {
         onSuccess: () => {
-          router.push("/login");
+          router.push(routes.login);
         },
         onError: () => {
           errorToast("Failed to log out. Please try again.");
@@ -20,12 +21,12 @@ export function useAuth() {
     });
   };
 
- const login = async ({ email, password }) => {
+  const login = async ({ email, password }) => {
     await authClient.signIn.email(
       { email, password },
       {
         onSuccess: () => {
-          router.push("/onboarding");
+          router.push(routes.onboarding);
         },
         onError: (ctx) => {
           errorToast(ctx.error.message ?? "Login failed.");
@@ -33,7 +34,7 @@ export function useAuth() {
       }
     );
   };
-  const loginWithGoogle = async (callbackURL = "/onboarding") => {
+  const loginWithGoogle = async (callbackURL = routes.onboarding) => {
     await authClient.signIn.social({
       provider: "google",
       callbackURL,

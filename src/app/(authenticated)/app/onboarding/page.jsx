@@ -17,7 +17,7 @@ const page = async () => {
     }
 
     if (appUserId) {
-        redirect("/dashboard")
+        redirect(routes.shops)
     }
 
     const { data, error: createError } = await createAppUserAction();
@@ -29,7 +29,7 @@ const page = async () => {
     }
 
     if (data) {
-        redirect("/shops")
+        redirect(routes.shops)
     }
 
 }

@@ -2,6 +2,7 @@ import PageHeader from '@/components/PageHeader';
 import ActionDenied from '@/components/ActionDenied';
 import { fetchAllShops } from '@/SSRCalls/Shop.ssrCalls';
 import ShopsList from './ShopsList';
+import { routes } from '@/lib/routes/routes';
 
 const page = async () => {
     const { data: shops, error } = await fetchAllShops();
@@ -16,7 +17,7 @@ const page = async () => {
                 title="Shops"
                 description="Manage your shops and their details."
                 rightButton={{
-                    href: '/shops/new',
+                    href: routes.shopCreate,
                     label: 'Create A Shop',
                 }}
             />

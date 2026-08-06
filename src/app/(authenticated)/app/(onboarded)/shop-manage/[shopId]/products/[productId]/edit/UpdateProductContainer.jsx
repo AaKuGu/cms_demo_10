@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import ProductForm from "@/app/(authenticated)/(onboarded)/shop-manage/[shopId]/products/new/ProductForm";
 import { updateProductAction } from "@/actions/Product.actions";
 import { errorToast, successToast } from "@/lib/toast";
+import { routes } from "@/lib/routes/routes";
+import ProductForm from "../../new/ProductForm";
 
 export default function UpdateProductContainer({ product, shopId, categories = [] }) {
     const router = useRouter();
@@ -43,7 +44,7 @@ export default function UpdateProductContainer({ product, shopId, categories = [
         }
 
         successToast("Product updated successfully!");
-        router.push(`/shop-manage/${shopId}/products`);
+        router.push(routes.products(shopId));
     };
 
     return (
@@ -51,7 +52,7 @@ export default function UpdateProductContainer({ product, shopId, categories = [
             formValues={formValues}
             onChange={updateField}
             onSubmit={handleSubmit}
-            onCancel={() => router.push(`/shop-manage/${shopId}/products`)}
+            onCancel={() => router.push(routes.products(shopId))}
             isPending={isPending}
             submitLabel="Update Product"
             shopId={shopId}
