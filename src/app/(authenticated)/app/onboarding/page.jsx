@@ -11,6 +11,8 @@ const page = async () => {
 
 
     if (error) {
+
+        
         return <ActionDenied message={error} />;
     }
 
