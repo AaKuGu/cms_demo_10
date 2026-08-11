@@ -10,15 +10,14 @@ import { createAppUserValidator } from "@/validators/AppUser.validators";
 
 
 export async function createAppUserAction() {
+    return beforeOnboardingActionGuard(async ({ userIdFromAuthLibrary, appUser }) => {
 
+        const email = appUser.email;
+        const name = appUser.name;
 
-    return beforeOnboardingActionGuard(async ({ userIdFromAuthLibrary, email, name }) => {
+        logConsole(`/actions/AppUsers.actions : email , name : `, email, name);
 
-        logConsole("actions/appusers : createAppUserAction :  userIdFromAuthLibrary ", userIdFromAuthLibrary)
-        logConsole("actions/appusers : createAppUserAction :  email ", email)
-        logConsole("actions/appusers : createAppUserAction :  name ", name)
-
-        const validated = validateInputs(createAppUserValidator, { email, userIdFromAuthLibrary, name });
+        const validated = validateInputs(createAppUserValidator, { email, name });
         if (!validated.success) {
             throwError(validated.error);
         }
@@ -26,7 +25,7 @@ export async function createAppUserAction() {
         logConsole("actions/appusers : createAppUserAction :  validated ", validated)
 
 
-        const created = await createAppUser({ ...validated.data });
+        const created = await createAppUser({ name, email, userIdFromAuthLibrary });
         if (!created) {
             throwError("Failed to add patient. Please try again.");
         }
@@ -37,6 +36,8 @@ export async function createAppUserAction() {
     });
 }
 
+
+//following func can be deleted anytime
 export async function updatePatientAction(formData, patientId) {
     return beforeOnboardingActionGuard(PATIENT_PERMISSIONS.UPDATE_PATIENT, async ({ clinicId }) => {
         if (!patientId) {

@@ -151,13 +151,6 @@ const aboutUsSchema = new mongoose.Schema(
       required: true,
       index: true,
     },
-    userIdFromAuthLibrary: {
-      type: String,
-      required: true,
-      trim: true,
-      index: true,
-    },
-
     // 5 Core Sections
     story: {
       type: storySectionSchema,

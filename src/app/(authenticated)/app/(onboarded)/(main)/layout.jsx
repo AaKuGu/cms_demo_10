@@ -1,5 +1,5 @@
 import React from 'react'
-import { getAppUserIdFromSession } from '@/lib/authentication/authentication';
+import { getAppUserFromSession, getUserFromAuthLibraryFromSession } from '@/lib/authentication/authentication';
 import { redirect } from 'next/navigation';
 import Sidebar from './Sidebar';
 import Navbar from '../../MainNavbar';
@@ -7,10 +7,16 @@ import { routes } from '@/lib/routes/routes';
 
 const layout = async ({ children }) => {
 
-    const appUserId = await getAppUserIdFromSession();
-    if (!appUserId) {
+    const userFromAuthLibrary = await getUserFromAuthLibraryFromSession();
+    if (!userFromAuthLibrary) {
+        redirect(routes.login)
+    }
+
+    const appUser = await getAppUserFromSession();
+    if (!appUser) {
         redirect(routes.onboarding);
     }
+
 
     return (
         <div className="flex min-h-screen flex-col">

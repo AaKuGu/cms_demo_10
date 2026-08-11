@@ -11,7 +11,7 @@ import { validateInputs } from "@/lib/validateInputs";
 import { createContactValidator } from "@/validators/Contact.validators";
 
 export async function updateContactAction(formData, shopId) {
-    return afterOnboardingActionGuard(async ({ appUserId, userIdFromAuthLibrary }) => {
+    return afterOnboardingActionGuard(async ({ appUserId }) => {
         logConsole("actions/contact : updateContactAction : formData ", formData);
         logConsole("actions/contact : updateContactAction : shopId ", shopId);
 
@@ -51,7 +51,6 @@ export async function updateContactAction(formData, shopId) {
         const updated = await upsertContactByShopId(shopId, {
             ...validated.data,
             appUserId,
-            userIdFromAuthLibrary,
         });
         logConsole("actions/contact : updateContactAction : updated ", updated);
 

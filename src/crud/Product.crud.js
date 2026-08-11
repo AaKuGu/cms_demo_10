@@ -25,14 +25,13 @@ export async function getProduct(filter) {
     return serialize(product);
 }
 
-export async function getProductList(filter = {}, populate = []) {
+export async function getProductList(filter = {}, populate = [], sort = { createdAt: -1 }) {
     await dbConnect();
     const products = await Product.find(filter)
         .populate(populate)
-        .sort({ createdAt: -1 });
+        .sort(sort);
 
     logConsole("crud/Product : getProductList : products ", products)
-
     return serialize(products);
 }
 

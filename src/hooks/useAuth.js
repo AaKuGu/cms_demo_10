@@ -34,7 +34,7 @@ export function useAuth() {
       }
     );
   };
-  const loginWithGoogle = async (callbackURL = routes.onboarding) => {
+  const loginWithGoogle = async (callbackURL) => {
     await authClient.signIn.social({
       provider: "google",
       callbackURL,

@@ -20,6 +20,18 @@ export async function getAuthenticatedContext() {
 
 // above is the verge of deletion
 
+export async function getUserFromAuthLibraryFromSession() {
+  const session = await auth.api.getSession({ headers: await headers() });
+  logConsole("/lib/authentication/getUserFromAuthLibraryFromSession : session : ", session);
+  return serialize(session?.userFromAuthLibrary ?? null);
+}
+
+export async function getAppUserFromSession() {
+  const session = await auth.api.getSession({ headers: await headers() });
+  logConsole("/lib/authentication/getAppUserFromSession : session : ", session);
+  return serialize(session?.appUser ?? null);
+}
+
 export async function getAuthenticationLibraryUserIdFromSession() {
   const session = await auth.api.getSession({ headers: await headers() });
 
@@ -28,10 +40,25 @@ export async function getAuthenticationLibraryUserIdFromSession() {
   return serialize(session?.userFromAuthLibrary?.id ?? null);
 }
 
-export async function getAppUserIdFromSession() {
+//above might get deleted 80% chance
+
+export async function getAppUserIdFromAppUserSession() {
   const session = await auth.api.getSession({ headers: await headers() });
+  logConsole("/lib/authentication/getAppUserIdFromAppUserSession : session : ", session)
   return serialize(session?.appUser?._id ?? null);
 }
+
+
+//above might get deleted 80% chance
+
+export async function getAppUserIdFromSession() {
+  const session = await auth.api.getSession({ headers: await headers() });
+  logConsole("/lib/authentication/getAppUserIdFromSession : session : ", session)
+  return serialize(session?.appUser?._id ?? null);
+}
+
+//above might get deleted 80% chance
+
 
 export async function getNameFromSession() {
   const session = await auth.api.getSession({ headers: await headers() });
@@ -39,6 +66,9 @@ export async function getNameFromSession() {
 
   return session?.userFromAuthLibrary?.name ?? null;
 }
+
+//above might get deleted 80% chance
+
 
 // export async function getClinicIdFromSession() {
 //   const session = await auth.api.getSession({ headers: await headers() });
@@ -57,3 +87,41 @@ export async function getEmailFromSession() {
 
   return session?.userFromAuthLibrary?.email ?? null;
 }
+
+//above might get deleted 80% chance
+
+
+export async function getEmailFromAppUserSession() {
+  const session = await auth.api.getSession({ headers: await headers() });
+
+  logConsole("/lib/authentications : getEmailFromSession : session : ", session);
+
+  return session?.appUser?.email ?? null;
+}
+
+//above might get deleted 80% chance
+
+
+export async function getNameFromAppUserSession() {
+  const session = await auth.api.getSession({ headers: await headers() });
+
+  logConsole("/lib/authentications : getNameFromAppUserSession : session : ", session);
+
+  return session?.appUser?.name ?? null;
+}
+
+//above might get deleted 80% chance
+
+
+
+export async function getOnboardingFromAppUserSession() {
+  const session = await auth.api.getSession({ headers: await headers() });
+
+  logConsole("/lib/authentications : getOnboardingFromAppUserSession : session : ", session);
+
+  return session?.appUser?.onboarding ?? null;
+}
+
+
+//above might get deleted 80% chance
+

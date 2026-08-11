@@ -3,18 +3,37 @@ import { getProduct, getProductList } from "@/crud/Product.crud";
 import { serialize } from "@/lib/serialize";
 import { logConsole } from "@/lib/console/console";
 import { getCategoryList } from "@/crud/Category.crud";
+import { buildProductFilter } from "@/app/(authenticated)/app/(onboarded)/shop-manage/[shopId]/products/lib/buildProductFilter";
 
-export async function fetchDataForProductListing({ shopId } = {}) {
+export async function fetchDataForProductListing({ shopId, searchParams = {} } = {}) {
     return afterOnboardingActionGuard(async ({ appUserId }) => {
-        logConsole("ssrcalls : product : fetchAllProducts : appUserId ", appUserId)
-        logConsole("ssrcalls : product : fetchAllProducts : shopId ", shopId)
+        const userFilter = buildProductFilter(searchParams);
+        const hasFilter = Object.keys(userFilter).length > 0;
 
-        const data = await getProductList({ appUserId, shopId }, ['categoryId']);
-        logConsole("ssrcalls : product : fetchAllProducts : data ", data)
+        const filter = { appUserId, shopId, ...userFilter };
+        const products = await getProductList(filter, ['categoryId'], { createdAt: -1 });
 
-        return serialize(data);
+        // default to latest 10 when no filter is applied
+        const finalProducts = hasFilter ? products : products.slice(0, 10);
+
+        return serialize({ products: finalProducts, hasFilter });
     });
 }
+
+
+// export async function fetchDataForProductListing({ shopId, filter = {}, sort } = {}) {
+//     return afterOnboardingActionGuard(async ({ appUserId }) => {
+//         logConsole("ssrcalls : product : fetchAllProducts : appUserId ", appUserId)
+//         logConsole("ssrcalls : product : fetchAllProducts : shopId ", shopId)
+//         logConsole("ssrcalls : product : fetchAllProducts : filter ", filter)
+
+//         const fullFilter = { appUserId, shopId, ...filter };
+//         const data = await getProductList(fullFilter, ['categoryId'], sort);
+//         logConsole("ssrcalls : product : fetchAllProducts : data ", data)
+
+//         return serialize(data);
+//     });
+// }
 
 export async function fetchAProduct({ productId } = {}) {
     return afterOnboardingActionGuard(async ({ appUserId }) => {

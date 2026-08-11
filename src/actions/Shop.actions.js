@@ -9,9 +9,8 @@ import { validateInputs } from "@/lib/validateInputs";
 import { createShopValidator } from "@/validators/Shop.validators";
 
 export async function createShopAction(formData) {
-    return afterOnboardingActionGuard(async ({ appUserId, userIdFromAuthLibrary }) => {
+    return afterOnboardingActionGuard(async ({ appUserId }) => {
         logConsole("actions/shop : createShopAction : appUserId ", appUserId)
-        logConsole("actions/shop : createShopAction : userIdFromAuthLibrary ", userIdFromAuthLibrary)
 
         const rawValues = {
             name: formData.get("name"),
@@ -39,7 +38,6 @@ export async function createShopAction(formData) {
         const created = await createShop({
             ...validated.data,
             appUserId,
-            userIdFromAuthLibrary,
         });
         logConsole("actions/shop : createShopAction : created ", created)
 

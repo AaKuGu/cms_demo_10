@@ -15,7 +15,7 @@ export const Main_Sidebar_Menus = [
 
 export const Shop_Sidebar_Menus = [
   { label: "Live View", getHref: routes.live, icon: LayoutDashboard },
-  { label: "Store Preview", getHref: routes.storePreview, icon: LayoutDashboard },
+  // { label: "Store Preview", getHref: routes.storePreview, icon: LayoutDashboard },
   { label: "Categories", getHref: routes.categories, icon: Tags },
   { label: "Products", getHref: routes.products, icon: Package },
   { label: "Socials", getHref: routes.socials, icon: Share2 },

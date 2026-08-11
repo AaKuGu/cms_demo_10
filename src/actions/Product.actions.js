@@ -11,9 +11,8 @@ import { validateInputs } from "@/lib/validateInputs";
 import { createProductValidator, productsSettingsValidator } from "@/validators/Product.validators";
 
 export async function createProductAction(formData) {
-    return afterOnboardingActionGuard(async ({ appUserId, userIdFromAuthLibrary }) => {
+    return afterOnboardingActionGuard(async ({ appUserId }) => {
         logConsole("actions/product : createProductAction : appUserId ", appUserId);
-        logConsole("actions/product : createProductAction : userIdFromAuthLibrary ", userIdFromAuthLibrary);
         logConsole("actions/product : createProductAction : formData ", formData);
 
         const rawValues = {
@@ -49,7 +48,6 @@ export async function createProductAction(formData) {
         const created = await createProduct({
             ...validated.data,
             appUserId,
-            userIdFromAuthLibrary,
         });
         logConsole("actions/product : createProductAction : created ", created);
 
@@ -74,6 +72,7 @@ export async function updateProductAction(formData) {
             name: formData.get("name"),
             desc: formData.get("desc"),
             price: Number(formData.get("price")),
+            image: formData.get("image"),
         };
 
         logConsole("actions/product : updateProductAction : rawValues ", rawValues);

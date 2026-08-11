@@ -12,7 +12,9 @@ import { createCategoryValidator } from "@/validators/Category.validators";
 import { routes } from "@/lib/routes/routes";
 
 export async function createCategoryAction(formData) {
-    return afterOnboardingActionGuard(async ({ appUserId, userIdFromAuthLibrary }) => {
+    return afterOnboardingActionGuard(async ({ appUserId }) => {
+
+        logConsole("actions/category : createCategoryAction : appUserId ", appUserId);
         logConsole("actions/category : createCategoryAction : formData ", formData);
 
         const rawValues = {
@@ -45,7 +47,6 @@ export async function createCategoryAction(formData) {
         const created = await createCategory({
             ...validated.data,
             appUserId,
-            userIdFromAuthLibrary,
         });
         logConsole("actions/category : createCategoryAction : created ", created);
 
@@ -53,9 +54,7 @@ export async function createCategoryAction(formData) {
             throwError("Failed to create category. Please try again.");
         }
 
-        revalidatePath(routes.categories(validated.data.shopId));
-
-        return serialize(created);  
+        return serialize(created);
     });
 }
 

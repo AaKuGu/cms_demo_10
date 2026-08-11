@@ -10,9 +10,12 @@ const page = async ({ params }) => {
 
     logConsole("storePreview : shopId : ", shopId);
 
-    const { data: { shop, categories, products }, error } = await fetchStorePreviewByShopId({ shopId });
+    const { data, error } = await fetchStorePreviewByShopId({ shopId });
 
-    logConsole("storePreview : data : ", { shop, categories, products });
+    logConsole(" storePreview : data : ", data)
+
+    const { shop, categories, products, socials, contactUs, aboutUs } = data;
+    // logConsole("storePreview : data : ", { shop, categories, products, socials, contactUs, aboutUs });
 
     if (error) {
         return <ActionDenied message={error} />;
@@ -23,14 +26,14 @@ const page = async ({ params }) => {
     return (
         <div className="relative">
             {/* Floating on top of the preview — seller-only, never shown on the public live site */}
-            <div className="sticky top-0 z-25 flex justify-end border-b border-gray-200 bg-white/90 px-2 py-1 backdrop-blur-sm sm:px-3">
+            {/* <div className="sticky top-0 z-25 flex justify-end border-b border-gray-200 bg-white/90 px-2 py-1 backdrop-blur-sm sm:px-3">
                 <ShareStoreButton
                     shopSlug={shop.slug}
                     shopName={shop.name.replace(/_/g, " ")}
                 />
-            </div>
+            </div> */}
 
-            <StorePreviewView shop={shop} categories={categories} products={products} />
+            <StorePreviewView shop={shop} categories={categories} products={products} socials={socials} contact={contactUs} aboutUs={aboutUs} />
         </div>
     );
 }

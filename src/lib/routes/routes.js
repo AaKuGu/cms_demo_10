@@ -39,7 +39,7 @@ export const routes = {
   home: "/",
   login: "/login",
   register: "/register",
-  onboarding: "/onboarding",
+  onboarding: "/app/onboarding",
   shops: "/app/shops",
   shopEdit: (shopId) => `/app/shops/${shopId}/edit`,
   shopView: (shopId) => `/app/shops/${shopId}`,

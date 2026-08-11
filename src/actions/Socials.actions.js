@@ -11,7 +11,7 @@ import { validateInputs } from "@/lib/validateInputs";
 import { createSocialsValidator } from "@/validators/Socials.validators";
 
 export async function updateSocialsAction(formData, shopId) {
-    return afterOnboardingActionGuard(async ({ appUserId, userIdFromAuthLibrary }) => {
+    return afterOnboardingActionGuard(async ({ appUserId }) => {
         logConsole("actions/socials : updateSocialsAction : formData ", formData);
         logConsole("actions/socials : updateSocialsAction : shopId ", shopId);
 
@@ -48,7 +48,6 @@ export async function updateSocialsAction(formData, shopId) {
         const updated = await upsertSocialsByShopId(shopId, {
             ...validated.data,
             appUserId,
-            userIdFromAuthLibrary,
         });
         logConsole("actions/socials : updateSocialsAction : updated ", updated);
 

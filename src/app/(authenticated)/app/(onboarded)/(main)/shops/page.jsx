@@ -3,6 +3,7 @@ import ActionDenied from '@/components/ActionDenied';
 import { fetchAllShops } from '@/SSRCalls/Shop.ssrCalls';
 import ShopsList from './ShopsList';
 import { routes } from '@/lib/routes/routes';
+export const dynamic = 'force-dynamic';
 
 const page = async () => {
     const { data: shops, error } = await fetchAllShops();

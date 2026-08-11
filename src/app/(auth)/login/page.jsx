@@ -11,7 +11,6 @@ export default function LoginPage() {
 
     const [loading, setLoading] = useState(false);
 
-
     const handle_login_with_google = async () => {
         setLoading(true);
 

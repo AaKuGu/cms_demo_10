@@ -25,6 +25,7 @@ export async function getCategory(filter) {
 }
 
 export async function getCategoryList(filter = {}) {
+    logConsole("crud/Category : getCategory : filter : ", filter);
     await dbConnect();
     const categories = await Category.find(filter).sort({ createdAt: -1 });
     logConsole("crud/Category : getCategoryList : categories ", categories);

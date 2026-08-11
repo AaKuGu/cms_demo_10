@@ -98,7 +98,7 @@ export default function ShopsList({ shops }) {
                                     className="w-full sm:w-auto"
                                     onClick={() =>
                                         router.push(
-                                            routes.storePreview(shop._id)
+                                            routes.products(shop._id)
                                         )
                                     }
                                 >

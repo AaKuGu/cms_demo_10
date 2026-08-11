@@ -16,7 +16,6 @@ export async function fetchAllShops() {
     });
 }
 
-
 import { getShopById } from "@/crud/Shop.crud";
 
 export async function fetchAShop({ shopId } = {}) {

@@ -9,11 +9,20 @@ import { errorToast, successToast } from "@/lib/toast";
 import { useState } from "react";
 import { routes } from "@/lib/routes/routes";
 
-export default function ProductsList({ products, shopId }) {
+export default function ProductsList({ products, shopId, hasFilter }) {
     const router = useRouter();
     const [deletingId, setDeletingId] = useState(null);
 
     if (!products || products.length === 0) {
+        if (hasFilter) {
+            return (
+                <EmptyState
+                    title="No matching products"
+                    description="Try a different name or category."
+                />
+            );
+        }
+
         return (
             <EmptyState
                 title="No products yet"
@@ -57,7 +66,7 @@ export default function ProductsList({ products, shopId }) {
                                 {product.name || "Unnamed product"}
                             </p>
                             <p className="truncate text-sm text-gray-500">
-                                {product.categoryId.name || "No Category added"}
+                                {product.categoryId?.name || "No Category added"}
                             </p>
                         </div>
                     </div>

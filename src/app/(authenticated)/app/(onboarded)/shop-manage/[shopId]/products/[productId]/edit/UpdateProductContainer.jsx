@@ -6,6 +6,7 @@ import { updateProductAction } from "@/actions/Product.actions";
 import { errorToast, successToast } from "@/lib/toast";
 import { routes } from "@/lib/routes/routes";
 import ProductForm from "../../new/ProductForm";
+import { logConsole } from "@/lib/console/console";
 
 export default function UpdateProductContainer({ product, shopId, categories = [] }) {
     const router = useRouter();
@@ -23,6 +24,9 @@ export default function UpdateProductContainer({ product, shopId, categories = [
     };
 
     const handleSubmit = async (e) => {
+
+        alert("hello ji")
+
         e.preventDefault();
         setIsPending(true);
 
@@ -34,6 +38,8 @@ export default function UpdateProductContainer({ product, shopId, categories = [
         formData.set("desc", formValues.desc || "");
         formData.set("price", String(formValues.price));
         formData.set("image", formValues.image);
+
+        logConsole("UpdateProductContainer : handleSubmit : formData ", formData);
 
         const { data, error } = await updateProductAction(formData);
         setIsPending(false);

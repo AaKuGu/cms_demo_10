@@ -42,12 +42,6 @@ const socialsSchema = new mongoose.Schema(
             required: true,
             index: true,
         },
-        userIdFromAuthLibrary: {
-            type: String,
-            required: true,
-            trim: true,
-            index: true,
-        },
         links: {
             type: [socialLinkSchema],
             default: [],

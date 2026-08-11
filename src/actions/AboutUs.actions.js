@@ -1,76 +1,3 @@
-// "use server";
-
-// import { revalidatePath } from "next/cache";
-// import { upsertAboutUsByShopId } from "@/crud/AboutUs.crud";
-// import { getShopById } from "@/crud/Shop.crud";
-// import { afterOnboardingActionGuard } from "@/lib/actions/action";
-// import { logConsole } from "@/lib/console/console";
-// import { serialize } from "@/lib/serialize";
-// import { throwError } from "@/lib/throwError";
-// import { validateInputs } from "@/lib/validateInputs";
-// import { createAboutUsValidator } from "@/validators/AboutUs.validators";
-
-// export async function updateAboutUsAction(formData, shopId) {
-//     return afterOnboardingActionGuard(async ({ appUserId, userIdFromAuthLibrary }) => {
-//         logConsole("actions/aboutUs : updateAboutUsAction : formData ", formData);
-//         logConsole("actions/aboutUs : updateAboutUsAction : shopId ", shopId);
-
-//         if (!shopId) {
-//             throwError("Shop ID is required.");
-//         }
-
-//         const rawValues = {
-//             shopId,
-//             story: JSON.parse(formData.get("story") || "{}"),
-//             visionMission: JSON.parse(formData.get("visionMission") || "{}"),
-//             foundersMessage: JSON.parse(formData.get("foundersMessage") || "{}"),
-//             milestones: JSON.parse(formData.get("milestones") || "{}"),
-//             team: JSON.parse(formData.get("team") || "{}"),
-//             certifications: JSON.parse(formData.get("certifications") || "{}"),
-//             values: JSON.parse(formData.get("values") || "{}"),
-//             storeGallery: JSON.parse(formData.get("storeGallery") || "{}"),
-//             ctaBlock: JSON.parse(formData.get("ctaBlock") || "{}"),
-//             isVisible: formData.get("isVisible") === "true",
-//         };
-
-//         logConsole("actions/aboutUs : updateAboutUsAction : rawValues ", rawValues);
-
-//         const validated = validateInputs(createAboutUsValidator, rawValues);
-//         logConsole("actions/aboutUs : updateAboutUsAction : validated ", validated);
-
-//         if (!validated.success) {
-//             throwError(validated.error);
-//         }
-
-//         const shop = await getShopById(shopId);
-//         logConsole("actions/aboutUs : updateAboutUsAction : shop ", shop);
-
-//         if (!shop) {
-//             throwError("Selected shop not found.");
-//         }
-
-//         if (shop.appUserId?.toString() !== appUserId.toString()) {
-//             throwError("You are not authorized to update this shop's About Us page.");
-//         }
-
-//         const updated = await upsertAboutUsByShopId(shopId, {
-//             ...validated.data,
-//             appUserId,
-//             userIdFromAuthLibrary,
-//         });
-//         logConsole("actions/aboutUs : updateAboutUsAction : updated ", updated);
-
-//         if (!updated) {
-//             throwError("Failed to update About Us page. Please try again.");
-//         }
-
-//         revalidatePath(`/shop-manage/${shopId}/about-us`);
-
-//         return serialize(updated);
-//     });
-// }
-
-
 "use server";
 
 import { revalidatePath } from "next/cache";
@@ -88,7 +15,7 @@ import { serialize } from "@/lib/serialize";
 const parseJson = (val) => (val ? JSON.parse(val) : {});
 
 export async function updateAboutUsAction(formData, shopId) {
-  return afterOnboardingActionGuard(async ({ appUserId, userIdFromAuthLibrary }) => {
+  return afterOnboardingActionGuard(async ({ appUserId }) => {
     if (!shopId) {
       throwError("Shop ID is required.");
     }
@@ -137,7 +64,6 @@ export async function updateAboutUsAction(formData, shopId) {
     const updated = await upsertAboutUsByShopId(shopId, {
       ...cleanData,
       appUserId,
-      userIdFromAuthLibrary,
     });
 
     if (!updated) {

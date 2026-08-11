@@ -18,10 +18,18 @@ const appUserSchema = new mongoose.Schema(
             trim: true,
             lowercase: true,
         },
-        role: {
+        phone: {
             type: String,
-            trim: true,
-            default: "owner",
+            required: false,
+        },
+        onboarding: {
+            type: Boolean,
+            required: true,
+            default: false,
+        },
+        onboardingCompletedAt: {
+            type: Date,
+            required: false,
         },
     },
     { timestamps: true }

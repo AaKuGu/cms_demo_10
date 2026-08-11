@@ -19,12 +19,13 @@
 //   }
 // }
 
-import { errorConsole } from "./console/console";
+import { errorConsole, logConsole } from "./console/console";
 
 // lib/tryCatchAction.js
 export async function tryCatchAction(fn) {
   try {
     const data = await fn();
+    logConsole("tryCatchAction : data : ", data)
     return { data, error: null };
   } catch (err) {
     // redirect() internally throw karta hai, usko catch mat karo

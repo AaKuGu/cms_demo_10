@@ -8,12 +8,6 @@ const shopSchema = new mongoose.Schema(
             required: true,
             index: true,
         },
-        userIdFromAuthLibrary: {
-            type: String,
-            required: true,
-            trim: true,
-            index: true,
-        },
         slug: {
             type: String,
             required: true,

@@ -90,8 +90,8 @@ const StorePreviewView = ({ shop, categories, products }) => {
                                             key={cat._id}
                                             onClick={() => setActiveCategoryId(cat._id)}
                                             className={`relative whitespace-nowrap px-4 py-3 text-sm font-medium transition ${isActive
-                                                    ? "text-zinc-900"
-                                                    : "text-zinc-400 hover:text-zinc-600"
+                                                ? "text-zinc-900"
+                                                : "text-zinc-400 hover:text-zinc-600"
                                                 }`}
                                         >
                                             {cat.name}
