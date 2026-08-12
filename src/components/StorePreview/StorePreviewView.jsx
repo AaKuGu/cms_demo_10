@@ -21,6 +21,8 @@ import StoreHeader from "./StoreHeader";
 import CategoryTabs from "./CategoryTabs";
 import ProductCard from "./ProductCard";
 import CategoryCards from "./CategoryCards";
+import FloatingSocialLinks from "./FloatingSocialLinks";
+import FloatingQuickContact from "./FloatingQuickContact";
 
 const PLATFORM_ICON_MAP = {
     instagram: FaInstagram,
@@ -128,58 +130,18 @@ const StorePreviewView = ({ shop, categories, products, socials, contact, aboutU
         <div className="flex h-screen flex-col bg-white">
             {/* Floating social icons — fixed to the left edge, vertically centered. */}
             {visibleSocialLinks.length > 0 && (
-                <div className="fixed left-2 top-1/2 z-40 flex -translate-y-1/2 flex-col gap-2.5 sm:left-3 sm:gap-3 lg:left-5">
-                    {visibleSocialLinks.map((link, index) => {
-                        const Icon = PLATFORM_ICON_MAP[link.platform];
-                        if (!Icon) return null;
-                        return (
-                            <a
-                                key={`${link.platform}-${index}`}
-                                href={link.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                aria-label={link.platform}
-                                className="flex h-10 w-10 items-center justify-center rounded-full bg-[#241A15] text-white shadow-md ring-1 ring-black/10 transition duration-200 hover:-translate-x-0.5 hover:bg-[#7A1F3D] hover:shadow-lg"
-                            >
-                                <Icon className="h-4 w-4" />
-                            </a>
-                        );
-                    })}
-                </div>
+                <FloatingSocialLinks links={visibleSocialLinks} />
             )}
 
             {/* Floating quick-contact icons — fixed near the bottom-right corner */}
             {(shop.phone || visibleContact?.contactNumbers?.some((n) => n.type === "phone")) && (
-                <div className="fixed bottom-6 right-2 z-40 flex flex-col gap-2.5 sm:bottom-8 sm:right-3 sm:gap-3 lg:right-5 lg:bottom-10">
-                    {shop.phone && (
-                        <a
-                            href={`https://wa.me/91${shop.phone}?text=${whatsappMessage}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label="Chat on WhatsApp"
-                            className="flex h-10 w-10 items-center justify-center rounded-full bg-[#241A15] text-white shadow-md ring-1 ring-black/10 transition duration-200 hover:translate-x-0.5 hover:bg-green-600 hover:shadow-lg"
-                        >
-                            <FaWhatsapp className="h-4 w-4" />
-                        </a>
-                    )}
-                    {shop.phone && (
-                        <a
-                            href={`tel:${shop.phone}`}
-                            aria-label="Call the store"
-                            className="flex h-10 w-10 items-center justify-center rounded-full bg-[#241A15] text-white shadow-md ring-1 ring-black/10 transition duration-200 hover:translate-x-0.5 hover:bg-[#7A1F3D] hover:shadow-lg"
-                        >
-                            <FaPhone className="h-4 w-4" />
-                        </a>
-                    )}
-                </div>
+                <FloatingQuickContact phone={shop.phone} whatsappMessage={whatsappMessage} />
             )}
 
             {/* Category selector — cards on homepage, nothing on a category page */}
             {!isCategoryPage && categoriesWithProducts.length > 0 && (
                 <CategoryCards shopSlug={shop.slug} categories={categoriesWithProducts} />
             )}
-
-
 
             {/* Scrollable body — products, then about us, then contact */}
             <div className="flex-1 overflow-y-auto bg-white">

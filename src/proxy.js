@@ -54,7 +54,7 @@ export async function proxy(request) {
 
   // Case 2: already logged in, trying to access login/register → send to app
   if (sessionCookie && isAuthRoute) {
-    return NextResponse.redirect(new URL(routes.onboarding, request.url));
+    return NextResponse.redirect(new URL(routes.shops, request.url));
   }
 
   return NextResponse.next();
