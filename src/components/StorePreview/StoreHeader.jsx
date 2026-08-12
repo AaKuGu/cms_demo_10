@@ -7,7 +7,7 @@ const StoreHeader = ({ shop, whatsappMessage }) => {
     const { shopSlug } = useParams();
 
     const navItems = [
-        { label: "Products", href: `/${shopSlug}` },
+        { label: "Collections", href: `/${shopSlug}` },
         { label: "About us", href: `/${shopSlug}/about-us` },
         { label: "Contact us", href: `/${shopSlug}/contact-us` },
     ];

@@ -9,17 +9,13 @@ const page = async () => {
 
     const { data: { name, email }, error } = await onboardingInitialDetails();
 
-
     if (error) {
-
-        
         return <ActionDenied message={error} />;
     }
 
     return <>
         <Navbar />
         <Onboarding initialDetails={{ name, email }} />
-
     </>
 
 

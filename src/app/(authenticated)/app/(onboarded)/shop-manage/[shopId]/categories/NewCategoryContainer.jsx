@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import CategoryForm from "./CategoryForm";
 import { createCategoryAction } from "@/actions/Category.actions";
@@ -11,17 +11,43 @@ const defaultValues = {
     name: "",
     slug: "",
     description: "",
+    image: "",
 };
+
+const slugify = (value) =>
+    value
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "");
 
 export default function NewCategoryContainer({ shopId }) {
     const router = useRouter();
     const [formValues, setFormValues] = useState(() => ({ ...defaultValues }));
     const [isPending, setIsPending] = useState(false);
+    const slugTouchedRef = useRef(false);
 
     logConsole('new category container : shopId ', shopId);
 
     const updateField = (field) => (e) => {
-        setFormValues((prev) => ({ ...prev, [field]: e.target.value }));
+        const value = e.target.value;
+
+        if (field === "slug") {
+            slugTouchedRef.current = true;
+            setFormValues((prev) => ({ ...prev, slug: value }));
+            return;
+        }
+
+        if (field === "name") {
+            setFormValues((prev) => ({
+                ...prev,
+                name: value,
+                slug: slugTouchedRef.current ? prev.slug : slugify(value),
+            }));
+            return;
+        }
+
+        setFormValues((prev) => ({ ...prev, [field]: value }));
     };
 
     const handleSubmit = async (e) => {
@@ -33,6 +59,7 @@ export default function NewCategoryContainer({ shopId }) {
         formData.set("name", formValues.name);
         formData.set("slug", formValues.slug);
         formData.set("description", formValues.description || "");
+        formData.set("image", formValues.image || "");
 
         logConsole('new category container : submit formData ', Object.fromEntries(formData.entries()));
 
@@ -49,6 +76,7 @@ export default function NewCategoryContainer({ shopId }) {
 
         successToast("Category added successfully!");
         setFormValues({ ...defaultValues });
+        slugTouchedRef.current = false;
         router.refresh();
     };
 
@@ -57,7 +85,10 @@ export default function NewCategoryContainer({ shopId }) {
             formValues={formValues}
             onChange={updateField}
             onSubmit={handleSubmit}
-            onCancel={() => setFormValues({ ...defaultValues })}
+            onCancel={() => {
+                setFormValues({ ...defaultValues });
+                slugTouchedRef.current = false;
+            }}
             isPending={isPending}
             submitLabel="Add Category"
         />

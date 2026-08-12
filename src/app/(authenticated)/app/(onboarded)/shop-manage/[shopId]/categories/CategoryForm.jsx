@@ -1,5 +1,7 @@
 "use client";
 
+import ImageUpload from "@/components/ImageUpload";
+
 export default function CategoryForm({
     formValues,
     onChange,
@@ -54,6 +56,16 @@ export default function CategoryForm({
                         className="w-full rounded-lg border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-slate-900 focus:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-200"
                     />
                 </div>
+            </div>
+
+            <div className="mt-4">
+                <ImageUpload
+                    value={formValues.image}
+                    onChange={(url) =>
+                        onChange("image")({ target: { value: url } })
+                    }
+                    label="Category Image"
+                />
             </div>
 
             <div className="mt-4 flex justify-end gap-2">

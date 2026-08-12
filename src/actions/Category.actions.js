@@ -8,7 +8,7 @@ import { logConsole } from "@/lib/console/console";
 import { serialize } from "@/lib/serialize";
 import { throwError } from "@/lib/throwError";
 import { validateInputs } from "@/lib/validateInputs";
-import { createCategoryValidator } from "@/validators/Category.validators";
+import { createCategoryValidator, updateCategoryValidator } from "@/validators/Category.validators";
 import { routes } from "@/lib/routes/routes";
 
 export async function createCategoryAction(formData) {
@@ -22,6 +22,7 @@ export async function createCategoryAction(formData) {
             name: formData.get("name"),
             slug: formData.get("slug"),
             description: formData.get("description") ?? "",
+            image: formData.get("image") ?? "",
         };
 
         logConsole("actions/category : createCategoryAction : rawValues ", rawValues);
@@ -117,15 +118,17 @@ export async function updateCategoryAction(formData) {
             name: formData.get("name"),
             slug: formData.get("slug"),
             description: formData.get("description") ?? "",
+            image: formData.get("image") ?? "",
         };
 
         logConsole("actions/category : updateCategoryAction : rawValues ", rawValues);
 
-        const validated = validateInputs(createCategoryValidator, {
+        const validated = validateInputs(updateCategoryValidator, {
             shopId: rawValues.shopId,
             name: rawValues.name,
             slug: rawValues.slug,
             description: rawValues.description,
+            image: rawValues.image,
         });
         logConsole("actions/category : updateCategoryAction : validated ", validated);
 

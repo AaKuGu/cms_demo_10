@@ -19,6 +19,13 @@ export const createCategoryValidator = z.object({
         .max(1000, "Description must be under 1000 characters")
         .optional()
         .or(z.literal("")),
+    image: z
+        .string()
+        .trim()
+        .url("Enter a valid image URL")
+        .max(500, "Image URL must be under 500 characters")
+        .optional()
+        .or(z.literal("")),
 });
 
 export const updateCategoryValidator = createCategoryValidator.partial();

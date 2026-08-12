@@ -20,6 +20,7 @@ import {
 import StoreHeader from "./StoreHeader";
 import CategoryTabs from "./CategoryTabs";
 import ProductCard from "./ProductCard";
+import CategoryCards from "./CategoryCards";
 
 const PLATFORM_ICON_MAP = {
     instagram: FaInstagram,
@@ -48,7 +49,7 @@ const getMapEmbedSrc = (googleMapLink, address) => {
     return `https://www.google.com/maps?q=${encodeURIComponent(query)}&output=embed`;
 };
 
-const StorePreviewView = ({ shop, categories, products, socials, contact, aboutUs }) => {
+const StorePreviewView = ({ shop, categories, products, socials, contact, aboutUs, activeCategory: activeCategoryProp }) => {
     logConsole("about Us : ", aboutUs);
 
     const showPricing = shop?.settings?.products?.showPricing !== false; // default true if unset
@@ -75,13 +76,15 @@ const StorePreviewView = ({ shop, categories, products, socials, contact, aboutU
             .filter((cat) => cat.products.length > 0);
     }, [categories, products]);
 
+    const isCategoryPage = Boolean(activeCategoryProp);
+
     const [activeCategoryId, setActiveCategoryId] = useState(
         categoriesWithProducts[0]?._id ?? null
     );
 
-    const activeCategory = categoriesWithProducts.find(
-        (cat) => cat._id === activeCategoryId
-    );
+    const activeCategory = isCategoryPage
+        ? activeCategoryProp
+        : categoriesWithProducts.find((cat) => cat._id === activeCategoryId);
 
     const whatsappMessage = encodeURIComponent(
         `Hi, I saw your store "${shop.name.replace(/_/g, " ")}" online and wanted to ask about your products.`
@@ -118,6 +121,8 @@ const StorePreviewView = ({ shop, categories, products, socials, contact, aboutU
             .filter((sec) => sec.data && sec.data.isVisible)
             .sort((a, b) => (a.data.order ?? 0) - (b.data.order ?? 0));
     }, [aboutUs]);
+
+
 
     return (
         <div className="flex h-screen flex-col bg-white">
@@ -169,34 +174,33 @@ const StorePreviewView = ({ shop, categories, products, socials, contact, aboutU
                 </div>
             )}
 
-
-            {/* Category tabs */}
-            {categoriesWithProducts.length > 0 && (
-                <CategoryTabs categories={categoriesWithProducts} activeCategoryId={activeCategoryId} onSelect={setActiveCategoryId} />
+            {/* Category selector — cards on homepage, nothing on a category page */}
+            {!isCategoryPage && categoriesWithProducts.length > 0 && (
+                <CategoryCards shopSlug={shop.slug} categories={categoriesWithProducts} />
             )}
+
+
 
             {/* Scrollable body — products, then about us, then contact */}
             <div className="flex-1 overflow-y-auto bg-white">
                 <div className="mx-auto max-w-[1440px] px-4 py-7 sm:px-6 sm:py-10 lg:px-8">
                     {categoriesWithProducts.length === 0 ? (
                         <EmptyProductsState />
-                    ) : (
+                    ) : isCategoryPage ? (
                         <>
                             {activeCategory?.description && (
                                 <p className="mb-7 max-w-lg text-sm leading-relaxed text-[#948676]">
                                     {activeCategory.description}
                                 </p>
                             )}
-
                             <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-3 gap-y-7 sm:gap-x-6 sm:gap-y-9">
                                 {activeCategory?.products.map((product) => (
-                                    <ProductCard product={product} showPricing={showPricing} getProductWhatsappLink={getProductWhatsappLink} />
+                                    <ProductCard key={product._id} product={product} showPricing={showPricing} getProductWhatsappLink={getProductWhatsappLink} />
                                 ))}
                             </div>
                         </>
-                    )}
+                    ) : null /* homepage: cards already rendered above, nothing else here for now */}
                 </div>
-
             </div>
         </div>
     );
