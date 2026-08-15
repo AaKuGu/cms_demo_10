@@ -1,12 +1,31 @@
 "use client";
 
+import { useState } from "react";
+
 const ProductCard = ({ product, showPricing, getProductWhatsappLink }) => {
+    const images = product.images || [];
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    const hasMultipleImages = images.length > 1;
+
+    const goPrev = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+    };
+
+    const goNext = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+    };
+
     return (
         <div className="group">
             <div className="relative flex aspect-square items-center justify-center overflow-hidden rounded-xl bg-[#F3EAD9] shadow-[0_1px_2px_rgba(36,26,21,0.06)] transition-all duration-300 group-hover:-translate-y-0.5 group-hover:shadow-[0_10px_24px_-8px_rgba(122,31,61,0.25)]">
-                {product.image ? (
+                {images.length > 0 ? (
                     <img
-                        src={product.image}
+                        src={images[currentIndex]}
                         alt={product.name}
                         className="h-full w-full object-cover transition duration-300 ease-out group-hover:scale-[1.04]"
                     />
@@ -24,6 +43,42 @@ const ProductCard = ({ product, showPricing, getProductWhatsappLink }) => {
                             d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14M4 6h16v12H4V6z"
                         />
                     </svg>
+                )}
+
+                {hasMultipleImages && (
+                    <>
+                        <button
+                            type="button"
+                            onClick={goPrev}
+                            aria-label="Previous image"
+                            className="absolute left-1.5 top-1/2 flex h-6 w-6 -translate-y-1/2 items-center justify-center rounded-full bg-white/80 text-[#241A15] shadow-sm backdrop-blur-sm transition hover:bg-white sm:h-7 sm:w-7"
+                        >
+                            <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                            </svg>
+                        </button>
+
+                        <button
+                            type="button"
+                            onClick={goNext}
+                            aria-label="Next image"
+                            className="absolute right-1.5 top-1/2 flex h-6 w-6 -translate-y-1/2 items-center justify-center rounded-full bg-white/80 text-[#241A15] shadow-sm backdrop-blur-sm transition hover:bg-white sm:h-7 sm:w-7"
+                        >
+                            <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </button>
+
+                        <div className="absolute bottom-1.5 left-1/2 flex -translate-x-1/2 gap-1">
+                            {images.map((_, i) => (
+                                <span
+                                    key={i}
+                                    className={`h-1 w-1 rounded-full transition ${i === currentIndex ? "bg-white" : "bg-white/50"
+                                        }`}
+                                />
+                            ))}
+                        </div>
+                    </>
                 )}
             </div>
 
@@ -55,7 +110,7 @@ const ProductCard = ({ product, showPricing, getProductWhatsappLink }) => {
                     </a>
                 </div>
             </div>
-        </div>
+        </div >
     );
 };
 

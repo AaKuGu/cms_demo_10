@@ -16,16 +16,19 @@ export default function UpdateProductContainer({ product, shopId, categories = [
         name: product.name || "",
         desc: product.desc || "",
         price: product.price || "",
-        image: product.image || "",
+        images: product.images || [],
+
     });
 
     const updateField = (field) => (e) => {
         setFormValues((prev) => ({ ...prev, [field]: e.target.value }));
     };
 
-    const handleSubmit = async (e) => {
+    const updateImages = (images) => {
+        setFormValues((prev) => ({ ...prev, images }));
+    };
 
-        alert("hello ji")
+    const handleSubmit = async (e) => {
 
         e.preventDefault();
         setIsPending(true);
@@ -37,7 +40,7 @@ export default function UpdateProductContainer({ product, shopId, categories = [
         formData.set("name", formValues.name);
         formData.set("desc", formValues.desc || "");
         formData.set("price", String(formValues.price));
-        formData.set("image", formValues.image);
+        formData.set("images", JSON.stringify(formValues.images || []));
 
         logConsole("UpdateProductContainer : handleSubmit : formData ", formData);
 
@@ -57,6 +60,7 @@ export default function UpdateProductContainer({ product, shopId, categories = [
         <ProductForm
             formValues={formValues}
             onChange={updateField}
+            onImagesChange={updateImages}
             onSubmit={handleSubmit}
             onCancel={() => router.push(routes.products(shopId))}
             isPending={isPending}

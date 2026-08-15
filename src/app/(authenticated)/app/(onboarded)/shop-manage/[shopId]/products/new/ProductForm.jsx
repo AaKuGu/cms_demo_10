@@ -1,11 +1,12 @@
 "use client";
 
 import FormInput from "@/components/FormInput";
-import ImageUpload from "@/components/ImageUpload";
+import ImageUploadMultiple from "@/components/ImageUploadMultiple";
 
 export default function ProductForm({
     formValues,
     onChange,
+    onImagesChange,
     onSubmit,
     onCancel,
     isPending = false,
@@ -30,9 +31,9 @@ export default function ProductForm({
                     </div>
 
                     <div className="md:col-span-2">
-                        <ImageUpload
-                            value={formValues.image}
-                            onChange={(url) => onChange("image")({ target: { value: url } })}
+                        <ImageUploadMultiple
+                            value={formValues.images}
+                            onChange={onImagesChange}
                         />
                     </div>
 

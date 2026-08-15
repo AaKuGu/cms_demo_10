@@ -12,6 +12,7 @@ const defaultValues = {
     name: "",
     desc: "",
     price: "",
+    images: [],
 };
 
 export default function NewProductContainer({ shopId, categories = [] }) {
@@ -21,6 +22,10 @@ export default function NewProductContainer({ shopId, categories = [] }) {
 
     const updateField = (field) => (e) => {
         setFormValues((prev) => ({ ...prev, [field]: e.target.value }));
+    };
+
+    const updateImages = (images) => {
+        setFormValues((prev) => ({ ...prev, images }));
     };
 
     const handleSubmit = async (e) => {
@@ -33,7 +38,7 @@ export default function NewProductContainer({ shopId, categories = [] }) {
         formData.set("name", formValues.name);
         formData.set("desc", formValues.desc);
         formData.set("price", formValues.price);
-        formData.set("image", formValues.image);
+        formData.set("images", JSON.stringify(formValues.images || []));
 
         const { data, error } = await createProductAction(formData);
 
@@ -52,6 +57,7 @@ export default function NewProductContainer({ shopId, categories = [] }) {
         <ProductForm
             formValues={formValues}
             onChange={updateField}
+            onImagesChange={updateImages}
             onSubmit={handleSubmit}
             onCancel={() => router.push(routes.products(shopId))}
             isPending={isPending}

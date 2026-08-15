@@ -21,7 +21,7 @@ export async function createProductAction(formData) {
             name: formData.get("name"),
             desc: formData.get("desc"),
             price: Number(formData.get("price")),
-            image: formData.get("image"),
+            images: formData.get("images"),
 
         };
 
@@ -72,7 +72,8 @@ export async function updateProductAction(formData) {
             name: formData.get("name"),
             desc: formData.get("desc"),
             price: Number(formData.get("price")),
-            image: formData.get("image"),
+            images: formData.get("images"),
+
         };
 
         logConsole("actions/product : updateProductAction : rawValues ", rawValues);
