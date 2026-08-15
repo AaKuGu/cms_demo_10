@@ -6,12 +6,17 @@ import { useParams } from "next/navigation";
 const StoreHeader = ({ shop, whatsappMessage }) => {
     const { shopSlug } = useParams();
 
-    const navItems = [
-        { label: "Collections", href: `/${shopSlug}` },
-        { label: "About us", href: `/${shopSlug}/about-us` },
-        { label: "Contact us", href: `/${shopSlug}/contact-us` },
-    ];
+    // const navItems = [
+    //     { label: "Collections", href: `/${shopSlug}` },
+    //     { label: "About us", href: `/${shopSlug}/about-us` },
+    //     { label: "Contact us", href: `/${shopSlug}/contact-us` },
+    // ];
 
+    const navItems = [
+        { label: "Collections", href: `/` },
+        { label: "About us", href: `/about-us` },
+        { label: "Contact us", href: `/contact-us` },
+    ];
     return (
         <div className="relative shrink-0 bg-gradient-to-b from-[#FBF7F0] to-white">
             <div className="mx-auto max-w-[1440px] px-4 py-3 sm:px-6 sm:py-4 lg:px-8">
