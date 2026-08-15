@@ -60,6 +60,7 @@ function getSubdomain(hostname) {
   if (host.endsWith(`.${ROOT_DOMAIN}`)) {
     return host.replace(`.${ROOT_DOMAIN}`, "");
   }
+  
 
   return null;
 }
