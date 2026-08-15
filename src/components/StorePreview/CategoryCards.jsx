@@ -25,7 +25,8 @@ const CategoryCards = ({ shopSlug, categories }) => {
                 {categories.map((cat) => (
                     <Link
                         key={cat._id}
-                        href={`/${shopSlug}/${cat.slug}`}
+                        // href={`/${shopSlug}/${cat.slug}`}
+                        href={`/${cat.slug}`}
                         className="group overflow-hidden rounded-xl border border-[#ECE2D2] bg-white transition duration-200 hover:shadow-md"
                     >
                         <div className="relative aspect-square w-full bg-[#F4EDE1]">
