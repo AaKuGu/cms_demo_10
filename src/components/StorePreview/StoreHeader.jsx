@@ -10,6 +10,7 @@ const StoreHeader = ({ shop, whatsappMessage }) => {
     //     { label: "Collections", href: `/${shopSlug}` },
     //     { label: "About us", href: `/${shopSlug}/about-us` },
     //     { label: "Contact us", href: `/${shopSlug}/contact-us` },
+    
     // ];
 
     const navItems = [
