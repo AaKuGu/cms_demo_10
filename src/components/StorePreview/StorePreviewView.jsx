@@ -23,6 +23,7 @@ import ProductCard from "./ProductCard";
 import CategoryCards from "./CategoryCards";
 import FloatingSocialLinks from "./FloatingSocialLinks";
 import FloatingQuickContact from "./FloatingQuickContact";
+import EmptyProductsState from "./EmptyProductsState";
 
 const PLATFORM_ICON_MAP = {
     instagram: FaInstagram,
