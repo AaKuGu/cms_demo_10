@@ -37,7 +37,7 @@ export async function createShopAction(formData) {
 
         const created = await createShop({
             ...validated.data,
-            appUserId,
+            ownerId: appUserId,
         });
         logConsole("actions/shop : createShopAction : created ", created)
 

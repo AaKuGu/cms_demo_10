@@ -27,12 +27,6 @@ const contactSchema = new mongoose.Schema(
             unique: true,
             index: true,
         },
-        appUserId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "AppUser",
-            required: true,
-            index: true,
-        },
         email: {
             type: String,
             trim: true,

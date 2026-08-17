@@ -41,6 +41,8 @@ export function afterOnboardingActionGuard(fn) {
       redirect(routes.onboarding);
     }
 
+    
+
     return fn({ appUser, appUserId });
   });
 }

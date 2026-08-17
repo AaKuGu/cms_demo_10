@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const shopSchema = new mongoose.Schema(
     {
-        appUserId: {
+        ownerId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "AppUser",
             required: true,

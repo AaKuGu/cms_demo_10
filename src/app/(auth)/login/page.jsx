@@ -15,7 +15,7 @@ export default function LoginPage() {
         setLoading(true);
 
         try {
-            const callbackURL = routes.shops;
+            const callbackURL = routes.manage;
             await loginWithGoogle(callbackURL);
         } catch (err) {
             setLoading(false);
