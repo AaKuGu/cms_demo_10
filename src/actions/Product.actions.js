@@ -11,7 +11,7 @@ import { validateInputs } from "@/lib/validateInputs";
 import { createProductValidator, productsSettingsValidator } from "@/validators/Product.validators";
 
 export async function createProductAction(formData) {
-    return afterOnboardingActionGuard(async ({ appUserId }) => {
+    return afterOnboardingActionGuard(async ({ appUserId, managingBusinessUserId }) => {
         logConsole("actions/product : createProductAction : appUserId ", appUserId);
         logConsole("actions/product : createProductAction : formData ", formData);
 
@@ -41,13 +41,12 @@ export async function createProductAction(formData) {
             throwError("Selected shop not found.");
         }
 
-        if (shop.appUserId?.toString() !== appUserId.toString()) {
+        if (shop.appUserId?.toString() !== managingBusinessUserId.toString()) {
             throwError("You are not authorized to add products to this shop.");
         }
 
         const created = await createProduct({
             ...validated.data,
-            appUserId,
         });
         logConsole("actions/product : createProductAction : created ", created);
 
@@ -62,7 +61,7 @@ export async function createProductAction(formData) {
 }
 
 export async function updateProductAction(formData) {
-    return afterOnboardingActionGuard(async ({ appUserId }) => {
+    return afterOnboardingActionGuard(async ({ appUserId, managingBusinessUserId }) => {
         logConsole("actions/product : updateProductAction : formData ", formData);
 
         const rawValues = {
@@ -107,13 +106,12 @@ export async function updateProductAction(formData) {
             throwError("Selected shop not found.");
         }
 
-        if (shop.appUserId?.toString() !== appUserId.toString()) {
+        if (shop.appUserId?.toString() !== managingBusinessUserId.toString()) {
             throwError("You are not authorized to update this product.");
         }
 
         const updated = await updateProductById(rawValues.productId, {
             ...validated.data,
-            appUserId,
         });
         logConsole("actions/product : updateProductAction : updated ", updated);
 
@@ -128,7 +126,7 @@ export async function updateProductAction(formData) {
 }
 
 export async function deleteProductAction(productId, shopId) {
-    return afterOnboardingActionGuard(async ({ appUserId }) => {
+    return afterOnboardingActionGuard(async ({ appUserId, managingBusinessUserId }) => {
         logConsole("actions/product : deleteProductAction : productId ", productId);
         logConsole("actions/product : deleteProductAction : shopId ", shopId);
         logConsole("actions/product : deleteProductAction : appUserId ", appUserId);
@@ -159,7 +157,7 @@ export async function deleteProductAction(productId, shopId) {
             throwError("Selected shop not found.");
         }
 
-        if (shop.appUserId?.toString() !== appUserId.toString()) {
+        if (shop.appUserId?.toString() !== managingBusinessUserId.toString()) {
             throwError("You are not authorized to delete this product.");
         }
 
@@ -177,7 +175,7 @@ export async function deleteProductAction(productId, shopId) {
 }
 
 export async function updateProductSettingsAction(formData, shopId) {
-    return afterOnboardingActionGuard(async ({ appUserId }) => {
+    return afterOnboardingActionGuard(async ({ appUserId , managingBusinessUserId}) => {
         logConsole("actions/product : updateProductSettingsAction : formData ", formData);
         logConsole("actions/product : updateProductSettingsAction : shopId ", shopId);
 
@@ -204,7 +202,7 @@ export async function updateProductSettingsAction(formData, shopId) {
             throwError("Selected shop not found.");
         }
 
-        if (shop.appUserId?.toString() !== appUserId.toString()) {
+        if (shop.appUserId?.toString() !== managingBusinessUserId.toString()) {
             throwError("You are not authorized to update this shop's product settings.");
         }
 

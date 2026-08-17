@@ -8,7 +8,7 @@ export async function getAboutUsForThisShop({ shopId } = {}) {
         logConsole("ssrcalls : aboutUs : getAboutUsForThisShop : appUserId ", appUserId)
         logConsole("ssrcalls : aboutUs : getAboutUsForThisShop : shopId ", shopId)
 
-        const aboutUs = await getAboutUs({ shopId, appUserId });
+        const aboutUs = await getAboutUs({ shopId });
         logConsole("ssrcalls : aboutUs : getAboutUsForThisShop : aboutUs ", aboutUs)
 
         return serialize(aboutUs);

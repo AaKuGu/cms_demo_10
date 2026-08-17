@@ -15,7 +15,7 @@ import { serialize } from "@/lib/serialize";
 const parseJson = (val) => (val ? JSON.parse(val) : {});
 
 export async function updateAboutUsAction(formData, shopId) {
-  return afterOnboardingActionGuard(async ({ appUserId }) => {
+  return afterOnboardingActionGuard(async ({ appUserId, managingBusinessUserId }) => {
     if (!shopId) {
       throwError("Shop ID is required.");
     }
@@ -57,13 +57,12 @@ export async function updateAboutUsAction(formData, shopId) {
       throwError("Selected shop not found.");
     }
 
-    if (shop.appUserId?.toString() !== appUserId.toString()) {
+    if (shop.appUserId?.toString() !== managingBusinessUserId.toString()) {
       throwError("You are not authorized to update this shop's About Us page.");
     }
 
     const updated = await upsertAboutUsByShopId(shopId, {
       ...cleanData,
-      appUserId,
     });
 
     if (!updated) {

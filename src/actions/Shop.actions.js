@@ -9,7 +9,7 @@ import { validateInputs } from "@/lib/validateInputs";
 import { createShopValidator } from "@/validators/Shop.validators";
 
 export async function createShopAction(formData) {
-    return afterOnboardingActionGuard(async ({ appUserId }) => {
+    return afterOnboardingActionGuard(async ({ appUserId, managingBusinessUserId }) => {
         logConsole("actions/shop : createShopAction : appUserId ", appUserId)
 
         const rawValues = {
@@ -37,7 +37,7 @@ export async function createShopAction(formData) {
 
         const created = await createShop({
             ...validated.data,
-            appUserId,
+            appUserId: managingBusinessUserId,
         });
         logConsole("actions/shop : createShopAction : created ", created)
 
@@ -50,7 +50,7 @@ export async function createShopAction(formData) {
 }
 
 export async function updateShopAction(formData, shopId) {
-    return afterOnboardingActionGuard(async ({ appUserId }) => {
+    return afterOnboardingActionGuard(async ({ appUserId , managingBusinessUserId}) => {
         logConsole("actions/shop : updateShopAction : shopId ", shopId)
         logConsole("actions/shop : updateShopAction : appUserId ", appUserId)
 
@@ -65,7 +65,7 @@ export async function updateShopAction(formData, shopId) {
             throwError("Shop not found.");
         }
 
-        if (existingShop.appUserId.toString() !== appUserId.toString()) {
+        if (existingShop.appUserId.toString() !== managingBusinessUserId.toString()) {
             throwError("You are not authorized to update this shop.");
         }
 
@@ -106,7 +106,7 @@ export async function updateShopAction(formData, shopId) {
 }
 
 export async function deleteShopAction(shopId) {
-    return afterOnboardingActionGuard(async ({ appUserId }) => {
+    return afterOnboardingActionGuard(async ({ appUserId, managingBusinessUserId }) => {
         logConsole("actions/shop : deleteShopAction : shopId ", shopId)
         logConsole("actions/shop : deleteShopAction : appUserId ", appUserId)
 
@@ -121,7 +121,7 @@ export async function deleteShopAction(shopId) {
             throwError("Shop not found.");
         }
 
-        if (existingShop.appUserId.toString() !== appUserId.toString()) {
+        if (existingShop.appUserId.toString() !== managingBusinessUserId.toString()) {
             throwError("You are not authorized to delete this shop.");
         }
 

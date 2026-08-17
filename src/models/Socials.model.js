@@ -36,12 +36,6 @@ const socialsSchema = new mongoose.Schema(
             unique: true,
             index: true,
         },
-        appUserId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "AppUser",
-            required: true,
-            index: true,
-        },
         links: {
             type: [socialLinkSchema],
             default: [],

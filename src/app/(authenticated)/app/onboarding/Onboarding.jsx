@@ -39,7 +39,7 @@ export default function OnboardingContainer({ initialDetails = {} }) {
         }
 
         successToast("Details saved successfully!");
-        redirect(routes.shops)
+        redirect(routes.workspace)
     };
 
     return (

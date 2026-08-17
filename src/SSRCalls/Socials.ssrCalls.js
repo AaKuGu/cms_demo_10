@@ -8,7 +8,7 @@ export async function getAllSocialsForThisShop({ shopId } = {}) {
         logConsole("ssrcalls : socials : getAllSocialsForThisShop : appUserId ", appUserId)
         logConsole("ssrcalls : socials : getAllSocialsForThisShop : shopId ", shopId)
 
-        const socials = await getSocials({ shopId, appUserId });
+        const socials = await getSocials({ shopId });
         logConsole("ssrcalls : socials : getAllSocialsForThisShop : socials ", socials)
 
         return serialize(socials);

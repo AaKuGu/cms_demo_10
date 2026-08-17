@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/hooks/useAuth";
 import Button from "@/ui/Button";
+import { routes } from "@/lib/routes/routes";
 
 export default function Navbar() {
     const { logout } = useAuth();
@@ -24,7 +25,7 @@ export default function Navbar() {
     return (
         <header className="sticky top-0 z-50 border-b border-border bg-white/80 backdrop-blur-md">
             <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
-                <Link href="/shops">
+                <Link href={routes.shops}>
                     <img
                         src="/horizontal_logo.png"
                         alt="Logo"

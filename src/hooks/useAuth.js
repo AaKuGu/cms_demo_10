@@ -4,11 +4,15 @@ import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/authClient";
 import { successToast, errorToast } from "@/lib/toast";
 import { routes } from "@/lib/routes/routes";
+import { clearWorkspaceCookieAction } from "@/actions/Workspace.actions";
 
 export function useAuth() {
   const router = useRouter();
 
   const logout = async () => {
+
+    await clearWorkspaceCookieAction();
+
     await authClient.signOut({
       fetchOptions: {
         onSuccess: () => {

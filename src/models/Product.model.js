@@ -14,12 +14,6 @@ const productSchema = new mongoose.Schema(
             default: null,
             index: true,
         },
-        appUserId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "AppUser",
-            required: true,
-            index: true,
-        },
         name: {
             type: String,
             required: true,

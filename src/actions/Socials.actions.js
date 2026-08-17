@@ -11,7 +11,7 @@ import { validateInputs } from "@/lib/validateInputs";
 import { createSocialsValidator } from "@/validators/Socials.validators";
 
 export async function updateSocialsAction(formData, shopId) {
-    return afterOnboardingActionGuard(async ({ appUserId }) => {
+    return afterOnboardingActionGuard(async ({ appUserId, managingBusinessUserId}) => {
         logConsole("actions/socials : updateSocialsAction : formData ", formData);
         logConsole("actions/socials : updateSocialsAction : shopId ", shopId);
 
@@ -41,13 +41,12 @@ export async function updateSocialsAction(formData, shopId) {
             throwError("Selected shop not found.");
         }
 
-        if (shop.appUserId?.toString() !== appUserId.toString()) {
+        if (shop.appUserId?.toString() !== managingBusinessUserId.toString()) {
             throwError("You are not authorized to update this shop's social links.");
         }
 
         const updated = await upsertSocialsByShopId(shopId, {
             ...validated.data,
-            appUserId,
         });
         logConsole("actions/socials : updateSocialsAction : updated ", updated);
 

@@ -5,7 +5,7 @@ import PageHeader from "@/components/PageHeader";
 import { routes } from "@/lib/routes/routes";
 import ProductsList from "./ProductsList";
 import ProductFilterWrapper from "./ProductFilterWrapper";
-import { logConsole } from "../../../../../../../lib/console/console";
+import { logConsole } from "../../../../../../../../lib/console/console";
 
 const page = async ({ params, searchParams }) => {
     const { shopId } = await params;

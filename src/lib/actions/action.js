@@ -5,9 +5,9 @@ import {
   getAppUserFromSession
 } from "@/lib/authentication/authentication";
 import { tryCatchAction } from "@/lib/tryCatchAction";
-import { ERRORS } from "../errors/errorMessages";
-import { errorConsole, logConsole } from "../console/console";
+import { logConsole } from "../console/console";
 import { routes } from "../routes/routes";
+import { cookies } from "next/headers";
 
 export function afterOnboardingActionGuard(fn) {
   return tryCatchAction(async () => {
@@ -41,7 +41,12 @@ export function afterOnboardingActionGuard(fn) {
       redirect(routes.onboarding);
     }
 
-    return fn({ appUser, appUserId });
+    const cookieStore = await cookies();
+    const managingBusinessUserId = cookieStore.get("managingBusinessUserId")?.value || null;
+
+    logConsole("lib/actions/afterOnboardingActionGuard : managingBusinessUserId ", managingBusinessUserId);
+
+    return fn({ appUser, appUserId, managingBusinessUserId });
   });
 }
 

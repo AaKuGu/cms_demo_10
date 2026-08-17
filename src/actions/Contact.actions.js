@@ -11,7 +11,7 @@ import { validateInputs } from "@/lib/validateInputs";
 import { createContactValidator } from "@/validators/Contact.validators";
 
 export async function updateContactAction(formData, shopId) {
-    return afterOnboardingActionGuard(async ({ appUserId }) => {
+    return afterOnboardingActionGuard(async ({ appUserId, managingBusinessUserId }) => {
         logConsole("actions/contact : updateContactAction : formData ", formData);
         logConsole("actions/contact : updateContactAction : shopId ", shopId);
 
@@ -44,7 +44,7 @@ export async function updateContactAction(formData, shopId) {
             throwError("Selected shop not found.");
         }
 
-        if (shop.appUserId?.toString() !== appUserId.toString()) {
+        if (shop.appUserId?.toString() !== managingBusinessUserId.toString()) {
             throwError("You are not authorized to update this shop's contact info.");
         }
 

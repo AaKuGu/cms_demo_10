@@ -40,12 +40,21 @@ export const routes = {
   login: "/login",
   register: "/register",
   onboarding: "/app/onboarding",
+
+  workspace: "/app/workspace",
+
+  team: "/app/team",
+  teamCreate: "/app/team/member/new",
+
   shops: "/app/shops",
   shopEdit: (shopId) => `/app/shops/${shopId}/edit`,
   shopView: (shopId) => `/app/shops/${shopId}`,
   shopCreate: `/app/shops/new`,
   storePreview: (shopId) => `/app/shop-manage/${shopId}/storePreview`,
   live: (shopId) => `/app/shop-manage/${shopId}/live`,
+
+  //workspace
+  workSpaceClients: "/app/workspace/others",
 
   //products
   products: (shopId) => `/app/shop-manage/${shopId}/products`,

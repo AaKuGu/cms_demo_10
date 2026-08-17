@@ -145,12 +145,6 @@ const aboutUsSchema = new mongoose.Schema(
       unique: true,
       index: true,
     },
-    appUserId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "AppUser",
-      required: true,
-      index: true,
-    },
     // 5 Core Sections
     story: {
       type: storySectionSchema,

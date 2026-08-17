@@ -12,7 +12,7 @@ import { createCategoryValidator, updateCategoryValidator } from "@/validators/C
 import { routes } from "@/lib/routes/routes";
 
 export async function createCategoryAction(formData) {
-    return afterOnboardingActionGuard(async ({ appUserId }) => {
+    return afterOnboardingActionGuard(async ({ appUserId, managingBusinessUserId }) => {
 
         logConsole("actions/category : createCategoryAction : appUserId ", appUserId);
         logConsole("actions/category : createCategoryAction : formData ", formData);
@@ -41,13 +41,12 @@ export async function createCategoryAction(formData) {
             throwError("Selected shop not found.");
         }
 
-        if (shop.appUserId?.toString() !== appUserId.toString()) {
+        if (shop.appUserId?.toString() !== managingBusinessUserId.toString()) {
             throwError("You are not authorized to create category for this shop.");
         }
 
         const created = await createCategory({
             ...validated.data,
-            appUserId,
         });
         logConsole("actions/category : createCategoryAction : created ", created);
 
@@ -60,7 +59,7 @@ export async function createCategoryAction(formData) {
 }
 
 export async function removeCategoryAction(categoryId, shopId) {
-    return afterOnboardingActionGuard(async ({ appUserId }) => {
+    return afterOnboardingActionGuard(async ({ appUserId, managingBusinessUserId }) => {
         logConsole("actions/category : removeCategoryAction : categoryId ", categoryId);
         logConsole("actions/category : removeCategoryAction : shopId ", shopId);
         logConsole("actions/category : removeCategoryAction : appUserId ", appUserId);
@@ -91,7 +90,7 @@ export async function removeCategoryAction(categoryId, shopId) {
             throwError("Selected shop not found.");
         }
 
-        if (shop.appUserId?.toString() !== appUserId.toString()) {
+        if (shop.appUserId?.toString() !== managingBusinessUserId.toString()) {
             throwError("You are not authorized to delete this category.");
         }
 
@@ -109,7 +108,8 @@ export async function removeCategoryAction(categoryId, shopId) {
 }
 
 export async function updateCategoryAction(formData) {
-    return afterOnboardingActionGuard(async ({ appUserId }) => {
+    return afterOnboardingActionGuard(async ({ appUserId, managingBusinessUserId }) => {
+        logConsole("actions/cateogry : updateCAtegoryACtion : managingBusinessUserId : ", managingBusinessUserId)
         logConsole("actions/category : updateCategoryAction : formData ", formData);
 
         const rawValues = {
@@ -158,7 +158,7 @@ export async function updateCategoryAction(formData) {
             throwError("Selected shop not found.");
         }
 
-        if (shop.appUserId?.toString() !== appUserId.toString()) {
+        if (shop.appUserId?.toString() !== managingBusinessUserId.toString()) {
             throwError("You are not authorized to update this category.");
         }
 

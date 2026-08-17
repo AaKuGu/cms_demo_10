@@ -4,11 +4,11 @@ import { serialize } from "@/lib/serialize";
 import { logConsole } from "@/lib/console/console";
 
 export async function fetchAllShops() {
-    return afterOnboardingActionGuard(async ({ appUserId }) => {
+    return afterOnboardingActionGuard(async ({ appUserId, managingBusinessUserId }) => {
 
         logConsole("ssrcalls : shop : fetchAllShops : appUserId ", appUserId)
 
-        const shops = await getShopList({ appUserId });
+        const shops = await getShopList({ appUserId: managingBusinessUserId });
 
         logConsole("ssrcalls : shop : fetchAllShops : shops ", shops)
 

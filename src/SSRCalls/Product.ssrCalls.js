@@ -3,14 +3,14 @@ import { getProduct, getProductList } from "@/crud/Product.crud";
 import { serialize } from "@/lib/serialize";
 import { logConsole } from "@/lib/console/console";
 import { getCategoryList } from "@/crud/Category.crud";
-import { buildProductFilter } from "@/app/(authenticated)/app/(onboarded)/shop-manage/[shopId]/products/lib/buildProductFilter";
+import { buildProductFilter } from "@/app/(authenticated)/app/(onboarded)/(workspace)/shop-manage/[shopId]/products/lib/buildProductFilter";
 
 export async function fetchDataForProductListing({ shopId, searchParams = {} } = {}) {
     return afterOnboardingActionGuard(async ({ appUserId }) => {
         const userFilter = buildProductFilter(searchParams);
         const hasFilter = Object.keys(userFilter).length > 0;
 
-        const filter = { appUserId, shopId, ...userFilter };
+        const filter = { shopId, ...userFilter };
         const products = await getProductList(filter, ['categoryId'], { createdAt: -1 });
 
         // default to latest 10 when no filter is applied
@@ -40,7 +40,7 @@ export async function fetchAProduct({ productId } = {}) {
         logConsole("ssrcalls : product : fetchAProduct : appUserId ", appUserId)
         logConsole("ssrcalls : product : fetchAProduct : productId ", productId)
 
-        const product = await getProduct({ _id: productId, appUserId });
+        const product = await getProduct({ _id: productId });
         logConsole("ssrcalls : product : fetchAProduct : product ", product)
 
         return serialize(product);
